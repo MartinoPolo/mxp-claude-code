@@ -1,5 +1,5 @@
 ---
-name: init-project
+name: mp-init-project
 description: Initialize a new Claude Code project. Sets up git, creates spec interactively, generates checklists.
 disable-model-invocation: true
 allowed-tools: Read, Write, Bash, Skill, AskUserQuestion
@@ -12,34 +12,34 @@ All-in-one orchestrator for setting up a new Claude Code project with specificat
 ## Workflow Overview
 
 ```
-┌─────────────────┐
-│  /init-project  │
-└────────┬────────┘
+┌───────────────────┐
+│  /mp-init-project │
+└────────┬──────────┘
          │
          ▼
-┌─────────────────┐
-│  /create-spec   │ ◄── Interactive tech stack Q&A
-└────────┬────────┘
+┌───────────────────┐
+│  /mp-create-spec  │ ◄── Interactive tech stack Q&A
+└────────┬──────────┘
          │
          ▼
-┌─────────────────┐
-│   Confirm git   │ ◄── Ask user before init
-└────────┬────────┘
+┌───────────────────┐
+│   Confirm git     │ ◄── Ask user before init
+└────────┬──────────┘
          │
          ▼
-┌─────────────────┐
-│   /init-repo    │ ◄── Deterministic script
-└────────┬────────┘
+┌───────────────────┐
+│   /mp-init-repo   │ ◄── Deterministic script
+└────────┬──────────┘
          │
          ▼
-┌─────────────────┐
-│   /parse-spec   │ ◄── Auto-detects complexity
-└────────┬────────┘
+┌───────────────────┐
+│   /mp-parse-spec  │ ◄── Auto-detects complexity
+└────────┬──────────┘
          │
          ▼
-┌─────────────────┐
-│    Summary      │
-└─────────────────┘
+┌───────────────────┐
+│    Summary        │
+└───────────────────┘
 ```
 
 ## Instructions
@@ -60,10 +60,10 @@ If any exist, inform the user and ask how to proceed:
 
 If SPEC.md doesn't exist (or user wants to overwrite):
 
-Invoke the `/create-spec` skill to interactively gather project requirements and tech stack decisions.
+Invoke the `/mp-create-spec` skill to interactively gather project requirements and tech stack decisions.
 
 ```
-Use Skill tool: skill: "create-spec"
+Use Skill tool: skill: "mp-create-spec"
 ```
 
 ### Step 3: Confirm Git Initialization
@@ -81,20 +81,20 @@ Use `AskUserQuestion` for this confirmation.
 
 ### Step 4: Initialize Repository
 
-If user confirms, invoke `/init-repo`:
+If user confirms, invoke `/mp-init-repo`:
 
 ```
-Use Skill tool: skill: "init-repo"
+Use Skill tool: skill: "mp-init-repo"
 ```
 
 If user declines, skip to next step.
 
 ### Step 5: Parse Specification
 
-Invoke `/parse-spec` to generate implementation checklists:
+Invoke `/mp-parse-spec` to generate implementation checklists:
 
 ```
-Use Skill tool: skill: "parse-spec"
+Use Skill tool: skill: "mp-parse-spec"
 ```
 
 This will auto-detect complexity and create either:
@@ -128,17 +128,18 @@ Git Status:
 Next Steps:
   [For Simple Projects]
   Start implementing! Work through .claude/CHECKLIST.md
+  Run `/mp-execute` to execute the next task.
 
   [For Complex Projects]
-  Run `/execute-phase 1` to start Phase 1 with fresh context.
-  Run `/project-status` to check progress at any time.
+  Run `/mp-execute` to start Phase 1 with fresh context.
+  Run `/mp-project-status` to check progress at any time.
 ```
 
 ## Error Handling
 
-- If `/create-spec` fails, stop and report the error
-- If `/init-repo` fails (e.g., git not installed), continue but warn user
-- If `/parse-spec` fails, suggest user check SPEC.md format
+- If `/mp-create-spec` fails, stop and report the error
+- If `/mp-init-repo` fails (e.g., git not installed), continue but warn user
+- If `/mp-parse-spec` fails, suggest user check SPEC.md format
 
 ## Notes
 

@@ -1,5 +1,5 @@
 ---
-name: create-spec
+name: mp-create-spec
 description: Create project specification interactively. Asks about your idea, suggests tech stack, determines complexity.
 disable-model-invocation: true
 allowed-tools: Read, Write, Bash, AskUserQuestion
@@ -164,8 +164,8 @@ Show the user what was created and suggest next steps:
 > - Features: [count]
 >
 > **Next steps:**
-> - Run `/parse-spec` to generate implementation checklist
-> - Or run `/init-project` to also initialize git"
+> - Run `/mp-parse-spec` to generate implementation checklist
+> - Or run `/mp-init-project` to also initialize git"
 
 ## Notes
 

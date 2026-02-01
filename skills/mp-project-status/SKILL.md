@@ -1,5 +1,5 @@
 ---
-name: project-status
+name: mp-project-status
 description: Show current project progress and next steps. Works for both simple and complex projects.
 disable-model-invocation: true
 allowed-tools: Read, Bash
@@ -12,7 +12,7 @@ Display current project progress, completed tasks, and next steps. Works for bot
 ## Usage
 
 ```
-/project-status
+/mp-project-status
 ```
 
 ## Workflow
@@ -22,7 +22,7 @@ Display current project progress, completed tasks, and next steps. Works for bot
 Check which files exist:
 - `.claude/CHECKLIST.md` - Required for any tracked project
 - `.claude/STATE.md` - Indicates complex (phased) project
-- `.claude/phases/` - Phase files for complex projects
+- `.claude/phases/` - Phase folders for complex projects
 
 **Simple Project:** Has CHECKLIST.md but no STATE.md
 **Complex Project:** Has CHECKLIST.md, STATE.md, and phases/
@@ -39,7 +39,7 @@ Check which files exist:
 **For Complex Projects:**
 1. Read `.claude/STATE.md` for current status
 2. Read `.claude/ROADMAP.md` for phase overview
-3. For current phase, read phase file to get task progress
+3. For current phase, read phase folder's CHECKLIST.md for task progress
 4. Compile overall statistics
 
 ### Step 3: Generate Status Display
@@ -102,8 +102,8 @@ Session Notes:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Commands:
-  /execute-phase 2    Continue current phase
-  /parse-spec         Regenerate checklists
+  /mp-execute          Continue with next task
+  /mp-parse-spec       Regenerate checklists
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -111,9 +111,9 @@ Commands:
 
 Based on project state, suggest relevant next commands:
 
-- If no tasks done: "Start with the first task in Setup"
-- If phase incomplete: "Continue with `/execute-phase N`"
-- If phase complete: "Ready for `/execute-phase N+1`"
+- If no tasks done: "Start with `/mp-execute` to execute the first task"
+- If phase incomplete: "Continue with `/mp-execute`"
+- If phase complete: "Ready for next phase with `/mp-execute`"
 - If blockers exist: "Resolve blockers before continuing"
 - If all done: "Project complete! Consider final review"
 
@@ -141,9 +141,9 @@ Use 20 characters for the bar.
 
 ## Error Cases
 
-- **No CHECKLIST.md:** "No project tracking found. Run `/init-project` or `/parse-spec` first."
+- **No CHECKLIST.md:** "No project tracking found. Run `/mp-init-project` or `/mp-parse-spec` first."
 - **Empty checklist:** "Checklist exists but has no tasks. Check `.claude/CHECKLIST.md`"
-- **Corrupted STATE.md:** "Could not parse STATE.md. Consider regenerating with `/parse-spec`"
+- **Corrupted STATE.md:** "Could not parse STATE.md. Consider regenerating with `/mp-parse-spec`"
 
 ## Notes
 

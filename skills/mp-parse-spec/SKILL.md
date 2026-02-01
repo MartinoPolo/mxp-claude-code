@@ -1,5 +1,5 @@
 ---
-name: parse-spec
+name: mp-parse-spec
 description: Parse SPEC.md into implementation checklist or phases. Auto-detects complexity. Creates CHECKLIST.md for simple projects, phase folders + ROADMAP.md + STATE.md for complex.
 disable-model-invocation: false
 allowed-tools: Read, Write, Bash
@@ -35,7 +35,7 @@ Read `.claude/SPEC.md` and extract:
 - Create `.claude/CHECKLIST.md` (high-level phase tracking)
 - Create `.claude/ROADMAP.md` (phase overview)
 - Create `.claude/STATE.md` (session handoff)
-- Create `.claude/phases/` directory with phase files
+- Create `.claude/phases/` directory with **phase folders**
 
 ### Step 3A: Simple Project - Create CHECKLIST.md
 
@@ -135,7 +135,7 @@ Phase 4 (Polish)
 [Continue for all phases...]
 ```
 
-**STATE.md**:
+**STATE.md** (global):
 ```markdown
 # Project State
 
@@ -171,30 +171,53 @@ None
 - Created implementation plan
 ```
 
-**Phase Files** (`.claude/phases/01-foundation.md`):
+**Phase Folders** (`.claude/phases/01-foundation/`):
+
+Each phase gets its own folder with three files:
+
+**SPEC.md** (phase-specific requirements):
 ```markdown
-# Phase 1: Foundation
+# Phase 1: Foundation - Specification
 
 **Status:** Not Started
-**Estimated Tasks:** N
 **Dependencies:** None
 
 ## Objective
 Set up the project infrastructure and development environment.
 
-## Tasks
+## Scope
+- Initialize project structure
+- Set up build tools
+- Configure development environment
 
-### Setup
+## Out of Scope
+- Feature implementation
+- Production deployment
+
+## Deliverables
+- Working dev environment
+- Basic project structure
+- Build configuration
+
+## Notes
+[Phase-specific considerations]
+```
+
+**CHECKLIST.md** (phase tasks):
+```markdown
+# Phase 1: Foundation - Checklist
+
+## Setup
 - [ ] Initialize [package manager] project
 - [ ] Install core dependencies
 - [ ] Configure TypeScript/linting
 
-### Project Structure
+## Project Structure
 - [ ] Create directory structure
 - [ ] Set up entry point
 - [ ] Configure build process
 
-### Development Environment
+## Development Environment
 - [ ] Set up dev server
 - [ ] Configure hot reload
 - [ ] Add debug configuration
@@ -204,8 +227,30 @@ Set up the project infrastructure and development environment.
 - [ ] Dev server runs successfully
 - [ ] Basic tests pass
 
+---
+Progress: 0/N tasks complete
+```
+
+**STATE.md** (phase progress):
+```markdown
+# Phase 1: Foundation - State
+
+Last Updated: [Date]
+
+## Status
+Not Started
+
+## Progress
+0/N tasks complete (0%)
+
+## Decisions Made
+[Phase-specific decisions]
+
+## Blockers
+None
+
 ## Notes
-[Phase-specific notes and considerations]
+[Session notes for this phase]
 ```
 
 ### Step 4: Update CLAUDE.md
@@ -219,21 +264,21 @@ Report what was created:
 **For Simple Projects:**
 > "Created `.claude/CHECKLIST.md` with N tasks across M sections.
 >
-> Start implementing by working through the checklist. Mark items with [x] as you complete them."
+> Start implementing by working through the checklist. Run `/mp-execute` to execute the next task."
 
 **For Complex Projects:**
 > "Created phased implementation plan:
 > - `.claude/CHECKLIST.md` - High-level phase tracking
 > - `.claude/ROADMAP.md` - Phase overview and dependencies
 > - `.claude/STATE.md` - Session handoff tracking
-> - `.claude/phases/` - Detailed phase breakdowns
+> - `.claude/phases/` - Phase folders with SPEC.md, CHECKLIST.md, STATE.md each
 >
 > **Phases Created:**
 > 1. Foundation (N tasks)
 > 2. [Feature] (N tasks)
 > ...
 >
-> Run `/execute-phase 1` to start Phase 1 with fresh context."
+> Run `/mp-execute` to start with the first task."
 
 ## Task Breakdown Guidelines
 
@@ -245,9 +290,33 @@ When breaking features into tasks, ensure:
 - Testing tasks are included for each feature
 - Polish/cleanup tasks come at the end
 
+## Phase Folder Structure Summary
+
+```
+.claude/
+├── SPEC.md              # Master project specification
+├── CHECKLIST.md         # High-level phase tracking
+├── ROADMAP.md           # Phase overview
+├── STATE.md             # Global project state
+└── phases/
+    ├── 01-foundation/
+    │   ├── SPEC.md      # Phase requirements
+    │   ├── CHECKLIST.md # Phase tasks
+    │   └── STATE.md     # Phase progress
+    ├── 02-core-feature/
+    │   ├── SPEC.md
+    │   ├── CHECKLIST.md
+    │   └── STATE.md
+    └── 03-polish/
+        ├── SPEC.md
+        ├── CHECKLIST.md
+        └── STATE.md
+```
+
 ## Notes
 
 - All files are created in `.claude/` directory
 - Never create duplicate files in project root
 - If files already exist, ask before overwriting
-- Phase files should be numbered (01-, 02-, etc.) for ordering
+- Phase folders should be numbered (01-, 02-, etc.) for ordering
+- Each phase folder contains its own SPEC.md, CHECKLIST.md, STATE.md

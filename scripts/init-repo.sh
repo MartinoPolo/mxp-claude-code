@@ -70,6 +70,10 @@ yarn-error.log*
 pnpm-debug.log*
 debug/
 
+# Backup folders
+**/backup/
+
+
 # Testing
 .coverage
 htmlcov/

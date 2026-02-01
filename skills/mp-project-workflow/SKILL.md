@@ -1,5 +1,5 @@
 ---
-name: project-workflow
+name: mp-project-workflow
 description: Project workflow guidance for spec-driven development. Background knowledge auto-loaded when relevant.
 user-invocable: false
 ---
@@ -28,13 +28,13 @@ This document provides background knowledge about spec-driven development workfl
 ### Simple Projects
 - **Characteristics:** 1-3 features, single focus, short duration
 - **Tracking:** Single CHECKLIST.md
-- **Workflow:** Work through checklist sequentially
+- **Workflow:** Work through checklist with `/mp-execute`
 - **Session handling:** Just continue where you left off
 
 ### Complex Projects
 - **Characteristics:** 4+ features, multiple components, multi-session
-- **Tracking:** Phases + STATE.md + ROADMAP.md
-- **Workflow:** Execute phases with `/execute-phase N`
+- **Tracking:** Phase folders + STATE.md + ROADMAP.md
+- **Workflow:** Execute tasks with `/mp-execute` (auto-detects phase)
 - **Session handling:** STATE.md tracks handoff context
 
 ## File Responsibilities
@@ -42,10 +42,10 @@ This document provides background knowledge about spec-driven development workfl
 | File | Purpose | When Updated |
 |------|---------|--------------|
 | SPEC.md | Requirements, tech stack, scope | Initial creation, scope changes |
-| CHECKLIST.md | Task tracking | As tasks complete |
+| CHECKLIST.md | Task tracking (simple) or phase overview (complex) | As tasks complete |
 | ROADMAP.md | Phase overview, dependencies | Phase completion |
 | STATE.md | Session handoff, decisions, blockers | Each session |
-| phases/*.md | Detailed phase tasks | During phase execution |
+| phases/NN-name/ | Phase folder with SPEC.md, CHECKLIST.md, STATE.md | During phase execution |
 
 ## Best Practices
 
@@ -76,24 +76,29 @@ This document provides background knowledge about spec-driven development workfl
 ## Troubleshooting
 
 ### "I'm lost in my project"
-1. Run `/project-status` to see current state
+1. Run `/mp-project-status` to see current state
 2. Read STATE.md for recent context
 3. Check last commits with `git log --oneline -10`
 
 ### "The plan doesn't match reality"
 1. Update SPEC.md with actual requirements
-2. Run `/parse-spec` to regenerate checklists
+2. Run `/mp-parse-spec` to regenerate checklists
 3. Review and adjust as needed
 
 ### "Context is getting degraded"
-1. Use `/execute-phase N` for complex work
+1. Use `/mp-execute` for complex work
 2. This spawns fresh agent with clean context
 3. STATE.md maintains continuity
 
 ### "I need to change scope"
 1. Update SPEC.md with new requirements
-2. Regenerate with `/parse-spec`
+2. Regenerate with `/mp-parse-spec`
 3. Completed work is preserved in git
+
+### "I need to add new requirements"
+1. Run `/mp-add-requirements "description"`
+2. Reviews current state and detects conflicts
+3. Updates SPEC.md and generates new tasks
 
 ## Integration with Git
 
@@ -111,10 +116,11 @@ This document provides background knowledge about spec-driven development workfl
 ## Quick Reference
 
 ```
-/init-project     - Full setup (spec + git + checklist)
-/create-spec      - Interactive spec creation
-/init-repo        - Git initialization only
-/parse-spec       - Generate checklists from spec
-/execute-phase N  - Execute phase with fresh context
-/project-status   - Show progress and next steps
+/mp-init-project       - Full setup (spec + git + checklist)
+/mp-create-spec        - Interactive spec creation
+/mp-init-repo          - Git initialization only
+/mp-parse-spec         - Generate checklists from spec
+/mp-execute            - Execute next task (simple or complex)
+/mp-project-status     - Show progress and next steps
+/mp-add-requirements   - Add new requirements to existing project
 ```

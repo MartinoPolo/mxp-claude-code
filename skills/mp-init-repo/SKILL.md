@@ -1,5 +1,5 @@
 ---
-name: init-repo
+name: mp-init-repo
 description: Initialize git repository with comprehensive .gitignore. Use when starting a new project.
 disable-model-invocation: true
 allowed-tools: Bash, Write
