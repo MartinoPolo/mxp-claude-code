@@ -1,0 +1,197 @@
+#!/bin/bash
+# Initialize a new project with git and Claude Code structure
+# Usage: bash ~/.claude/scripts/init-repo.sh
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+echo -e "${GREEN}Initializing project...${NC}"
+
+# Check if .git already exists
+if [ -d ".git" ]; then
+    echo -e "${YELLOW}Git repository already exists. Skipping git init.${NC}"
+else
+    echo "Initializing git repository..."
+    git init
+fi
+
+# Create comprehensive .gitignore
+echo "Creating .gitignore..."
+cat > .gitignore << 'EOF'
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.eggs/
+*.egg-info/
+vendor/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+coverage/
+*.egg
+*.whl
+target/
+bin/
+obj/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+.secrets/
+credentials.json
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+*.code-workspace
+
+# Logs & debug
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+debug/
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.nyc_output/
+jest-cache/
+
+# Claude Code local files
+.claude/CLAUDE.local.md
+.claude/settings.local.json
+.claude/*.local.*
+
+# Package manager locks (optional - uncomment if desired)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+EOF
+
+# Create .claude directory structure
+echo "Creating .claude/ directory..."
+mkdir -p .claude
+
+# Create CLAUDE.md template
+if [ ! -f ".claude/CLAUDE.md" ]; then
+    echo "Creating .claude/CLAUDE.md template..."
+    cat > .claude/CLAUDE.md << 'EOF'
+# Project Context
+
+## Overview
+[Brief description of what this project does]
+
+## Tech Stack
+- Language: [e.g., TypeScript, Python]
+- Framework: [e.g., React, FastAPI]
+- Database: [e.g., PostgreSQL, SQLite, None]
+- Package Manager: [e.g., npm, yarn, pip]
+
+## Project Structure
+```
+[Add key directories and their purposes]
+```
+
+## Development Commands
+```bash
+# Install dependencies
+[command]
+
+# Run development server
+[command]
+
+# Run tests
+[command]
+
+# Build for production
+[command]
+```
+
+## Key Files
+- `[file]`: [purpose]
+
+## Notes
+[Any important context for Claude to know]
+EOF
+fi
+
+# Create SPEC.md template
+if [ ! -f ".claude/SPEC.md" ]; then
+    echo "Creating .claude/SPEC.md template..."
+    cat > .claude/SPEC.md << 'EOF'
+# Project Specification
+
+## Project Name
+[Name]
+
+## Description
+[What does this project do? Who is it for?]
+
+## Core Features
+1. [Feature 1]
+2. [Feature 2]
+3. [Feature 3]
+
+## Technical Requirements
+- [ ] [Requirement 1]
+- [ ] [Requirement 2]
+
+## Non-Functional Requirements
+- Performance: [requirements]
+- Security: [requirements]
+- Accessibility: [requirements]
+
+## Out of Scope
+- [What this project will NOT do]
+
+## Success Criteria
+- [How do we know when it's done?]
+EOF
+fi
+
+# Stage and commit
+echo "Creating initial commit..."
+git add .gitignore .claude/
+
+# Check if there's anything to commit
+if git diff --cached --quiet; then
+    echo -e "${YELLOW}No changes to commit.${NC}"
+else
+    git commit -m "Initial project setup
+
+- Add comprehensive .gitignore
+- Add .claude/ project structure
+- Add CLAUDE.md and SPEC.md templates"
+fi
+
+echo ""
+echo -e "${GREEN}Project initialized successfully!${NC}"
+echo ""
+echo "Created:"
+echo "  .gitignore          - Comprehensive ignore patterns"
+echo "  .claude/CLAUDE.md   - Project context template"
+echo "  .claude/SPEC.md     - Requirements template"
+echo ""
+echo "Next steps:"
+echo "  1. Edit .claude/SPEC.md with your project requirements"
+echo "  2. Run /parse-spec to generate implementation checklist"

@@ -1,0 +1,42 @@
+---
+name: init-repo
+description: Initialize git repository with comprehensive .gitignore. Use when starting a new project.
+disable-model-invocation: true
+allowed-tools: Bash, Write
+---
+
+# Initialize Repository
+
+Initialize a new git repository with a comprehensive .gitignore and Claude Code project structure.
+
+## Instructions
+
+1. **Check for existing git repo**: If `.git/` already exists, inform the user and abort.
+
+2. **Run the init script**: Execute the initialization script:
+   ```bash
+   bash ~/.claude/scripts/init-repo.sh
+   ```
+
+3. **Report results**: Show the user what was created:
+   - `.git/` directory
+   - `.gitignore` file
+   - `.claude/` folder structure
+   - Initial commit
+
+## What Gets Created
+
+```
+project/
+├── .git/
+├── .gitignore              # Comprehensive multi-language
+└── .claude/
+    ├── CLAUDE.md           # Project context template
+    └── SPEC.md             # Requirements template
+```
+
+## Notes
+
+- The script is idempotent for the .gitignore (won't duplicate entries)
+- Creates templates in `.claude/` for project documentation
+- Makes an initial commit with message "Initial project setup"

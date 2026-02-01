@@ -1,0 +1,44 @@
+# Sensitive - never commit
+settings.json
+settings.local.json
+credentials.json
+.credentials.json
+*.pem
+*.key
+
+# Personal configuration (keep private)
+CLAUDE.md
+AGENTS.md
+
+# Session data
+projects/
+todos/
+plans/
+tasks/
+file-history/
+debug/
+shell-snapshots/
+statsig/
+telemetry/
+history.jsonl
+stats-cache.json
+
+# Plugin data
+plugins/
+chrome/
+ide/
+
+# Cache
+cache/
+paste-cache/
+
+# Local overrides
+*.local.md
+*.local.json
+
+# Notes (personal)
+*-notes.md
+
+# OS files
+.DS_Store
+Thumbs.db
