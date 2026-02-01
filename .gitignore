@@ -6,10 +6,6 @@ credentials.json
 *.pem
 *.key
 
-# Personal configuration (keep private)
-CLAUDE.md
-AGENTS.md
-
 # Session data
 projects/
 todos/

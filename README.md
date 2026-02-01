@@ -1,30 +1,21 @@
 # Claude Code Custom Configuration
 
-Personal Claude Code skills and configuration.
+## Skills
 
-## Custom Skills (mp- prefix)
+| Skill | Description |
+|-------|-------------|
+| `/mp-init-project` | Full project setup (spec + git + checklist) |
+| `/mp-create-spec` | Interactive spec creation |
+| `/mp-init-repo` | Initialize git repo |
+| `/mp-parse-spec` | Parse SPEC.md → checklist/phases |
+| `/mp-execute` | Execute next task |
+| `/mp-project-status` | Show progress |
+| `/mp-add-requirements` | Add requirements with conflict detection |
+| `/mp-review-branch` | Multi-agent code review |
+| `/mp-review-pr` | PR review |
+| `/mp-update-readme` | Update README.md |
 
-### Review & Utility Skills
-
-| Skill | Command | Description |
-|-------|---------|-------------|
-| mp-update-readme | `/mp-update-readme` | Analyze codebase and update README.md |
-| mp-review-branch | `/mp-review-branch [base]` | Multi-agent code review of branch changes |
-| mp-review-pr | `/mp-review-pr [number]` | Multi-agent PR review (works on drafts) |
-
-### Project Workflow Skills
-
-| Skill | Command | Description |
-|-------|---------|-------------|
-| mp-init-project | `/mp-init-project` | Full project setup (spec + git + checklist) |
-| mp-create-spec | `/mp-create-spec` | Interactive spec creation with tech stack Q&A |
-| mp-init-repo | `/mp-init-repo` | Initialize git repository with .gitignore |
-| mp-parse-spec | `/mp-parse-spec` | Parse SPEC.md into checklist/phases |
-| mp-execute | `/mp-execute` | Execute next task (works for simple & complex) |
-| mp-project-status | `/mp-project-status` | Show project progress and next steps |
-| mp-add-requirements | `/mp-add-requirements [desc]` | Add new requirements with conflict detection |
-
-## Project Workflow
+## Workflow
 
 ```
 ┌───────────────────┐
