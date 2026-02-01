@@ -1,13 +1,13 @@
 ---
 name: mp-project-status
-description: Show current project progress and next steps. Works for both simple and complex projects.
+description: Show current project progress. Displays phase status and next steps.
 disable-model-invocation: true
 allowed-tools: Read, Bash
 ---
 
 # Project Status
 
-Display current project progress, completed tasks, and next steps. Works for both simple (checklist-based) and complex (phase-based) projects.
+Display current project progress, completed tasks, and next steps.
 
 ## Usage
 
@@ -17,57 +17,14 @@ Display current project progress, completed tasks, and next steps. Works for bot
 
 ## Workflow
 
-### Step 1: Detect Project Type
+### Step 1: Gather Progress Data
 
-Check which files exist:
-- `.claude/CHECKLIST.md` - Required for any tracked project
-- `.claude/STATE.md` - Indicates complex (phased) project
-- `.claude/phases/` - Phase folders for complex projects
-
-**Simple Project:** Has CHECKLIST.md but no STATE.md
-**Complex Project:** Has CHECKLIST.md, STATE.md, and phases/
-
-### Step 2: Gather Progress Data
-
-**For Simple Projects:**
-1. Read `.claude/CHECKLIST.md`
-2. Count total tasks (lines with `- [ ]` or `- [x]`)
-3. Count completed tasks (lines with `- [x]`)
-4. Identify current section being worked on
-5. Find next incomplete task
-
-**For Complex Projects:**
 1. Read `.claude/STATE.md` for current status
 2. Read `.claude/ROADMAP.md` for phase overview
 3. For current phase, read phase folder's CHECKLIST.md for task progress
 4. Compile overall statistics
 
-### Step 3: Generate Status Display
-
-**Simple Project Format:**
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- Project Status: [Project Name]
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Progress: ████████░░░░░░░░░░░░ 40% (8/20 tasks)
-
-Sections:
-  ✅ Setup (4/4)
-  🔄 Feature: User Auth (2/6) ◄ Current
-  ⬜ Feature: Dashboard (0/5)
-  ⬜ Polish (0/5)
-
-Next Task:
-  □ Implement password hashing
-
-Recent Completions:
-  ✓ Set up Express server
-  ✓ Configure database connection
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
-**Complex Project Format:**
+### Step 2: Generate Status Display
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  Project Status: [Project Name]
@@ -103,11 +60,11 @@ Session Notes:
 
 Commands:
   /mp-execute          Continue with next task
-  /mp-parse-spec       Regenerate checklists
+  /mp-parse-spec       Regenerate plan
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-### Step 4: Show Contextual Commands
+### Step 3: Show Contextual Commands
 
 Based on project state, suggest relevant next commands:
 
@@ -115,7 +72,7 @@ Based on project state, suggest relevant next commands:
 - If phase incomplete: "Continue with `/mp-execute`"
 - If phase complete: "Ready for next phase with `/mp-execute`"
 - If blockers exist: "Resolve blockers before continuing"
-- If all done: "Project complete! Consider final review"
+- If all phases done: "Project complete! Consider final review"
 
 ## Progress Bar Generation
 
@@ -141,8 +98,8 @@ Use 20 characters for the bar.
 
 ## Error Cases
 
-- **No CHECKLIST.md:** "No project tracking found. Run `/mp-init-project` or `/mp-parse-spec` first."
-- **Empty checklist:** "Checklist exists but has no tasks. Check `.claude/CHECKLIST.md`"
+- **No STATE.md or phases/:** "No project tracking found. Run `/mp-init-project` or `/mp-parse-spec` first."
+- **Empty phase checklist:** "Phase checklist has no tasks. Check phase's `CHECKLIST.md`"
 - **Corrupted STATE.md:** "Could not parse STATE.md. Consider regenerating with `/mp-parse-spec`"
 
 ## Notes

@@ -1,19 +1,17 @@
 ---
 name: mp-parse-spec
-description: Parse SPEC.md into implementation checklist or phases. Auto-detects complexity. Creates CHECKLIST.md for simple projects, phase folders + ROADMAP.md + STATE.md for complex.
+description: Parse SPEC.md into phased implementation. Creates phase folders + ROADMAP.md + STATE.md.
 disable-model-invocation: false
 allowed-tools: Read, Write, Bash
 ---
 
 # Parse Specification
 
-Convert SPEC.md into actionable implementation checklists or phases based on project complexity.
+Convert SPEC.md into a phased implementation plan with tracking files.
 
 ## Prerequisites
 
 - `.claude/SPEC.md` must exist
-- SPEC.md should have a "Complexity" field (Simple or Complex)
-- If complexity field is missing, analyze features to determine it
 
 ## Workflow
 
@@ -22,53 +20,20 @@ Convert SPEC.md into actionable implementation checklists or phases based on pro
 Read `.claude/SPEC.md` and extract:
 - Project name
 - Tech stack
-- Complexity level
 - Core features
 - Technical requirements
 
-### Step 2: Determine Output Format
+### Step 2: Create Phase Structure
 
-**If Simple Project:**
-- Create single `.claude/CHECKLIST.md`
+Create the following:
+- `.claude/CHECKLIST.md` (high-level phase tracking)
+- `.claude/ROADMAP.md` (phase overview)
+- `.claude/STATE.md` (session handoff)
+- `.claude/phases/` directory with **phase folders**
 
-**If Complex Project:**
-- Create `.claude/CHECKLIST.md` (high-level phase tracking)
-- Create `.claude/ROADMAP.md` (phase overview)
-- Create `.claude/STATE.md` (session handoff)
-- Create `.claude/phases/` directory with **phase folders**
+Smaller projects may have just 1-2 phases; larger projects may have more.
 
-### Step 3A: Simple Project - Create CHECKLIST.md
-
-```markdown
-# Implementation Checklist
-
-Project: [Name]
-Generated: [Date]
-
-## Setup
-- [ ] Initialize project with [package manager]
-- [ ] Configure [framework]
-- [ ] Set up [testing framework]
-
-## Feature: [Feature 1 Name]
-- [ ] [Task 1.1]
-- [ ] [Task 1.2]
-- [ ] [Task 1.3]
-
-## Feature: [Feature 2 Name]
-- [ ] [Task 2.1]
-- [ ] [Task 2.2]
-
-## Polish
-- [ ] Add error handling
-- [ ] Write README.md
-- [ ] Final testing
-
----
-Progress: 0/N tasks complete
-```
-
-### Step 3B: Complex Project - Create Phase Structure
+### Step 3: Create Files
 
 **CHECKLIST.md** (high-level):
 ```markdown
@@ -76,7 +41,6 @@ Progress: 0/N tasks complete
 
 Project: [Name]
 Generated: [Date]
-Complexity: Complex (Phased)
 
 ## Phases
 - [ ] Phase 1: Foundation
@@ -261,12 +225,6 @@ If `.claude/CLAUDE.md` exists and has template content, update it with actual pr
 
 Report what was created:
 
-**For Simple Projects:**
-> "Created `.claude/CHECKLIST.md` with N tasks across M sections.
->
-> Start implementing by working through the checklist. Run `/mp-execute` to execute the next task."
-
-**For Complex Projects:**
 > "Created phased implementation plan:
 > - `.claude/CHECKLIST.md` - High-level phase tracking
 > - `.claude/ROADMAP.md` - Phase overview and dependencies

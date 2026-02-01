@@ -1,13 +1,13 @@
 ---
 name: mp-create-spec
-description: Create project specification interactively. Asks about your idea, suggests tech stack, determines complexity.
+description: Create project specification interactively. Asks about your idea, suggests tech stack.
 disable-model-invocation: true
 allowed-tools: Read, Write, Bash, AskUserQuestion
 ---
 
 # Create Project Specification
 
-Interactive specification creation with intelligent tech stack suggestions and automatic complexity detection.
+Interactive specification creation with intelligent tech stack suggestions.
 
 ## Workflow
 
@@ -91,27 +91,7 @@ options:
   - None (Skip for now)
 ```
 
-### Step 4: Determine Complexity
-
-Based on the features identified, automatically determine complexity:
-
-**Simple Project** (generates single CHECKLIST.md):
-- 1-3 core features
-- Single component/service
-- No complex integrations
-- Can be completed in one focused session
-
-**Complex Project** (generates phases + STATE.md + ROADMAP.md):
-- 4+ features
-- Multiple components/services
-- External integrations
-- Multi-session effort
-
-Inform the user of the detected complexity:
-
-> "Based on your requirements, this looks like a **[simple/complex]** project. I'll create [a single checklist / phased implementation plan]."
-
-### Step 5: Generate SPEC.md
+### Step 4: Generate SPEC.md
 
 Create `.claude/SPEC.md` with all gathered information:
 
@@ -131,9 +111,6 @@ Create `.claude/SPEC.md` with all gathered information:
 - Database: [selected]
 - Testing: [selected]
 
-## Complexity
-[Simple/Complex] - [reason]
-
 ## Core Features
 1. [Feature 1]
 2. [Feature 2]
@@ -151,7 +128,7 @@ Create `.claude/SPEC.md` with all gathered information:
 [Any additional context from conversation]
 ```
 
-### Step 6: Summary
+### Step 5: Summary
 
 Show the user what was created and suggest next steps:
 
@@ -160,11 +137,10 @@ Show the user what was created and suggest next steps:
 > **Summary:**
 > - Project: [name]
 > - Tech: [stack summary]
-> - Complexity: [simple/complex]
 > - Features: [count]
 >
 > **Next steps:**
-> - Run `/mp-parse-spec` to generate implementation checklist
+> - Run `/mp-parse-spec` to generate phased implementation plan
 > - Or run `/mp-init-project` to also initialize git"
 
 ## Notes

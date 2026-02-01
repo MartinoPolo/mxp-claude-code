@@ -23,26 +23,12 @@ This document provides background knowledge about spec-driven development workfl
                  STATE.md
 ```
 
-## Simple vs Complex Projects
-
-### Simple Projects
-- **Characteristics:** 1-3 features, single focus, short duration
-- **Tracking:** Single CHECKLIST.md
-- **Workflow:** Work through checklist with `/mp-execute`
-- **Session handling:** Just continue where you left off
-
-### Complex Projects
-- **Characteristics:** 4+ features, multiple components, multi-session
-- **Tracking:** Phase folders + STATE.md + ROADMAP.md
-- **Workflow:** Execute tasks with `/mp-execute` (auto-detects phase)
-- **Session handling:** STATE.md tracks handoff context
-
 ## File Responsibilities
 
 | File | Purpose | When Updated |
 |------|---------|--------------|
 | SPEC.md | Requirements, tech stack, scope | Initial creation, scope changes |
-| CHECKLIST.md | Task tracking (simple) or phase overview (complex) | As tasks complete |
+| CHECKLIST.md | High-level phase tracking | As phases complete |
 | ROADMAP.md | Phase overview, dependencies | Phase completion |
 | STATE.md | Session handoff, decisions, blockers | Each session |
 | phases/NN-name/ | Phase folder with SPEC.md, CHECKLIST.md, STATE.md | During phase execution |

@@ -33,7 +33,7 @@ All-in-one orchestrator for setting up a new Claude Code project with specificat
          │
          ▼
 ┌───────────────────┐
-│   /mp-parse-spec  │ ◄── Auto-detects complexity
+│   /mp-parse-spec  │ ◄── Creates phased plan
 └────────┬──────────┘
          │
          ▼
@@ -91,15 +91,13 @@ If user declines, skip to next step.
 
 ### Step 5: Parse Specification
 
-Invoke `/mp-parse-spec` to generate implementation checklists:
+Invoke `/mp-parse-spec` to generate implementation plan:
 
 ```
 Use Skill tool: skill: "mp-parse-spec"
 ```
 
-This will auto-detect complexity and create either:
-- Simple: Single CHECKLIST.md
-- Complex: Phases + ROADMAP.md + STATE.md
+This creates phases + ROADMAP.md + STATE.md.
 
 ### Step 6: Final Summary
 
@@ -110,27 +108,21 @@ Project Initialized Successfully!
 
 Project: [Name]
 Tech Stack: [Language] + [Framework] + [Database]
-Complexity: [Simple/Complex]
 
 Files Created:
   .gitignore              ✓
   .claude/CLAUDE.md       ✓
   .claude/SPEC.md         ✓
   .claude/CHECKLIST.md    ✓
-  [.claude/ROADMAP.md     ✓]  (complex only)
-  [.claude/STATE.md       ✓]  (complex only)
-  [.claude/phases/        ✓]  (complex only)
+  .claude/ROADMAP.md      ✓
+  .claude/STATE.md        ✓
+  .claude/phases/         ✓
 
 Git Status:
   Repository initialized  ✓
   Initial commit created  ✓
 
 Next Steps:
-  [For Simple Projects]
-  Start implementing! Work through .claude/CHECKLIST.md
-  Run `/mp-execute` to execute the next task.
-
-  [For Complex Projects]
   Run `/mp-execute` to start Phase 1 with fresh context.
   Run `/mp-project-status` to check progress at any time.
 ```

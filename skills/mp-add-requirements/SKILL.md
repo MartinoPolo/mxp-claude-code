@@ -35,23 +35,14 @@ If no argument, ask the user:
 ### Step 2: Read Current State
 
 Read all relevant project files:
-
-**Always:**
 - `.claude/SPEC.md` - Master requirements
-- `.claude/CHECKLIST.md` - Current tasks
+- `.claude/CHECKLIST.md` - Phase overview
 - `.claude/CLAUDE.md` - Project context (if exists)
-
-**For Complex Projects (if exists):**
 - `.claude/ROADMAP.md` - Phase overview
 - `.claude/STATE.md` - Current progress
 - `.claude/phases/*/SPEC.md` - Phase requirements
 
-### Step 3: Detect Project Type
-
-- **Simple Project:** Has CHECKLIST.md but no phases/
-- **Complex Project:** Has CHECKLIST.md, STATE.md, and phases/
-
-### Step 4: Analyze for Conflicts
+### Step 3: Analyze for Conflicts
 
 Check the new requirements against existing specifications:
 
@@ -70,7 +61,7 @@ Check the new requirements against existing specifications:
 - Requirements that dramatically change project complexity
 - Features that depend on non-existent infrastructure
 
-### Step 5: Report Conflicts (if any)
+### Step 4: Report Conflicts (if any)
 
 If conflicts detected, present them to the user:
 
@@ -95,21 +86,7 @@ Options:
 
 Use `AskUserQuestion` for conflict resolution.
 
-### Step 6: Update Files
-
-**For Simple Projects:**
-
-1. **Update SPEC.md:**
-   - Add to "Core Features" or create "Additional Features" section
-   - Note any tech stack additions in "Tech Stack" section
-   - Add any conflict notes
-
-2. **Update CHECKLIST.md:**
-   - Add new section: `## Feature: [New Requirement]`
-   - Generate tasks for the new requirement
-   - Place appropriately (before "Polish" section)
-
-**For Complex Projects:**
+### Step 5: Update Files
 
 1. **Update SPEC.md:**
    - Add to features list
@@ -132,7 +109,7 @@ Use `AskUserQuestion` for conflict resolution.
    - Add note about requirements change
    - Update task counts
 
-### Step 7: Report Changes
+### Step 6: Report Changes
 
 ```
 Requirements Added Successfully!
@@ -142,9 +119,6 @@ New Requirements:
 
 Files Updated:
   ✓ .claude/SPEC.md - Added to Core Features
-  ✓ .claude/CHECKLIST.md - Added 5 new tasks
-
-[For Complex Projects:]
   ✓ .claude/ROADMAP.md - Updated Phase 3 task count
   ✓ .claude/phases/03-secondary/CHECKLIST.md - Added tasks
   ✓ .claude/phases/03-secondary/SPEC.md - Updated scope
