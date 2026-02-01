@@ -32,6 +32,9 @@ ide/
 cache/
 paste-cache/
 
+# Backup folders
+**/backup/
+
 # Local overrides
 *.local.md
 *.local.json
