@@ -21,7 +21,7 @@ Add new requirements to an existing project, updating all relevant files and det
 ## Prerequisites
 
 - `.claude/SPEC.md` must exist
-- `.claude/CHECKLIST.md` must exist
+- `.claude/ROADMAP.md` must exist
 
 ## Workflow
 
@@ -36,11 +36,11 @@ If no argument, ask the user:
 
 Read all relevant project files:
 - `.claude/SPEC.md` - Master requirements
-- `.claude/CHECKLIST.md` - Phase overview
+- `.claude/ROADMAP.md` - Phase overview + tracking
+- `.claude/STATE.md` - Current progress + session handoff
 - `.claude/CLAUDE.md` - Project context (if exists)
-- `.claude/ROADMAP.md` - Phase overview
-- `.claude/STATE.md` - Current progress
 - `.claude/phases/*/SPEC.md` - Phase requirements
+- `.claude/phases/*/CHECKLIST.md` - Phase tasks
 
 ### Step 3: Analyze for Conflicts
 

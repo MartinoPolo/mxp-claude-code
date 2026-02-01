@@ -1,32 +1,64 @@
 ---
 name: mp-execute
-description: Execute next task. Finds current phase, delegates to executor agent.
+description: Execute next task. Prompts for phase selection, delegates to executor agent.
 disable-model-invocation: true
-allowed-tools: Read, Write, Task, Bash
+allowed-tools: Read, Write, Task, Bash, AskUserQuestion
 ---
 
 # Execute Next Task
 
-Execute the next task by finding the current phase and delegating to the executor agent.
+Execute a task by selecting a phase and delegating to the executor agent.
 
 ## Usage
 
 ```
-/mp-execute           # Execute next task
+/mp-execute           # Select phase, execute next task
 ```
 
 ## Workflow
 
-### Step 1: Find Next Task
+### Step 1: Find Available Phases
 
-1. Read `.claude/STATE.md` for current phase
-2. Find first incomplete phase folder (`.claude/phases/NN-name/`)
-3. Read phase's `CHECKLIST.md`
-4. Find first unchecked task (`- [ ]`)
-5. Read phase's `SPEC.md` for context
-6. Prepare context for executor agent
+1. Read `.claude/STATE.md` for overall status
+2. Read `.claude/ROADMAP.md` for phase dependencies
+3. Find all phase folders in `.claude/phases/`
+4. For each phase, check:
+   - Status from ROADMAP.md (Not Started / In Progress / Completed)
+   - Dependencies from ROADMAP.md
+   - Whether dependencies are satisfied (all dependency phases = Completed)
 
-### Step 2: Prepare Context for Agent
+### Step 2: Prompt for Phase Selection
+
+Use `AskUserQuestion` to let user choose which phase to work on.
+
+**Rules:**
+- Only offer phases whose dependencies are satisfied
+- First option = first incomplete phase (Recommended)
+- Next 3 options = next eligible phases
+- "Other" allows manual phase number entry
+
+**Example prompt:**
+```
+Question: "Which phase to execute?"
+Header: "Phase"
+Options:
+  1. "Phase 1: Foundation (Recommended)" - "First incomplete phase, 3/10 tasks done"
+  2. "Phase 2: Core API" - "Dependencies met, 0/8 tasks done"
+  3. "Phase 3: UI Components" - "Dependencies met, 0/12 tasks done"
+  4. "Phase 4: Integration" - "Blocked by Phase 2, 3"
+```
+
+**If only one phase available:** Skip prompt, proceed with that phase.
+
+**If user selects "Other":** Parse phase number from input.
+
+### Step 3: Find Next Task in Selected Phase
+
+1. Read selected phase's `CHECKLIST.md`
+2. Find first unchecked task (`- [ ]`)
+3. Read phase's `SPEC.md` for context
+
+### Step 4: Prepare Context for Agent
 
 Gather essential context to pass to the executor agent:
 - Project name and tech stack (from SPEC.md)
@@ -34,13 +66,13 @@ Gather essential context to pass to the executor agent:
 - Task description
 - Any relevant decisions (from global or phase STATE.md)
 
-### Step 3: Delegate to Executor Agent
+### Step 5: Delegate to Executor Agent
 
 Use the Task tool to spawn a subagent:
 
 ```
 Task tool:
-  subagent_type: "general-purpose"
+  subagent_type: "mp-executor-agent"
   model: opus
   description: "Execute task: [task_name]"
   prompt: |
@@ -58,9 +90,8 @@ Task tool:
     ## Instructions
     1. Implement the task
     2. Commit after completing (use descriptive message)
-       - Simple: "[section] description"
-       - Complex: "phase-N: description"
-    3. Mark task complete: change `- [ ]` to `- [x]`
+       - Format: "phase-N: description"
+    3. Mark task complete: change `- [ ]` to `- [x]` in phase CHECKLIST.md
     4. If you encounter blockers, document them and stop
     5. Report summary when done
 
@@ -73,7 +104,7 @@ Task tool:
     - Do NOT make architectural changes not in the spec
 ```
 
-### Step 4: Handle Agent Response
+### Step 6: Handle Agent Response
 
 When the agent completes (or stops due to blocker):
 
@@ -81,31 +112,30 @@ When the agent completes (or stops due to blocker):
 1. Task is already marked complete by agent in phase's CHECKLIST.md
 2. Check if all phase tasks are complete
 3. If phase complete:
-   - Update phase's STATE.md
+   - Update phase's STATE.md (Status = Completed)
    - Update `.claude/STATE.md` (global)
-   - Update `.claude/ROADMAP.md`
-   - Update `.claude/CHECKLIST.md` (mark phase complete)
+   - Update `.claude/ROADMAP.md` (Status column = Completed)
 4. Report completion to user
 
 **On Blocker:**
 1. Update STATE.md:
    - Add blocker to Blockers section
-   - Add session note describing the issue
+   - Add session note in Session Handoff section
 2. Report to user what happened and what's needed
 
-### Step 5: Report Results
+### Step 7: Report Results
 
 ```
 Task Completed: [Task Description]
 Phase: N - [Phase Name]
 
 Phase Progress: X/Y tasks complete
-[If phase complete: "Phase N Complete! Ready for Phase N+1"]
+[If phase complete: "Phase N Complete!"]
 
 Commits Made: N
 
 Next Task:
-  □ [Next task description]
+  [] [Next task description]
 
 Run `/mp-execute` to continue.
 Run `/mp-project-status` for full progress overview.
@@ -113,10 +143,18 @@ Run `/mp-project-status` for full progress overview.
 
 ## Error Handling
 
-- **No CHECKLIST.md:** "No project found. Run `/mp-init-project` or `/mp-parse-spec` first."
+- **No phases found:** "No project found. Run `/mp-init-project` or `/mp-parse-spec` first."
 - **All phases complete:** "All phases complete! Project finished."
-- **Phase prerequisites not met:** "Phase N requires Phase M to be completed first."
+- **No eligible phases:** "All remaining phases are blocked. Check dependencies in ROADMAP.md."
 - **Agent fails:** Report error and suggest manual intervention
+
+## Parallel Execution Note
+
+Multiple `/mp-execute` commands can run in parallel on different phases if:
+- The phases have no mutual dependencies
+- Both phases' dependencies are already satisfied
+
+Example: Phase 2 and Phase 3 can both run if they only depend on Phase 1 (completed).
 
 ## Notes
 
@@ -124,3 +162,4 @@ Run `/mp-project-status` for full progress overview.
 - Each task should be atomic and completable in one execution
 - STATE.md provides continuity between tasks and sessions
 - Agent commits after each task to preserve progress
+- ROADMAP.md is the source of truth for phase completion status

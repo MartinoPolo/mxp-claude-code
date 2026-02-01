@@ -26,37 +26,19 @@ Read `.claude/SPEC.md` and extract:
 ### Step 2: Create Phase Structure
 
 Create the following:
-- `.claude/CHECKLIST.md` (high-level phase tracking)
-- `.claude/ROADMAP.md` (phase overview)
-- `.claude/STATE.md` (session handoff)
+- `.claude/ROADMAP.md` (phase overview + high-level tracking)
+- `.claude/STATE.md` (global state + session handoff)
 - `.claude/phases/` directory with **phase folders**
 
 Smaller projects may have just 1-2 phases; larger projects may have more.
 
 ### Step 3: Create Files
 
-**CHECKLIST.md** (high-level):
-```markdown
-# Implementation Checklist
-
-Project: [Name]
-Generated: [Date]
-
-## Phases
-- [ ] Phase 1: Foundation
-- [ ] Phase 2: [Core Feature Name]
-- [ ] Phase 3: [Secondary Features]
-- [ ] Phase 4: Polish & Testing
-
-See `phases/` for detailed task breakdowns.
-See `ROADMAP.md` for phase overview.
-See `STATE.md` for session handoff notes.
-```
-
-**ROADMAP.md**:
+**ROADMAP.md** (phase overview + tracking):
 ```markdown
 # Implementation Roadmap
 
+Project: [Name]
 Generated: [Date]
 Total Phases: N
 
@@ -99,7 +81,7 @@ Phase 4 (Polish)
 [Continue for all phases...]
 ```
 
-**STATE.md** (global):
+**STATE.md** (global state + session handoff):
 ```markdown
 # Project State
 
@@ -127,12 +109,34 @@ None
 ## Blockers
 None
 
-## Session Notes
-[Use this section for handoff between sessions]
+---
+
+## Session Handoff
 
 ### [Date] - Session Start
+**Progress:**
 - Initial project setup
 - Created implementation plan
+
+**Key Decisions:**
+- [Decisions made]
+
+**Issues Encountered:**
+- What went wrong: None
+- What NOT to do: [Lessons learned]
+- What we tried: [Approaches attempted]
+- How we handled it: [Solutions found]
+
+**Next Steps:**
+1. Start Phase 1: Foundation
+2. [Next action]
+
+**Critical Files:**
+- `.claude/SPEC.md`
+- `.claude/ROADMAP.md`
+
+**Working Memory:**
+[Accumulated context, patterns, file relationships]
 ```
 
 **Phase Folders** (`.claude/phases/01-foundation/`):
@@ -195,7 +199,7 @@ Set up the project infrastructure and development environment.
 Progress: 0/N tasks complete
 ```
 
-**STATE.md** (phase progress):
+**STATE.md** (phase state + session handoff):
 ```markdown
 # Phase 1: Foundation - State
 
@@ -213,8 +217,32 @@ Not Started
 ## Blockers
 None
 
-## Notes
-[Session notes for this phase]
+---
+
+## Session Handoff
+
+### [Date]
+**Progress This Session:**
+- [What was accomplished]
+
+**Key Decisions:**
+- [Decisions made this session]
+
+**Issues Encountered:**
+- What went wrong: [...]
+- What NOT to do: [...]
+- What we tried: [...]
+- How we handled it: [...]
+
+**Next Steps:**
+1. [...]
+2. [...]
+
+**Critical Files:**
+- [Files involved in current work]
+
+**Working Memory:**
+[Accumulated context, patterns, file relationships]
 ```
 
 ### Step 4: Update CLAUDE.md
@@ -226,9 +254,8 @@ If `.claude/CLAUDE.md` exists and has template content, update it with actual pr
 Report what was created:
 
 > "Created phased implementation plan:
-> - `.claude/CHECKLIST.md` - High-level phase tracking
-> - `.claude/ROADMAP.md` - Phase overview and dependencies
-> - `.claude/STATE.md` - Session handoff tracking
+> - `.claude/ROADMAP.md` - Phase overview, dependencies, and tracking
+> - `.claude/STATE.md` - Global state and session handoff
 > - `.claude/phases/` - Phase folders with SPEC.md, CHECKLIST.md, STATE.md each
 >
 > **Phases Created:**
@@ -253,14 +280,13 @@ When breaking features into tasks, ensure:
 ```
 .claude/
 ├── SPEC.md              # Master project specification
-├── CHECKLIST.md         # High-level phase tracking
-├── ROADMAP.md           # Phase overview
-├── STATE.md             # Global project state
+├── ROADMAP.md           # Phase overview + high-level tracking
+├── STATE.md             # Global state + session handoff
 └── phases/
     ├── 01-foundation/
     │   ├── SPEC.md      # Phase requirements
     │   ├── CHECKLIST.md # Phase tasks
-    │   └── STATE.md     # Phase progress
+    │   └── STATE.md     # Phase state + session handoff
     ├── 02-core-feature/
     │   ├── SPEC.md
     │   ├── CHECKLIST.md
@@ -278,3 +304,4 @@ When breaking features into tasks, ensure:
 - If files already exist, ask before overwriting
 - Phase folders should be numbered (01-, 02-, etc.) for ordering
 - Each phase folder contains its own SPEC.md, CHECKLIST.md, STATE.md
+- ROADMAP.md tracks phase completion (update Status column when phases complete)

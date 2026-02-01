@@ -1,19 +1,33 @@
 # Claude Code Custom Configuration
 
+## Custom Status Line
+
+![Status Line](assets/status-line.png)
+
+3-line status bar showing:
+- **Line 1**: Model, directory, git branch
+- **Line 2**: Context usage bar (█/░), % tokens, session cost (USD/CZK)
+- **Line 3**: 5-hour & 7-day quota utilization
+
+Configured via `scripts/context-bar.sh`.
+
 ## Skills
 
 | Skill | Description |
 |-------|-------------|
-| `/mp-init-project` | Full project setup (spec + git + checklist) |
+| `/mp-init-project` | Full project setup (spec + git + phases) |
 | `/mp-create-spec` | Interactive spec creation |
 | `/mp-init-repo` | Initialize git repo |
-| `/mp-parse-spec` | Parse SPEC.md → checklist/phases |
-| `/mp-execute` | Execute next task |
+| `/mp-parse-spec` | Parse SPEC.md → ROADMAP.md + phases |
+| `/mp-execute` | Select phase, execute next task |
 | `/mp-project-status` | Show progress |
 | `/mp-add-requirements` | Add requirements with conflict detection |
 | `/mp-review-branch` | Multi-agent code review |
 | `/mp-review-pr` | PR review |
 | `/mp-update-readme` | Update README.md |
+| `/mp-handoff` | Update STATE.md with session handoff info |
+| `/mp-gemini-fetch` | Fetch blocked sites via Gemini CLI |
+| `/mp-update-instructions` | Analyze history, improve CLAUDE.md/AGENTS.md |
 
 ## Workflow
 
@@ -34,7 +48,7 @@
          │
          ▼
 ┌───────────────────┐
-│  /mp-parse-spec   │  ◄── Generate checklist/phases
+│  /mp-parse-spec   │  ◄── Generate ROADMAP.md + phases
 └────────┬──────────┘
          │
          ▼
@@ -48,30 +62,20 @@
 └───────────────────┘
 ```
 
-## Simple vs Complex Projects
+## Project Structure
 
-**Simple Projects** (1-3 features):
-- Single `.claude/CHECKLIST.md`
-- Run `/mp-execute` to work through tasks
-
-**Complex Projects** (4+ features):
-- Phase folders with individual SPEC.md, CHECKLIST.md, STATE.md
-- Global ROADMAP.md and STATE.md
-- Run `/mp-execute` to work through phase tasks
-
-### Complex Project Structure
+All projects use phase-based organization:
 
 ```
 .claude/
 ├── SPEC.md              # Master project specification
-├── CHECKLIST.md         # High-level phase tracking
-├── ROADMAP.md           # Phase overview and dependencies
-├── STATE.md             # Global project state
+├── ROADMAP.md           # Phase overview + high-level tracking
+├── STATE.md             # Global state + session handoff
 └── phases/
     ├── 01-foundation/
     │   ├── SPEC.md      # Phase requirements
     │   ├── CHECKLIST.md # Phase tasks
-    │   └── STATE.md     # Phase progress
+    │   └── STATE.md     # Phase state + session handoff
     ├── 02-core-feature/
     │   ├── SPEC.md
     │   ├── CHECKLIST.md
@@ -82,6 +86,11 @@
         └── STATE.md
 ```
 
+**Key files:**
+- `ROADMAP.md` - tracks phase completion (Status column)
+- `STATE.md` - includes session handoff section
+- Each phase folder has its own `CHECKLIST.md` for task tracking
+
 ## Usage Examples
 
 ```bash
@@ -91,10 +100,10 @@
 # Or step by step:
 /mp-create-spec           # Create specification
 /mp-init-repo             # Initialize git
-/mp-parse-spec            # Generate checklist/phases
+/mp-parse-spec            # Generate ROADMAP.md + phases
 
 # Execute tasks
-/mp-execute               # Execute next task (auto-detects project type)
+/mp-execute               # Select phase, execute next task
 
 # Check progress
 /mp-project-status        # See progress and next steps

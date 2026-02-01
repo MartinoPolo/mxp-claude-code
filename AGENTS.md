@@ -69,7 +69,7 @@ Update docs when behavior, patterns, or structure changes.
 | New pattern/convention | `~/.claude/AGENTS.md` |
 | Workflow changes | `~/.claude/skills/*.md`, `README.md` |
 | Agent behavior | `~/.claude/agents/*.md` |
-| Project tasks | `.claude/CHECKLIST.md` or phase checklists |
+| Project tasks | `.claude/phases/*/CHECKLIST.md` |
 
 ## Plan Mode
 
@@ -96,3 +96,9 @@ Add any number of these:
 Conventional commits: `type(scope): description`
 
 **Types**: feat, fix, refactor, chore, docs, style, test, perf, ci, build, revert
+
+## Testing
+
+- Create tests when adding new features
+- Run existing tests after changes to verify nothing broke
+- Tests enable autonomous problem-solving and verification

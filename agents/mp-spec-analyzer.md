@@ -49,15 +49,14 @@ For each phase, create atomic tasks that:
 
 ### Step 5: Create Output Files
 Generate all required files in `.claude/` directory:
-- CHECKLIST.md (high-level phase tracking)
-- ROADMAP.md (phase overview)
-- STATE.md (global tracking)
+- ROADMAP.md (phase overview + high-level tracking)
+- STATE.md (global state + session handoff)
 - phases/NN-name/ (phase folders)
 
 **Each phase folder contains:**
 - SPEC.md (phase-specific requirements)
 - CHECKLIST.md (phase tasks)
-- STATE.md (phase progress)
+- STATE.md (phase state + session handoff)
 
 ## Output Quality Standards
 
@@ -162,8 +161,31 @@ Not Started
 ## Blockers
 None
 
-## Notes
-[Session notes for this phase]
+---
+
+## Session Handoff
+
+### [Date]
+**Progress This Session:**
+- [What was accomplished]
+
+**Key Decisions:**
+- [Decisions made]
+
+**Issues Encountered:**
+- What went wrong: [...]
+- What NOT to do: [...]
+- What we tried: [...]
+- How we handled it: [...]
+
+**Next Steps:**
+1. [...]
+
+**Critical Files:**
+- [Files involved]
+
+**Working Memory:**
+[Context, patterns, relationships]
 ```
 
 ## Remember

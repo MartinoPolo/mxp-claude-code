@@ -18,9 +18,9 @@ This document provides background knowledge about spec-driven development workfl
   Idea ──► Spec ──► Plan ──► Implement ──► Test ──► Ship
            │         │           │
            ▼         ▼           ▼
-        SPEC.md  CHECKLIST.md  Commits
-                 ROADMAP.md
+        SPEC.md  ROADMAP.md   Commits
                  STATE.md
+                 phases/
 ```
 
 ## File Responsibilities
@@ -28,9 +28,8 @@ This document provides background knowledge about spec-driven development workfl
 | File | Purpose | When Updated |
 |------|---------|--------------|
 | SPEC.md | Requirements, tech stack, scope | Initial creation, scope changes |
-| CHECKLIST.md | High-level phase tracking | As phases complete |
-| ROADMAP.md | Phase overview, dependencies | Phase completion |
-| STATE.md | Session handoff, decisions, blockers | Each session |
+| ROADMAP.md | Phase overview, dependencies, high-level tracking | Phase completion |
+| STATE.md | Global state, session handoff, decisions, blockers | Each session |
 | phases/NN-name/ | Phase folder with SPEC.md, CHECKLIST.md, STATE.md | During phase execution |
 
 ## Best Practices

@@ -49,7 +49,7 @@ All-in-one orchestrator for setting up a new Claude Code project with specificat
 First, check what already exists:
 - Does `.git/` exist? (git already initialized)
 - Does `.claude/SPEC.md` exist? (spec already created)
-- Does `.claude/CHECKLIST.md` exist? (already parsed)
+- Does `.claude/ROADMAP.md` exist? (already parsed)
 
 If any exist, inform the user and ask how to proceed:
 - Skip that step
@@ -113,7 +113,6 @@ Files Created:
   .gitignore              ✓
   .claude/CLAUDE.md       ✓
   .claude/SPEC.md         ✓
-  .claude/CHECKLIST.md    ✓
   .claude/ROADMAP.md      ✓
   .claude/STATE.md        ✓
   .claude/phases/         ✓
