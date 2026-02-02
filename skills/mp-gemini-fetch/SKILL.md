@@ -27,17 +27,17 @@ Invoke with a URL:
 
 Check if the URL is provided and valid.
 
-### Step 2: Execute Gemini CLI (Windows-compatible)
+### Step 2: Execute Gemini CLI
 
-Use Node.js child_process for Windows compatibility:
+**IMPORTANT:** Use `-p` flag for non-interactive mode. Without it, Gemini expects stdin and fails.
 
 ```bash
-node -e "const {execSync} = require('child_process'); console.log(execSync('gemini \"Fetch and summarize the content from: [URL]\"', {encoding:'utf8', timeout:60000}))"
+gemini -p "Fetch and summarize the main content from this URL: [URL]. Include key points, any code snippets, and relevant discussion highlights."
 ```
 
-Alternative direct execution:
+Use longer timeout for complex pages:
 ```bash
-gemini "Fetch and summarize the main content from this URL: [URL]. Include key points, any code snippets, and relevant discussion highlights."
+gemini -p "..." --timeout 120000
 ```
 
 ### Step 3: Capture Output
@@ -65,10 +65,11 @@ Present the fetched content to the user:
 ## Error Handling
 
 If Gemini CLI fails:
-1. Check if Gemini is installed: `gemini --version`
-2. Check authentication: `gemini auth`
-3. Try with simpler prompt
-4. Report error to user with troubleshooting steps
+1. **"No input provided via stdin"** → You forgot the `-p` flag. Use `gemini -p "prompt"`
+2. Check if Gemini is installed: `gemini --version`
+3. Check authentication: `gemini auth`
+4. Try with simpler prompt
+5. Report error to user with troubleshooting steps
 
 ## Notes
 
