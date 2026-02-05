@@ -110,6 +110,7 @@ Based on detected tech stack, check for:
 - Edge cases
 - Test coverage gaps
 - CLAUDE.md compliance
+- Overcomplicated code - over-abstraction, premature optimization, convoluted logic, excessive indirection, feature creep beyond requirements
 
 ## Phase 3: Confidence Scoring (Haiku Agents)
 

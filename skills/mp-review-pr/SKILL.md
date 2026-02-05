@@ -39,7 +39,7 @@ Same as /mp-review-branch:
 - Agent 2: Security Review (OWASP)
 - Agent 3: Performance Analysis
 - Agent 4: Error Handling & Reliability
-- Agent 5: Code Quality & CLAUDE.md
+- Agent 5: Code Quality, CLAUDE.md & Overcomplicated Code
 
 ## Phase 3: Confidence Scoring (Haiku Agents)
 

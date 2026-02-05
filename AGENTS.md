@@ -1,30 +1,5 @@
 # User-Level Instructions
 
-## Windows Command Workaround
-
-**On Windows, `yarn`, `npm`, `pnpm`, and `docker` commands produce no output when run directly.**
-
-This is a known Claude Code issue. Always wrap these commands with Node's child_process:
-
-```bash
-# Instead of: yarn lint
-node -e "require('child_process').execSync('yarn lint', {stdio:'inherit'})"
-
-# Instead of: yarn build
-node -e "require('child_process').execSync('yarn build', {stdio:'inherit'})"
-
-# Instead of: yarn --version
-node -e "console.log(require('child_process').execSync('yarn --version', {encoding:'utf8'}).trim())"
-```
-
-**Also use this workaround whenever you'd expect any output and see none (no content).**
-
-**Pattern**:
-- Use `stdio:'inherit'` for commands where you need live output (build, lint, test)
-- Use `encoding:'utf8'` + `console.log()` when you need to capture output as a string
-
-**Applies to**: `yarn`, `npm`, `pnpm`, `docker`, and similar tools that don't work with TTY detection.
-
 ## Communication Style
 
 - **Concise** - Be extremely concise. Sacrifice grammar for the sake of concision.
@@ -48,6 +23,28 @@ Use `ToolSearch` to load deferred tools only when needed.
 | Docs | `context7` | Web search |
 | GitHub | `github` | `gh` CLI |
 | Browser testing | `chrome-devtools` | Manual |
+
+## Agent Auto-Spawn Rules
+
+**Spawn `mp-context7-docs` agent when:**
+- User asks about library APIs, syntax, or best practices
+- Questions mention: React, Vue, Next.js, Express, Tailwind, etc.
+- "How do I use [library]?", "What's the best way to [library task]?"
+
+**Spawn `mp-css-layout` agent when:**
+- Layout issues: "fix layout", "elements overlapping", "overflow"
+- CSS systems: "flexbox not working", "grid issues", "centering"
+- Responsive: "mobile layout broken", "responsive design"
+
+**Spawn `mp-ux-designer` agent when:**
+- Pre-design research needed for new features
+- User flow planning, journey mapping
+- "Design a [feature]", "UX for..."
+
+**Spawn `mp-bash-coloring` agent when:**
+- Creating new bash/shell scripts
+- Adding echo/printf output to scripts
+- Scripts have success/error/warning messages
 
 ## Self-Improvement Protocol
 

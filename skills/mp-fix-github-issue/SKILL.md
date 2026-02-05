@@ -1,5 +1,5 @@
 ---
-name: mp-fix-issue
+name: mp-fix-github-issue
 description: Investigate GitHub issue, analyze codebase, create fix plan, execute with approval
 disable-model-invocation: true
 allowed-tools: Read, Glob, Grep, Task, AskUserQuestion, Bash(gh issue *), Bash(git log *)
@@ -12,8 +12,8 @@ Investigate a GitHub issue, analyze the codebase, plan a fix, and execute with u
 ## Usage
 
 ```
-/mp-fix-issue <issue-url>
-/mp-fix-issue https://github.com/owner/repo/issues/123
+/mp-fix-github-issue <issue-url>
+/mp-fix-github-issue https://github.com/owner/repo/issues/123
 ```
 
 ## Workflow
