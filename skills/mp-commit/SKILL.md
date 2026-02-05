@@ -1,0 +1,62 @@
+---
+name: mp-commit
+description: Stage and commit changes with conventional commit format
+allowed-tools: Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git add *), Bash(git commit *)
+---
+
+# Commit Changes
+
+Stage and commit changes with conventional commit format. $ARGUMENTS
+
+## Workflow
+
+### Step 1: Check Status
+```bash
+git status
+git diff --stat
+```
+
+### Step 2: Review Recent Commits
+```bash
+git log --oneline -5
+```
+Match repository's commit style.
+
+### Step 3: Stage Changes
+```bash
+git add <specific-files>
+```
+Prefer specific files over `git add -A`. Avoid staging sensitive files (.env, credentials).
+
+### Step 4: Commit
+```bash
+git commit -m "$(cat <<'EOF'
+type(scope): Description
+
+Optional body with details
+EOF
+)"
+```
+
+## Commit Rules
+
+### Critical
+- **No AI attribution**: Never include "Co-authored-by: Claude" or similar
+- **No --amend** unless explicitly requested
+
+### Format
+`type(scope): description`
+
+**Types:** feat, fix, refactor, chore, docs, style, test, perf, ci, build, revert
+
+### Guidelines
+- Focus on "why" over "what"
+- Keep subject line under 72 characters
+- Use imperative mood: "Add feature" not "Added feature"
+
+## Output
+
+After commit, display:
+- Commit hash
+- Commit message
+- Files changed summary

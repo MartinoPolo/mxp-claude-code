@@ -46,6 +46,14 @@ Use `ToolSearch` to load deferred tools only when needed.
 - Adding echo/printf output to scripts
 - Scripts have success/error/warning messages
 
+**Use `/mp-commit` skill when:**
+- User asks to commit changes
+- "Commit this", "Stage and commit", "Make a commit"
+
+**Use `/mp-pr-create` skill when:**
+- User asks to create a PR (without committing)
+- "Create PR", "Open pull request", "Make a PR"
+
 ## Self-Improvement Protocol
 
 When encountering errors, unexpected behavior, or workflow friction:
