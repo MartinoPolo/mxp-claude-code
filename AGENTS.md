@@ -18,39 +18,44 @@
 
 Use `ToolSearch` to load deferred tools only when needed.
 
-| Need | Search | Instead Of |
-|------|--------|------------|
-| Docs | `context7` | Web search |
-| GitHub | `github` | `gh` CLI |
-| Browser testing | `chrome-devtools` | Manual |
+| Need            | Search            | Instead Of |
+| --------------- | ----------------- | ---------- |
+| Docs            | `context7`        | Web search |
+| GitHub          | `github`          | `gh` CLI   |
+| Browser testing | `chrome-devtools` | Manual     |
 
 ## Agent Auto-Spawn Rules
 
-**Spawn `mp-context7-docs` agent when:**
-- User asks about library APIs, syntax, or best practices
-- Questions mention: React, Vue, Next.js, Express, Tailwind, etc.
-- "How do I use [library]?", "What's the best way to [library task]?"
+**Spawn `mp-context7-docs-fetcher` agent when:**
 
-**Spawn `mp-css-layout` agent when:**
+- User asks about library APIs, syntax, or best practices
+- Questions mention: React, Svelte, Typescript, Next.js, Tailwind, etc.
+- Question mentions context7 or library documentation
+- "Use [library] best practices", "How do I use [library]?", "What's the best way to [library task]?"
+
+**Spawn `mp-css-layout-debugger` agent when:**
+
 - Layout issues: "fix layout", "elements overlapping", "overflow"
 - CSS systems: "flexbox not working", "grid issues", "centering"
 - Responsive: "mobile layout broken", "responsive design"
 
 **Spawn `mp-ux-designer` agent when:**
-- Pre-design research needed for new features
-- User flow planning, journey mapping
+
 - "Design a [feature]", "UX for..."
 
-**Spawn `mp-bash-coloring` agent when:**
+**Spawn `mp-bash-script-colorizer` agent when:**
+
 - Creating new bash/shell scripts
 - Adding echo/printf output to scripts
 - Scripts have success/error/warning messages
 
 **Use `/mp-commit` skill when:**
+
 - User asks to commit changes
 - "Commit this", "Stage and commit", "Make a commit"
 
 **Use `/mp-pr-create` skill when:**
+
 - User asks to create a PR (without committing)
 - "Create PR", "Open pull request", "Make a PR"
 
@@ -69,13 +74,6 @@ When encountering errors, unexpected behavior, or workflow friction:
 
 Update docs when behavior, patterns, or structure changes.
 
-| Change Type | Update Target |
-|-------------|---------------|
-| New pattern/convention | `~/.claude/AGENTS.md` |
-| Workflow changes | `~/.claude/skills/*.md`, `README.md` |
-| Agent behavior | `~/.claude/agents/*.md` |
-| Project tasks | `.claude/phases/*/CHECKLIST.md` |
-
 ## Plan Mode
 
 - Extremely concise plans. Sacrifice grammar for the sake of concision.
@@ -87,10 +85,11 @@ Concise. Include reasoning, sources.
 
 Use these emoji indicators in summaries:
 Choose one of these:
+
 - 🟢 Success/completed
 - 🔴 Issues occurred (briefly describe)
 - ⚪ No action
-Add any number of these:
+  Add any number of these:
 - 🟡 Committed (mention branch/message)
 - 🟠 Pushed (mention remote/branch)
 - 🔵 PR created/updated (include link)
@@ -101,9 +100,3 @@ Add any number of these:
 Conventional commits: `type(scope): description`
 
 **Types**: feat, fix, refactor, chore, docs, style, test, perf, ci, build, revert
-
-## Testing
-
-- Create tests when adding new features
-- Run existing tests after changes to verify nothing broke
-- Tests enable autonomous problem-solving and verification

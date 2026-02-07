@@ -1,5 +1,5 @@
 ---
-name: mp-handoff
+name: mpx-handoff
 description: Update STATE.md with session handoff information capturing progress, decisions, and working memory.
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, TaskList
@@ -34,11 +34,11 @@ Use `TaskList` to see current task status:
 
 ### Step 3: Identify Which STATE.md to Update
 
-1. Check if in a phased project (`.claude/phases/` exists)
-2. If yes, identify the current active phase from `.claude/STATE.md`
+1. Check if in a phased project (`.mpx/phases/` exists)
+2. If yes, identify the current active phase from `.mpx/STATE.md`
 3. Update both:
-   - `.claude/STATE.md` (global) - for overall session context
-   - `.claude/phases/NN-name/STATE.md` (phase) - for phase-specific work
+   - `.mpx/STATE.md` (global) - for overall session context
+   - `.mpx/phases/NN-name/STATE.md` (phase) - for phase-specific work
 
 ### Step 4: Update Session Handoff Section
 
@@ -78,8 +78,8 @@ Append or update the "Session Handoff" section in STATE.md:
 Show the user what was updated:
 
 > "Session handoff updated in:
-> - `.claude/STATE.md` (global)
-> - `.claude/phases/02-feature/STATE.md` (current phase)
+> - `.mpx/STATE.md` (global)
+> - `.mpx/phases/02-feature/STATE.md` (current phase)
 >
 > Captured:
 > - [X] items of progress
@@ -92,7 +92,7 @@ Show the user what was updated:
 ## Notes
 
 - Updates existing STATE.md files, doesn't create new ones
-- If no STATE.md exists, suggest running `/mp-init-project` or `/mp-parse-spec`
+- If no STATE.md exists, suggest running `/mpx-init-project` or `/mpx-parse-spec`
 - Focus on "why" not just "what" - reasoning is crucial
 - Capture implicit knowledge that isn't documented elsewhere
 - Previous session entries are preserved (append new entry)

@@ -1,5 +1,5 @@
 ---
-name: mp-execute
+name: mpx-execute-task
 description: Execute next task. Prompts for phase selection, delegates to executor agent.
 disable-model-invocation: true
 allowed-tools: Read, Write, Task, Bash, AskUserQuestion
@@ -12,16 +12,16 @@ Execute a task by selecting a phase and delegating to the executor agent.
 ## Usage
 
 ```
-/mp-execute           # Select phase, execute next task
+/mpx-execute-task           # Select phase, execute next task
 ```
 
 ## Workflow
 
 ### Step 1: Find Available Phases
 
-1. Read `.claude/STATE.md` for overall status
-2. Read `.claude/ROADMAP.md` for phase dependencies
-3. Find all phase folders in `.claude/phases/`
+1. Read `.mpx/STATE.md` for overall status
+2. Read `.mpx/ROADMAP.md` for phase dependencies
+3. Find all phase folders in `.mpx/phases/`
 4. For each phase, check:
    - Status from ROADMAP.md (Not Started / In Progress / Completed)
    - Dependencies from ROADMAP.md
@@ -72,7 +72,7 @@ Use the Task tool to spawn a subagent:
 
 ```
 Task tool:
-  subagent_type: "mp-executor-agent"
+  subagent_type: "mpx-executor"
   model: opus
   description: "Execute task: [task_name]"
   prompt: |
@@ -113,8 +113,8 @@ When the agent completes (or stops due to blocker):
 2. Check if all phase tasks are complete
 3. If phase complete:
    - Update phase's STATE.md (Status = Completed)
-   - Update `.claude/STATE.md` (global)
-   - Update `.claude/ROADMAP.md` (Status column = Completed)
+   - Update `.mpx/STATE.md` (global)
+   - Update `.mpx/ROADMAP.md` (Status column = Completed)
 4. Report completion to user
 
 **On Blocker:**
@@ -137,20 +137,20 @@ Commits Made: N
 Next Task:
   [] [Next task description]
 
-Run `/mp-execute` to continue.
-Run `/mp-project-status` for full progress overview.
+Run `/mpx-execute-task` to continue.
+Run `/mpx-show-project-status` for full progress overview.
 ```
 
 ## Error Handling
 
-- **No phases found:** "No project found. Run `/mp-init-project` or `/mp-parse-spec` first."
+- **No phases found:** "No project found. Run `/mpx-init-project` or `/mpx-parse-spec` first."
 - **All phases complete:** "All phases complete! Project finished."
 - **No eligible phases:** "All remaining phases are blocked. Check dependencies in ROADMAP.md."
 - **Agent fails:** Report error and suggest manual intervention
 
 ## Parallel Execution Note
 
-Multiple `/mp-execute` commands can run in parallel on different phases if:
+Multiple `/mpx-execute-task` commands can run in parallel on different phases if:
 - The phases have no mutual dependencies
 - Both phases' dependencies are already satisfied
 

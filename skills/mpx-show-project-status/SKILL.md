@@ -1,5 +1,5 @@
 ---
-name: mp-project-status
+name: mpx-show-project-status
 description: Show current project progress. Displays phase status and next steps.
 disable-model-invocation: true
 allowed-tools: Read, Bash
@@ -12,15 +12,15 @@ Display current project progress, completed tasks, and next steps.
 ## Usage
 
 ```
-/mp-project-status
+/mpx-show-project-status
 ```
 
 ## Workflow
 
 ### Step 1: Gather Progress Data
 
-1. Read `.claude/STATE.md` for current status
-2. Read `.claude/ROADMAP.md` for phase overview
+1. Read `.mpx/STATE.md` for current status
+2. Read `.mpx/ROADMAP.md` for phase overview
 3. For current phase, read phase folder's CHECKLIST.md for task progress
 4. Compile overall statistics
 
@@ -59,8 +59,8 @@ Session Notes:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Commands:
-  /mp-execute          Continue with next task
-  /mp-parse-spec       Regenerate plan
+  /mpx-execute-task          Continue with next task
+  /mpx-parse-spec       Regenerate plan
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -68,9 +68,9 @@ Commands:
 
 Based on project state, suggest relevant next commands:
 
-- If no tasks done: "Start with `/mp-execute` to execute the first task"
-- If phase incomplete: "Continue with `/mp-execute`"
-- If phase complete: "Ready for next phase with `/mp-execute`"
+- If no tasks done: "Start with `/mpx-execute-task` to execute the first task"
+- If phase incomplete: "Continue with `/mpx-execute-task`"
+- If phase complete: "Ready for next phase with `/mpx-execute-task`"
 - If blockers exist: "Resolve blockers before continuing"
 - If all phases done: "Project complete! Consider final review"
 
@@ -98,9 +98,9 @@ Use 20 characters for the bar.
 
 ## Error Cases
 
-- **No STATE.md or phases/:** "No project tracking found. Run `/mp-init-project` or `/mp-parse-spec` first."
+- **No STATE.md or phases/:** "No project tracking found. Run `/mpx-init-project` or `/mpx-parse-spec` first."
 - **Empty phase checklist:** "Phase checklist has no tasks. Check phase's `CHECKLIST.md`"
-- **Corrupted STATE.md:** "Could not parse STATE.md. Consider regenerating with `/mp-parse-spec`"
+- **Corrupted STATE.md:** "Could not parse STATE.md. Consider regenerating with `/mpx-parse-spec`"
 
 ## Notes
 

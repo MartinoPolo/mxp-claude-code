@@ -1,5 +1,5 @@
 ---
-name: mp-project-workflow
+name: mpx-project-workflow
 description: Project workflow guidance for spec-driven development. Background knowledge auto-loaded when relevant.
 user-invocable: false
 ---
@@ -61,27 +61,27 @@ This document provides background knowledge about spec-driven development workfl
 ## Troubleshooting
 
 ### "I'm lost in my project"
-1. Run `/mp-project-status` to see current state
+1. Run `/mpx-show-project-status` to see current state
 2. Read STATE.md for recent context
 3. Check last commits with `git log --oneline -10`
 
 ### "The plan doesn't match reality"
 1. Update SPEC.md with actual requirements
-2. Run `/mp-parse-spec` to regenerate checklists
+2. Run `/mpx-parse-spec` to regenerate checklists
 3. Review and adjust as needed
 
 ### "Context is getting degraded"
-1. Use `/mp-execute` for complex work
+1. Use `/mpx-execute-task` for complex work
 2. This spawns fresh agent with clean context
 3. STATE.md maintains continuity
 
 ### "I need to change scope"
 1. Update SPEC.md with new requirements
-2. Regenerate with `/mp-parse-spec`
+2. Regenerate with `/mpx-parse-spec`
 3. Completed work is preserved in git
 
 ### "I need to add new requirements"
-1. Run `/mp-add-requirements "description"`
+1. Run `/mpx-add-requirements "description"`
 2. Reviews current state and detects conflicts
 3. Updates SPEC.md and generates new tasks
 
@@ -101,11 +101,11 @@ This document provides background knowledge about spec-driven development workfl
 ## Quick Reference
 
 ```
-/mp-init-project       - Full setup (spec + git + checklist)
-/mp-create-spec        - Interactive spec creation
-/mp-init-repo          - Git initialization only
-/mp-parse-spec         - Generate checklists from spec
-/mp-execute            - Execute next task (simple or complex)
-/mp-project-status     - Show progress and next steps
-/mp-add-requirements   - Add new requirements to existing project
+/mpx-init-project       - Full setup (spec + git + checklist)
+/mpx-create-spec        - Interactive spec creation
+/mpx-init-repo          - Git initialization only
+/mpx-parse-spec         - Generate checklists from spec
+/mpx-execute-task            - Execute next task (simple or complex)
+/mpx-show-project-status     - Show progress and next steps
+/mpx-add-requirements   - Add new requirements to existing project
 ```

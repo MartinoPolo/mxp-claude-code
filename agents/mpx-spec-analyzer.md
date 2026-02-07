@@ -1,5 +1,5 @@
 ---
-name: mp-spec-analyzer
+name: mpx-spec-analyzer
 description: Analyzes project specifications and creates structured implementation phases. Use when parsing complex specs.
 tools: Read, Write, Bash
 model: sonnet
@@ -48,7 +48,7 @@ For each phase, create atomic tasks that:
 - Include testing where appropriate
 
 ### Step 5: Create Output Files
-Generate all required files in `.claude/` directory:
+Generate all required files in `.mpx/` directory:
 - ROADMAP.md (phase overview + high-level tracking)
 - STATE.md (global state + session handoff)
 - phases/NN-name/ (phase folders)
@@ -78,7 +78,7 @@ Generate all required files in `.claude/` directory:
 ## Phase Folder Structure
 
 ```
-.claude/phases/02-user-auth/
+.mpx/phases/02-user-auth/
 ├── SPEC.md          # Phase requirements and scope
 ├── CHECKLIST.md     # Phase tasks
 └── STATE.md         # Phase progress tracking
@@ -194,5 +194,5 @@ None
 - Focus on creating actionable, clear tasks
 - Consider the developer experience
 - Make handoff between sessions seamless
-- All files go in `.claude/` directory only
+- All files go in `.mpx/` directory only
 - Each phase folder needs SPEC.md, CHECKLIST.md, STATE.md

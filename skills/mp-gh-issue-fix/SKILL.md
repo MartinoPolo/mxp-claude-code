@@ -1,5 +1,5 @@
 ---
-name: mp-fix-github-issue
+name: mp-gh-issue-fix
 description: Investigate GitHub issue, analyze codebase, create fix plan, execute with approval
 disable-model-invocation: true
 allowed-tools: Read, Glob, Grep, Task, AskUserQuestion, Bash(gh issue *), Bash(git log *)
@@ -12,8 +12,8 @@ Investigate a GitHub issue, analyze the codebase, plan a fix, and execute with u
 ## Usage
 
 ```
-/mp-fix-github-issue <issue-url>
-/mp-fix-github-issue https://github.com/owner/repo/issues/123
+/mp-gh-issue-fix <issue-url>
+/mp-gh-issue-fix https://github.com/owner/repo/issues/123
 ```
 
 ## Workflow
@@ -68,7 +68,7 @@ Spawn analyzer agent to synthesize findings:
 
 ```
 Task tool:
-  subagent_type: "mp-issue-analyzer-agent"
+  subagent_type: "mp-gh-issue-analyzer"
   model: opus
   description: "Analyze issue #N and plan fix"
   prompt: |
@@ -110,7 +110,7 @@ AskUserQuestion:
 
 ```
 Task tool:
-  subagent_type: "mp-executor-agent"
+  subagent_type: "mpx-executor"
   model: opus
   description: "Fix issue #N"
   prompt: |

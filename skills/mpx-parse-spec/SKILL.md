@@ -1,5 +1,5 @@
 ---
-name: mp-parse-spec
+name: mpx-parse-spec
 description: Parse SPEC.md into phased implementation. Creates phase folders + ROADMAP.md + STATE.md.
 disable-model-invocation: false
 allowed-tools: Read, Write, Bash
@@ -11,13 +11,13 @@ Convert SPEC.md into a phased implementation plan with tracking files.
 
 ## Prerequisites
 
-- `.claude/SPEC.md` must exist
+- `.mpx/SPEC.md` must exist
 
 ## Workflow
 
 ### Step 1: Read and Analyze SPEC.md
 
-Read `.claude/SPEC.md` and extract:
+Read `.mpx/SPEC.md` and extract:
 - Project name
 - Tech stack
 - Core features
@@ -26,9 +26,9 @@ Read `.claude/SPEC.md` and extract:
 ### Step 2: Create Phase Structure
 
 Create the following:
-- `.claude/ROADMAP.md` (phase overview + high-level tracking)
-- `.claude/STATE.md` (global state + session handoff)
-- `.claude/phases/` directory with **phase folders**
+- `.mpx/ROADMAP.md` (phase overview + high-level tracking)
+- `.mpx/STATE.md` (global state + session handoff)
+- `.mpx/phases/` directory with **phase folders**
 
 Smaller projects may have just 1-2 phases; larger projects may have more.
 
@@ -132,14 +132,14 @@ None
 2. [Next action]
 
 **Critical Files:**
-- `.claude/SPEC.md`
-- `.claude/ROADMAP.md`
+- `.mpx/SPEC.md`
+- `.mpx/ROADMAP.md`
 
 **Working Memory:**
 [Accumulated context, patterns, file relationships]
 ```
 
-**Phase Folders** (`.claude/phases/01-foundation/`):
+**Phase Folders** (`.mpx/phases/01-foundation/`):
 
 Each phase gets its own folder with three files:
 
@@ -254,16 +254,16 @@ If `.claude/CLAUDE.md` exists and has template content, update it with actual pr
 Report what was created:
 
 > "Created phased implementation plan:
-> - `.claude/ROADMAP.md` - Phase overview, dependencies, and tracking
-> - `.claude/STATE.md` - Global state and session handoff
-> - `.claude/phases/` - Phase folders with SPEC.md, CHECKLIST.md, STATE.md each
+> - `.mpx/ROADMAP.md` - Phase overview, dependencies, and tracking
+> - `.mpx/STATE.md` - Global state and session handoff
+> - `.mpx/phases/` - Phase folders with SPEC.md, CHECKLIST.md, STATE.md each
 >
 > **Phases Created:**
 > 1. Foundation (N tasks)
 > 2. [Feature] (N tasks)
 > ...
 >
-> Run `/mp-execute` to start with the first task."
+> Run `/mpx-execute-task` to start with the first task."
 
 ## Task Breakdown Guidelines
 
@@ -278,7 +278,7 @@ When breaking features into tasks, ensure:
 ## Phase Folder Structure Summary
 
 ```
-.claude/
+.mpx/
 ├── SPEC.md              # Master project specification
 ├── ROADMAP.md           # Phase overview + high-level tracking
 ├── STATE.md             # Global state + session handoff
@@ -299,7 +299,7 @@ When breaking features into tasks, ensure:
 
 ## Notes
 
-- All files are created in `.claude/` directory
+- All files are created in `.mpx/` directory
 - Never create duplicate files in project root
 - If files already exist, ask before overwriting
 - Phase folders should be numbered (01-, 02-, etc.) for ordering

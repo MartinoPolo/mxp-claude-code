@@ -13,53 +13,65 @@ Configured via `scripts/context-bar.sh`.
 
 ## Skills
 
+### mpx- (Spec-Driven Workflow)
+
 | Skill | Description |
 |-------|-------------|
-| `/mp-init-project` | Full project setup (spec + git + phases) |
-| `/mp-create-spec` | Interactive spec creation |
-| `/mp-init-repo` | Initialize git repo |
-| `/mp-parse-spec` | Parse SPEC.md → ROADMAP.md + phases |
-| `/mp-execute` | Select phase, execute next task |
-| `/mp-project-status` | Show progress |
-| `/mp-add-requirements` | Add requirements with conflict detection |
+| `/mpx-init-project` | Full project setup (spec + git + phases) |
+| `/mpx-create-spec` | Interactive spec creation |
+| `/mpx-init-repo` | Initialize git repo |
+| `/mpx-parse-spec` | Parse SPEC.md → ROADMAP.md + phases |
+| `/mpx-execute-task` | Select phase, execute next task |
+| `/mpx-show-project-status` | Show progress |
+| `/mpx-add-requirements` | Add requirements with conflict detection |
+| `/mpx-handoff` | Update STATE.md with session handoff info |
+
+### mp- (General Purpose)
+
+| Skill | Description |
+|-------|-------------|
+| `/mp-commit` | Stage and commit with conventional format |
+| `/mp-pr-create` | Create draft PR from existing commits |
+| `/mp-commit-push-pr` | Full workflow - commit, push, create draft PR |
 | `/mp-review-branch` | Multi-agent code review |
 | `/mp-review-pr` | PR review |
+| `/mp-review-design` | Visual design inspection via chrome-devtools |
+| `/mp-gh-issue-fix` | Investigate and fix GitHub issues |
 | `/mp-update-readme` | Update README.md |
-| `/mp-handoff` | Update STATE.md with session handoff info |
-| `/mp-gemini-fetch` | Fetch blocked sites via Gemini CLI |
 | `/mp-update-instructions` | Analyze history, improve CLAUDE.md/AGENTS.md |
+| `/mp-gemini-fetch` | Fetch blocked sites via Gemini CLI |
 
 ## Workflow
 
 ```
-┌───────────────────┐
-│  /mp-init-project │  ◄── Start here for new projects
-└────────┬──────────┘
+┌─────────────────────────┐
+│  /mpx-init-project      │  ◄── Start here for new projects
+└────────┬────────────────┘
          │
          ▼
-┌───────────────────┐
-│  /mp-create-spec  │  ◄── Interactive tech stack Q&A
-└────────┬──────────┘
+┌─────────────────────────┐
+│  /mpx-create-spec       │  ◄── Interactive tech stack Q&A
+└────────┬────────────────┘
          │
          ▼
-┌───────────────────┐
-│  /mp-init-repo    │  ◄── Git setup
-└────────┬──────────┘
+┌─────────────────────────┐
+│  /mpx-init-repo         │  ◄── Git setup
+└────────┬────────────────┘
          │
          ▼
-┌───────────────────┐
-│  /mp-parse-spec   │  ◄── Generate ROADMAP.md + phases
-└────────┬──────────┘
+┌─────────────────────────┐
+│  /mpx-parse-spec        │  ◄── Generate ROADMAP.md + phases
+└────────┬────────────────┘
          │
          ▼
-┌───────────────────┐
-│  /mp-execute      │  ◄── Execute tasks (loop)
-└────────┬──────────┘
+┌─────────────────────────┐
+│  /mpx-execute-task      │  ◄── Execute tasks (loop)
+└────────┬────────────────┘
          │
          ▼
-┌───────────────────┐
-│  /mp-project-status │  ◄── Check progress anytime
-└───────────────────┘
+┌─────────────────────────┐
+│  /mpx-show-project-status │  ◄── Check progress anytime
+└─────────────────────────┘
 ```
 
 ## Project Structure
@@ -67,7 +79,7 @@ Configured via `scripts/context-bar.sh`.
 All projects use phase-based organization:
 
 ```
-.claude/
+.mpx/
 ├── SPEC.md              # Master project specification
 ├── ROADMAP.md           # Phase overview + high-level tracking
 ├── STATE.md             # Global state + session handoff
@@ -95,21 +107,21 @@ All projects use phase-based organization:
 
 ```bash
 # Start a new project
-/mp-init-project
+/mpx-init-project
 
 # Or step by step:
-/mp-create-spec           # Create specification
-/mp-init-repo             # Initialize git
-/mp-parse-spec            # Generate ROADMAP.md + phases
+/mpx-create-spec           # Create specification
+/mpx-init-repo             # Initialize git
+/mpx-parse-spec            # Generate ROADMAP.md + phases
 
 # Execute tasks
-/mp-execute               # Select phase, execute next task
+/mpx-execute-task           # Select phase, execute next task
 
 # Check progress
-/mp-project-status        # See progress and next steps
+/mpx-show-project-status    # See progress and next steps
 
 # Add new requirements mid-project
-/mp-add-requirements "Add dark mode support"
+/mpx-add-requirements "Add dark mode support"
 
 # Review skills
 /mp-review-branch         # Review current branch
@@ -149,5 +161,10 @@ Issues are scored 0-100:
 
 | Agent | Model | Description |
 |-------|-------|-------------|
-| mp-executor-agent | Opus | Executes tasks with fresh context |
-| mp-spec-analyzer | Sonnet | Analyzes specs and creates phase structure |
+| mpx-executor | Opus | Executes tasks with fresh context |
+| mpx-spec-analyzer | Sonnet | Analyzes specs and creates phase structure |
+| mp-gh-issue-analyzer | Opus | Analyzes GitHub issues, creates fix plans |
+| mp-context7-docs-fetcher | Sonnet | Fetches library docs via Context7 MCP |
+| mp-css-layout-debugger | Haiku | CSS layout debugging |
+| mp-bash-script-colorizer | Haiku | Bash script coloring guidelines |
+| mp-ux-designer | - | UX research and design artifacts |

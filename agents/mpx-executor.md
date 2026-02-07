@@ -1,5 +1,5 @@
 ---
-name: mp-executor-agent
+name: mpx-executor
 description: Executes tasks with fresh context. Handles phase-based project tasks.
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: opus
@@ -33,7 +33,7 @@ Execute the assigned task by:
 4. Verify it works (run tests, manual check)
 5. Mark task complete: change `- [ ]` to `- [x]`
 
-**Update the phase's `CHECKLIST.md`** (e.g., `.claude/phases/01-foundation/CHECKLIST.md`)
+**Update the phase's `CHECKLIST.md`** (e.g., `.mpx/phases/01-foundation/CHECKLIST.md`)
 
 ### Step 3: Commit Work
 After completing the task:
@@ -128,7 +128,7 @@ Bad:
 - Don't change architecture without spec update
 - Don't skip error handling
 - Preserve existing functionality
-- All project tracking files stay in `.claude/` directory
+- All project tracking files stay in `.mpx/` directory
 
 ## Remember
 

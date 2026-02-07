@@ -1,5 +1,5 @@
 ---
-name: mp-create-spec
+name: mpx-create-spec
 description: Create project specification interactively. Asks about your idea, suggests tech stack.
 disable-model-invocation: true
 allowed-tools: Read, Write, Bash, AskUserQuestion
@@ -93,7 +93,7 @@ options:
 
 ### Step 4: Generate SPEC.md
 
-Create `.claude/SPEC.md` with all gathered information:
+Create `.mpx/SPEC.md` with all gathered information:
 
 ```markdown
 # Project Specification
@@ -132,7 +132,7 @@ Create `.claude/SPEC.md` with all gathered information:
 
 Show the user what was created and suggest next steps:
 
-> "Created `.claude/SPEC.md` with your project specification.
+> "Created `.mpx/SPEC.md` with your project specification.
 >
 > **Summary:**
 > - Project: [name]
@@ -140,12 +140,12 @@ Show the user what was created and suggest next steps:
 > - Features: [count]
 >
 > **Next steps:**
-> - Run `/mp-parse-spec` to generate phased implementation plan
-> - Or run `/mp-init-project` to also initialize git"
+> - Run `/mpx-parse-spec` to generate phased implementation plan
+> - Or run `/mpx-init-project` to also initialize git"
 
 ## Notes
 
-- Always create SPEC.md in `.claude/` directory
-- If `.claude/` doesn't exist, create it
+- Always create SPEC.md in `.mpx/` directory
+- If `.mpx/` doesn't exist, create it
 - If SPEC.md already exists, ask before overwriting
 - Be helpful with tech stack suggestions based on project type

@@ -1,5 +1,5 @@
 ---
-name: mp-add-requirements
+name: mpx-add-requirements
 description: Add new requirements to project. Parses current spec, checklist, state, and roadmap. Updates all files and detects conflicts.
 disable-model-invocation: false
 allowed-tools: Read, Write, Bash, AskUserQuestion
@@ -13,15 +13,15 @@ Add new requirements to an existing project, updating all relevant files and det
 ## Usage
 
 ```
-/mp-add-requirements "Add dark mode support"
-/mp-add-requirements "User authentication with OAuth"
-/mp-add-requirements   # Prompts for requirements
+/mpx-add-requirements "Add dark mode support"
+/mpx-add-requirements "User authentication with OAuth"
+/mpx-add-requirements   # Prompts for requirements
 ```
 
 ## Prerequisites
 
-- `.claude/SPEC.md` must exist
-- `.claude/ROADMAP.md` must exist
+- `.mpx/SPEC.md` must exist
+- `.mpx/ROADMAP.md` must exist
 
 ## Workflow
 
@@ -35,12 +35,12 @@ If no argument, ask the user:
 ### Step 2: Read Current State
 
 Read all relevant project files:
-- `.claude/SPEC.md` - Master requirements
-- `.claude/ROADMAP.md` - Phase overview + tracking
-- `.claude/STATE.md` - Current progress + session handoff
+- `.mpx/SPEC.md` - Master requirements
+- `.mpx/ROADMAP.md` - Phase overview + tracking
+- `.mpx/STATE.md` - Current progress + session handoff
 - `.claude/CLAUDE.md` - Project context (if exists)
-- `.claude/phases/*/SPEC.md` - Phase requirements
-- `.claude/phases/*/CHECKLIST.md` - Phase tasks
+- `.mpx/phases/*/SPEC.md` - Phase requirements
+- `.mpx/phases/*/CHECKLIST.md` - Phase tasks
 
 ### Step 3: Analyze for Conflicts
 
@@ -118,10 +118,10 @@ New Requirements:
   - [Description]
 
 Files Updated:
-  ✓ .claude/SPEC.md - Added to Core Features
-  ✓ .claude/ROADMAP.md - Updated Phase 3 task count
-  ✓ .claude/phases/03-secondary/CHECKLIST.md - Added tasks
-  ✓ .claude/phases/03-secondary/SPEC.md - Updated scope
+  ✓ .mpx/SPEC.md - Added to Core Features
+  ✓ .mpx/ROADMAP.md - Updated Phase 3 task count
+  ✓ .mpx/phases/03-secondary/CHECKLIST.md - Added tasks
+  ✓ .mpx/phases/03-secondary/SPEC.md - Updated scope
 
 New Tasks Generated:
   - [ ] [Task 1]
@@ -133,8 +133,8 @@ New Tasks Generated:
   - Database conflict noted in SPEC.md
   - Consider reviewing Phase 2 dependencies
 
-Run `/mp-project-status` to see updated progress.
-Run `/mp-execute` to start working on new tasks.
+Run `/mpx-show-project-status` to see updated progress.
+Run `/mpx-execute-task` to start working on new tasks.
 ```
 
 ## Conflict Detection Rules
@@ -165,7 +165,7 @@ When generating tasks for new requirements:
 
 ## Error Handling
 
-- **No SPEC.md:** "No project found. Run `/mp-init-project` first."
+- **No SPEC.md:** "No project found. Run `/mpx-init-project` first."
 - **Empty requirements:** "Please specify what requirements to add."
 - **Unresolvable conflict:** "Cannot add requirements due to fundamental conflicts. Manual review required."
 

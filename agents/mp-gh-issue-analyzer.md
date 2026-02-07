@@ -1,7 +1,9 @@
 ---
-name: mp-issue-analyzer-agent
+name: mp-gh-issue-analyzer
 description: Analyzes GitHub issues and codebase exploration results to create fix plans. Use after gathering issue data and codebase context.
 tools: Read, Grep, Glob, WebFetch
+mcpServers:
+  - "plugin:github:github"
 model: opus
 ---
 
