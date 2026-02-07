@@ -18,6 +18,7 @@ Configured via `scripts/context-bar.sh`.
 | Skill | Description |
 |-------|-------------|
 | `/mpx-init-project` | Full project setup (spec + git + phases) |
+| `/mpx-convert-project` | Convert existing project to mpx structure |
 | `/mpx-create-spec` | Interactive spec creation |
 | `/mpx-init-repo` | Initialize git repo |
 | `/mpx-parse-spec` | Parse SPEC.md → ROADMAP.md + phases |
@@ -47,6 +48,10 @@ Configured via `scripts/context-bar.sh`.
 ```
 ┌─────────────────────────┐
 │  /mpx-init-project      │  ◄── Start here for new projects
+└────────┬────────────────┘
+
+┌─────────────────────────┐
+│  /mpx-convert-project   │  ◄── Start here for existing projects
 └────────┬────────────────┘
          │
          ▼
@@ -164,6 +169,7 @@ Issues are scored 0-100:
 |-------|-------|-------------|
 | mpx-executor | Opus | Executes tasks with fresh context |
 | mpx-spec-analyzer | Sonnet | Analyzes specs and creates phase structure |
+| mpx-codebase-scanner | Sonnet | Scans codebase for tech stack, features, structure |
 | mp-gh-issue-analyzer | Opus | Analyzes GitHub issues, creates fix plans |
 | mp-context7-docs-fetcher | Sonnet | Fetches library docs via Context7 MCP |
 | mp-css-layout-debugger | Haiku | CSS layout debugging |
