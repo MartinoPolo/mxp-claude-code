@@ -39,6 +39,7 @@ Configured via `scripts/context-bar.sh`.
 | `/mp-gh-issue-fix` | Investigate and fix GitHub issues |
 | `/mp-update-readme` | Update README.md |
 | `/mp-update-instructions` | Analyze history, improve CLAUDE.md/AGENTS.md |
+| `/mp-check-fix` | Auto-detect and fix build/typecheck/lint errors |
 | `/mp-gemini-fetch` | Fetch blocked sites via Gemini CLI |
 
 ## Workflow

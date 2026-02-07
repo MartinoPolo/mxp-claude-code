@@ -59,6 +59,11 @@ Use `ToolSearch` to load deferred tools only when needed.
 - User asks to create a PR (without committing)
 - "Create PR", "Open pull request", "Make a PR"
 
+**Use `/mp-check-fix` skill when:**
+
+- "Fix lint errors", "Fix type errors", "Check and fix", "Run checks"
+- Before committing if build/lint issues suspected
+
 ## Self-Improvement Protocol
 
 When encountering errors, unexpected behavior, or workflow friction:
