@@ -1,0 +1,16 @@
+# Normalize all text to LF in git and working tree
+* text=auto eol=lf
+
+# Shell scripts - always LF (CRLF breaks shebangs)
+*.sh text eol=lf
+
+# Common text
+*.md text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+
+# Binary - no conversion
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary

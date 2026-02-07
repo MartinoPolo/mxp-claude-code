@@ -92,6 +92,66 @@ jest-cache/
 # pnpm-lock.yaml
 EOF
 
+# Create .gitattributes for cross-platform line ending normalization
+echo "Creating .gitattributes..."
+cat > .gitattributes << 'EOF'
+# Normalize all text to LF in git and working tree
+* text=auto eol=lf
+
+# Shell scripts - always LF (CRLF breaks shebangs)
+*.sh text eol=lf
+
+# Common text
+*.md text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.jsx text eol=lf
+*.html text eol=lf
+*.py text eol=lf
+*.rs text eol=lf
+*.go text eol=lf
+
+# Binary - no conversion
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.pdf binary
+*.zip binary
+EOF
+
+# Create .editorconfig for editor consistency
+echo "Creating .editorconfig..."
+cat > .editorconfig << 'EOF'
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{png,jpg,gif,ico,woff,woff2,ttf,eot,pdf,zip}]
+end_of_line = unset
+insert_final_newline = unset
+charset = unset
+trim_trailing_whitespace = unset
+EOF
+
 # Create .claude directory structure
 echo "Creating .claude/ directory..."
 mkdir -p .claude
@@ -175,7 +235,7 @@ fi
 
 # Stage and commit
 echo "Creating initial commit..."
-git add .gitignore .claude/
+git add .gitignore .gitattributes .editorconfig .claude/
 
 # Check if there's anything to commit
 if git diff --cached --quiet; then
@@ -184,6 +244,8 @@ else
     git commit -m "Initial project setup
 
 - Add comprehensive .gitignore
+- Add .gitattributes for line ending normalization
+- Add .editorconfig for editor consistency
 - Add .claude/ project structure
 - Add CLAUDE.md and SPEC.md templates"
 fi
@@ -193,6 +255,8 @@ echo -e "${GREEN}Project initialized successfully!${NC}"
 echo ""
 echo "Created:"
 echo "  .gitignore          - Comprehensive ignore patterns"
+echo "  .gitattributes      - Line ending normalization"
+echo "  .editorconfig       - Editor consistency settings"
 echo "  .claude/CLAUDE.md   - Project context template"
 echo "  .claude/SPEC.md     - Requirements template"
 echo ""
