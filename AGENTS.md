@@ -14,6 +14,31 @@
 - **Verbose Naming**: Full descriptive names. No abbreviations. Clear intent
 - **Docs**: Update when functionality changes. Keep comments minimal
 
+## Iron Laws
+
+Violating the letter IS violating the spirit. No exceptions.
+
+1. **NO COMPLETION CLAIMS WITHOUT VERIFICATION** — Run command, read output, THEN claim
+2. **NO FIXES WITHOUT ROOT CAUSE** — Understand why before changing code
+3. **NO COMMITS WITH FAILING CHECKS** — /mp-check-fix before /mp-commit
+4. **NEVER TRUST SUBAGENT REPORTS** — Verify independently (git diff, test output)
+
+## Forbidden Responses
+
+- "Should work now" / "Probably fixed" (without verification evidence)
+- "You're absolutely right!" / "Great point!" (performative agreement)
+- "I'm confident this works" (confidence != evidence)
+- "Let me just quickly..." (skipping process)
+
+## Red Flags — STOP
+
+If thinking any of these, follow the process instead:
+- "Quick fix for now, investigate later"
+- "Just try changing X and see"
+- "Skip the test, I'll verify manually"
+- "Too simple to need process"
+- "I'll write tests after"
+
 ## MCP Tools
 
 Use `ToolSearch` to load deferred tools only when needed.
@@ -63,6 +88,13 @@ Use `ToolSearch` to load deferred tools only when needed.
 
 - "Fix lint errors", "Fix type errors", "Check and fix", "Run checks"
 - Before committing if build/lint issues suspected
+
+**Use `/mp-brainstorm` skill when:**
+
+- User wants to explore/design before coding
+- "Brainstorm", "Design a...", "How should we approach..."
+- "Let's think about...", "What's the best way to..."
+- Before any large feature implementation
 
 ## Self-Improvement Protocol
 

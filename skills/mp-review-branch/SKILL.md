@@ -51,9 +51,9 @@ If $ARGUMENTS contains a branch name, use it as base. Otherwise:
 4. Check for CLAUDE.md files in the repo
 5. Return: base branch, changed files list, detected tech stack, CLAUDE.md locations
 
-## Phase 2: Parallel Review (5 Sonnet Agents)
+## Phase 2: Parallel Review (6 Sonnet Agents)
 
-Launch 5 parallel Sonnet agents. Each receives the changed files and tech stack info.
+Launch 6 parallel Sonnet agents. Each receives the changed files and tech stack info.
 
 ### Agent 1: Tech Stack Best Practices
 Based on detected tech stack, check for:
@@ -112,6 +112,14 @@ Based on detected tech stack, check for:
 - CLAUDE.md compliance
 - Overcomplicated code - over-abstraction, premature optimization, convoluted logic, excessive indirection, feature creep beyond requirements
 
+### Agent 6: Spec/Plan Alignment
+- Requirements coverage — all spec requirements implemented?
+- YAGNI — extra features not in requirements?
+- Requirement misinterpretation — solved the right problem?
+- Missing edge cases from spec
+- Scope creep detection
+- Do NOT trust implementer summary — verify by reading actual code
+
 ## Phase 3: Confidence Scoring (Haiku Agents)
 
 For each issue found, score confidence 0-100:
@@ -155,6 +163,7 @@ For each issue found, score confidence 0-100:
 | Best Practices | N | N | N | N |
 | Error Handling | N | N | N | N |
 | Code Quality | N | N | N | N |
+| Spec Alignment | N | N | N | N |
 
 ---
 

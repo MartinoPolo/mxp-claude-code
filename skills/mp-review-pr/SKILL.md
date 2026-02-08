@@ -32,7 +32,7 @@ This review is **READ-ONLY**. It does NOT:
 5. Detect tech stack from changed files and repo structure
 6. Find CLAUDE.md files
 
-## Phase 2: Parallel Review (5 Sonnet Agents)
+## Phase 2: Parallel Review (6 Sonnet Agents)
 
 Same as /mp-review-branch:
 - Agent 1: Tech Stack Best Practices
@@ -40,6 +40,7 @@ Same as /mp-review-branch:
 - Agent 3: Performance Analysis
 - Agent 4: Error Handling & Reliability
 - Agent 5: Code Quality, CLAUDE.md & Overcomplicated Code
+- Agent 6: Spec/Plan Alignment
 
 ## Phase 3: Confidence Scoring (Haiku Agents)
 
@@ -82,6 +83,7 @@ Score each issue 0-100:
 | Best Practices | N | N | N | N |
 | Error Handling | N | N | N | N |
 | Code Quality | N | N | N | N |
+| Spec Alignment | N | N | N | N |
 
 **Overall Risk**: [Low/Medium/High/Critical]
 **Ready to Merge**: [Yes/No - reasons]

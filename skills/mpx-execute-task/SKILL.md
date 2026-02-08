@@ -104,24 +104,116 @@ Task tool:
     - Do NOT make architectural changes not in the spec
 ```
 
-### Step 6: Handle Agent Response
+### Step 5.5: Stage 1 — Spec Compliance Review
 
-When the agent completes (or stops due to blocker):
+After executor reports back, dispatch a spec compliance reviewer (Sonnet agent):
 
-**On Success:**
-1. Task is already marked complete by agent in phase's CHECKLIST.md
-2. Check if all phase tasks are complete
-3. If phase complete:
-   - Update phase's STATE.md (Status = Completed)
-   - Update `.mpx/STATE.md` (global)
-   - Update `.mpx/ROADMAP.md` (Status column = Completed)
-4. Report completion to user
+```
+Task tool:
+  subagent_type: "general-purpose"
+  model: sonnet
+  description: "Review spec compliance for: [task_name]"
+  prompt: |
+    You are reviewing whether an implementation matches its specification.
+
+    ## What Was Requested
+    [FULL TEXT of original task from CHECKLIST.md]
+
+    ## What Implementer Claims They Built
+    [Executor's report summary]
+
+    ## CRITICAL: Do Not Trust the Report
+    The implementer may be incomplete, inaccurate, or optimistic.
+    Verify everything independently by reading actual code.
+
+    DO NOT: Take their word, trust claims about completeness, accept their interpretation
+    DO: Read actual code, compare to requirements line by line, check for missing pieces
+
+    ## Check For
+
+    **Missing requirements:**
+    - Everything requested actually implemented?
+    - Requirements skipped or missed?
+    - Claims something works but didn't actually implement it?
+
+    **Extra/unneeded work:**
+    - Built things not requested? (YAGNI violations)
+    - Over-engineered or added unnecessary features?
+
+    **Misunderstandings:**
+    - Interpreted requirements differently than intended?
+    - Solved the wrong problem?
+
+    ## Report
+    - ✅ Spec compliant (everything matches after code inspection)
+    - ❌ Issues: [list what's missing/extra with file:line references]
+```
+
+**If spec reviewer reports ❌:**
+1. Report issues to user
+2. Ask: fix now or skip?
+3. If fix: re-dispatch executor with specific issues to fix, then re-review
+4. Loop until ✅ or user says skip
+
+### Step 5.6: Stage 2 — Code Quality Review
+
+Only after spec compliance passes (✅). Dispatch code quality reviewer (Sonnet agent):
+
+```
+Task tool:
+  subagent_type: "general-purpose"
+  model: sonnet
+  description: "Review code quality for: [task_name]"
+  prompt: |
+    You are reviewing code quality of a task implementation.
+
+    ## What Was Implemented
+    [Executor's report]
+
+    ## Files Changed
+    Run `git diff HEAD~1 --name-only` to see changed files.
+    Run `git diff HEAD~1` to see the full diff.
+
+    ## Review Checklist
+    - Code patterns match existing codebase?
+    - Error handling adequate?
+    - Naming clear and descriptive?
+    - No DRY violations?
+    - No tight coupling?
+    - Tests verify real behavior?
+    - No security issues (injection, XSS, secrets)?
+    - No performance issues (N+1, memory leaks)?
+    - CLAUDE.md/project conventions followed?
+
+    ## Report
+    - Strengths: [what's good]
+    - Issues (Critical): [must fix — blocks completion]
+    - Issues (Important): [should fix]
+    - Issues (Minor): [nice to have]
+    - Assessment: APPROVED / NEEDS CHANGES
+```
+
+**If reviewer reports NEEDS CHANGES with Critical issues:**
+1. Report to user
+2. Ask: fix now or skip?
+3. If fix: re-dispatch executor, then re-review
+4. Loop until APPROVED or user says skip
+
+**Important/Minor issues:** Report to user but don't block completion.
+
+### Step 6: Handle Reviewed Results
+
+After both review stages pass:
+
+**On Success (both reviews ✅/APPROVED):**
+1. Task marked complete by agent in phase CHECKLIST.md
+2. Check if all phase tasks complete
+3. If phase complete: update STATE.md, ROADMAP.md
+4. Report completion + review summaries to user
 
 **On Blocker:**
-1. Update STATE.md:
-   - Add blocker to Blockers section
-   - Add session note in Session Handoff section
-2. Report to user what happened and what's needed
+1. Update STATE.md with blocker + review findings
+2. Report to user
 
 ### Step 7: Report Results
 

@@ -63,6 +63,42 @@ Do NOT:
 - Make workarounds that violate the spec
 - Continue past critical blockers
 
+### Step 4.5: Self-Review Before Reporting
+
+Before claiming completion, answer honestly:
+
+**Completeness:**
+- Did I implement everything in the spec?
+- Did I miss any requirements?
+- Are there edge cases I didn't handle?
+
+**Quality:**
+- Is this my best work, or did I cut corners?
+- Are names clear and accurate?
+- Is the code clean and maintainable?
+
+**Discipline:**
+- Did I avoid overbuilding (YAGNI)?
+- Did I only build what was requested?
+- Did I follow existing patterns?
+
+**Testing:**
+- Do tests verify real behavior (not just mock behavior)?
+- Are tests comprehensive?
+
+If you find issues during self-review, fix them before reporting.
+
+### Verification Gate
+
+Before claiming success:
+1. IDENTIFY what command proves the task works
+2. RUN it fresh (don't trust cached results)
+3. READ full output including exit code
+4. VERIFY output confirms the claim
+5. ONLY THEN report success
+
+Red flags in your own report: "should", "probably", "seems to"
+
 ### Step 5: Report Results
 When done (or blocked), report:
 
