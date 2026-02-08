@@ -1,19 +1,128 @@
-# Claude Code Custom Configuration
+# mpx — Claude Code Customization Toolkit
 
-## Custom Status Line
+A collection of skills, agents, scripts, and instructions that extend [Claude Code](https://docs.anthropic.com/en/docs/claude-code) with spec-driven project development workflows and general-purpose dev tools.
 
-![Status Line](assets/status-line.png)
+**Two ways to use it:**
+- **Full mpx workflow** — spec-driven, phase-based project development from scratch
+- **Individual skills** — cherry-pick general-purpose tools (commits, PRs, reviews, etc.)
 
-3-line status bar showing:
-- **Line 1**: Model, directory, git branch
-- **Line 2**: Context usage bar (█/░), % tokens, session cost (USD/CZK)
-- **Line 3**: 5-hour & 7-day quota utilization
+## Installation
 
-Configured via `scripts/context-bar.sh`.
+### Prerequisites
 
-## Skills
+- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed and working
 
-### mpx- (Spec-Driven Workflow)
+### Setup
+
+1. **Clone this repo:**
+
+```bash
+git clone https://github.com/user/mxp-claude-code.git
+cd mxp-claude-code
+```
+
+2. **Symlink into `~/.claude/`:**
+
+Claude Code loads skills, agents, and instructions from `~/.claude/`. Create symlinks so this repo's contents are available globally.
+
+**macOS / Linux:**
+
+```bash
+ln -s "$(pwd)/skills" ~/.claude/skills
+ln -s "$(pwd)/agents" ~/.claude/agents
+ln -s "$(pwd)/scripts" ~/.claude/scripts
+ln -s "$(pwd)/instructions" ~/.claude/instructions
+ln -s "$(pwd)/assets" ~/.claude/assets
+ln -s "$(pwd)/CLAUDE.md" ~/.claude/CLAUDE.md
+ln -s "$(pwd)/AGENTS.md" ~/.claude/AGENTS.md
+```
+
+**Windows (run as Administrator):**
+
+```cmd
+mklink /D "%USERPROFILE%\.claude\skills" "C:\path\to\mxp-claude-code\skills"
+mklink /D "%USERPROFILE%\.claude\agents" "C:\path\to\mxp-claude-code\agents"
+mklink /D "%USERPROFILE%\.claude\scripts" "C:\path\to\mxp-claude-code\scripts"
+mklink /D "%USERPROFILE%\.claude\instructions" "C:\path\to\mxp-claude-code\instructions"
+mklink /D "%USERPROFILE%\.claude\assets" "C:\path\to\mxp-claude-code\assets"
+mklink "%USERPROFILE%\.claude\CLAUDE.md" "C:\path\to\mxp-claude-code\CLAUDE.md"
+mklink "%USERPROFILE%\.claude\AGENTS.md" "C:\path\to\mxp-claude-code\AGENTS.md"
+```
+
+3. **Verify:** Launch Claude Code in any project — skills should appear when you type `/mp` or `/mpx`.
+
+## Quick Start
+
+**New project:**
+
+```bash
+cd your-project
+# Then in Claude Code:
+/mpx-init-project
+```
+
+Creates spec interactively, initializes git, generates phased roadmap and checklists.
+
+**Existing project:**
+
+```bash
+cd your-project
+# Then in Claude Code:
+/mpx-convert-project
+```
+
+Auto-detects tech stack, scans codebase, creates `.mpx/` structure from existing code.
+
+## MPX Workflow
+
+```
+/mpx-init-project          ◄── New projects (or /mpx-convert-project for existing)
+        │
+        ▼
+/mpx-create-spec           ◄── Interactive tech stack Q&A → SPEC.md
+        │
+        ▼
+/mpx-init-repo             ◄── Git setup (.gitignore, .editorconfig, etc.)
+        │
+        ▼
+/mpx-parse-spec            ◄── SPEC.md → ROADMAP.md + phase folders
+        │
+        ▼
+/mpx-execute-task          ◄── Pick phase, execute next task (loop)
+        │
+        ▼
+/mpx-show-project-status   ◄── Check progress anytime
+```
+
+Between sessions, use `/mpx-handoff` to save context to `STATE.md` for continuity.
+
+## Project Structure
+
+All mpx projects use phase-based organization inside `.mpx/`:
+
+```
+.mpx/
+├── SPEC.md              # Master project specification
+├── ROADMAP.md           # Phase overview + completion tracking
+├── STATE.md             # Global state + session handoff
+└── phases/
+    ├── 01-foundation/
+    │   ├── SPEC.md      # Phase requirements
+    │   ├── CHECKLIST.md # Phase tasks
+    │   └── STATE.md     # Phase state + session handoff
+    ├── 02-core-feature/
+    │   └── ...
+    └── 03-polish/
+        └── ...
+```
+
+- `ROADMAP.md` — tracks phase completion status
+- `STATE.md` — session handoff info (what was done, what's next)
+- Each phase has its own `CHECKLIST.md` for granular task tracking
+
+## Skills Reference
+
+### mpx- Skills (Spec-Driven Workflow)
 
 | Skill | Description |
 |-------|-------------|
@@ -27,141 +136,21 @@ Configured via `scripts/context-bar.sh`.
 | `/mpx-add-requirements` | Add requirements with conflict detection |
 | `/mpx-handoff` | Update STATE.md with session handoff info |
 
-### mp- (General Purpose)
+### mp- Skills (General Purpose)
 
 | Skill | Description |
 |-------|-------------|
 | `/mp-commit` | Stage and commit with conventional format |
 | `/mp-pr-create` | Create draft PR from existing commits |
-| `/mp-commit-push-pr` | Full workflow - commit, push, create draft PR |
-| `/mp-review-branch` | Multi-agent code review |
-| `/mp-review-pr` | PR review |
+| `/mp-commit-push-pr` | Full workflow — commit, push, create draft PR |
+| `/mp-review-branch` | Multi-agent code review of current branch |
+| `/mp-review-pr` | PR review with confidence scoring |
 | `/mp-review-design` | Visual design inspection via chrome-devtools |
 | `/mp-gh-issue-fix` | Investigate and fix GitHub issues |
 | `/mp-update-readme` | Update README.md |
 | `/mp-update-instructions` | Analyze history, improve CLAUDE.md/AGENTS.md |
 | `/mp-check-fix` | Auto-detect and fix build/typecheck/lint errors |
 | `/mp-gemini-fetch` | Fetch blocked sites via Gemini CLI |
-
-## Workflow
-
-```
-┌─────────────────────────┐
-│  /mpx-init-project      │  ◄── Start here for new projects
-└────────┬────────────────┘
-
-┌─────────────────────────┐
-│  /mpx-convert-project   │  ◄── Start here for existing projects
-└────────┬────────────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│  /mpx-create-spec       │  ◄── Interactive tech stack Q&A
-└────────┬────────────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│  /mpx-init-repo         │  ◄── Git setup
-└────────┬────────────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│  /mpx-parse-spec        │  ◄── Generate ROADMAP.md + phases
-└────────┬────────────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│  /mpx-execute-task      │  ◄── Execute tasks (loop)
-└────────┬────────────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│  /mpx-show-project-status │  ◄── Check progress anytime
-└─────────────────────────┘
-```
-
-## Project Structure
-
-All projects use phase-based organization:
-
-```
-.mpx/
-├── SPEC.md              # Master project specification
-├── ROADMAP.md           # Phase overview + high-level tracking
-├── STATE.md             # Global state + session handoff
-└── phases/
-    ├── 01-foundation/
-    │   ├── SPEC.md      # Phase requirements
-    │   ├── CHECKLIST.md # Phase tasks
-    │   └── STATE.md     # Phase state + session handoff
-    ├── 02-core-feature/
-    │   ├── SPEC.md
-    │   ├── CHECKLIST.md
-    │   └── STATE.md
-    └── 03-polish/
-        ├── SPEC.md
-        ├── CHECKLIST.md
-        └── STATE.md
-```
-
-**Key files:**
-- `ROADMAP.md` - tracks phase completion (Status column)
-- `STATE.md` - includes session handoff section
-- Each phase folder has its own `CHECKLIST.md` for task tracking
-
-## Usage Examples
-
-```bash
-# Start a new project
-/mpx-init-project
-
-# Or step by step:
-/mpx-create-spec           # Create specification
-/mpx-init-repo             # Initialize git
-/mpx-parse-spec            # Generate ROADMAP.md + phases
-
-# Execute tasks
-/mpx-execute-task           # Select phase, execute next task
-
-# Check progress
-/mpx-show-project-status    # See progress and next steps
-
-# Add new requirements mid-project
-/mpx-add-requirements "Add dark mode support"
-
-# Review skills
-/mp-review-branch         # Review current branch
-/mp-review-pr 123         # Review specific PR
-```
-
-## Review Skills Details
-
-### Safety Guarantees
-
-**Review skills are read-only:**
-- No files are modified
-- No commits are made
-- No GitHub comments are posted
-- No PRs are approved/rejected
-
-Only `/mp-update-readme` can modify files (the README.md).
-
-### Review Categories
-
-Both review skills check:
-1. **Tech Stack Best Practices** - Framework-specific patterns
-2. **Security** - OWASP top 10, injection, XSS, auth issues
-3. **Performance** - N+1 queries, memory leaks, bundle size
-4. **Error Handling** - Try/catch, boundaries, graceful degradation
-5. **Code Quality** - DRY, complexity, naming, CLAUDE.md compliance
-
-### Confidence Scoring
-
-Issues are scored 0-100:
-- **Top (>80)**: Must fix before merge
-- **High (66-80)**: Should address
-- **Medium (40-65)**: Worth reviewing
-- **Low (<40)**: Stylistic or minor
 
 ## Agents
 
@@ -174,4 +163,25 @@ Issues are scored 0-100:
 | mp-context7-docs-fetcher | Sonnet | Fetches library docs via Context7 MCP |
 | mp-css-layout-debugger | Haiku | CSS layout debugging |
 | mp-bash-script-colorizer | Haiku | Bash script coloring guidelines |
-| mp-ux-designer | - | UX research and design artifacts |
+| mp-ux-designer | Sonnet | UX research and design artifacts |
+
+Agents are auto-spawned based on rules in `AGENTS.md` — no manual invocation needed.
+
+## Custom Status Line
+
+![Status Line](assets/status-line.png)
+
+3-line status bar showing:
+- **Line 1**: Model, directory, git branch
+- **Line 2**: Context usage bar (█/░), % tokens, session cost (USD/CZK)
+- **Line 3**: 5-hour & 7-day quota utilization
+
+Configured via `scripts/context-bar.sh`.
+
+## Review Skills
+
+Review skills (`/mp-review-branch`, `/mp-review-pr`, `/mp-review-design`) are **read-only** — no files modified, no commits, no GitHub comments posted.
+
+**Categories checked:** tech stack best practices, security (OWASP top 10), performance, error handling, code quality.
+
+**Confidence scoring** (0–100): >80 must fix, 66–80 should address, 40–65 worth reviewing, <40 minor/stylistic.
