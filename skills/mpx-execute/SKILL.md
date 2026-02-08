@@ -1,18 +1,18 @@
 ---
-name: mpx-execute-task
-description: Execute next task. Prompts for phase selection, delegates to executor agent.
+name: mpx-execute
+description: Execute tasks. Prompts for phase, then choose full-phase or single-task execution mode.
 disable-model-invocation: true
 allowed-tools: Read, Write, Task, Bash, AskUserQuestion
 ---
 
-# Execute Next Task
+# Execute Tasks
 
-Execute a task by selecting a phase and delegating to the executor agent.
+Execute tasks by selecting a phase and choosing between full-phase or single-task execution mode.
 
 ## Usage
 
 ```
-/mpx-execute-task           # Select phase, execute next task
+/mpx-execute           # Select phase, choose execution mode
 ```
 
 ## Workflow
@@ -52,19 +52,54 @@ Options:
 
 **If user selects "Other":** Parse phase number from input.
 
-### Step 3: Find Next Task in Selected Phase
+### Step 3: Prompt for Execution Mode
+
+Count remaining unchecked tasks (`- [ ]`) in the selected phase's CHECKLIST.md.
+
+**If only 1 task remaining:** Skip prompt, execute it directly.
+
+**If multiple tasks remaining:** Use `AskUserQuestion`:
+
+```
+Question: "How do you want to execute Phase N?"
+Header: "Mode"
+Options:
+  1. "Execute entire phase (N remaining tasks) (Recommended)" - "Run all tasks sequentially with review after each"
+  2. "Execute next task only" - "Run single task then stop"
+```
+
+### Step 4: Execute — Task Mode
+
+For single-task execution:
 
 1. Read selected phase's `CHECKLIST.md`
 2. Find first unchecked task (`- [ ]`)
 3. Read phase's `SPEC.md` for context
+4. Delegate to executor (Step 5)
+5. Run reviews (Steps 5.5 + 5.6)
+6. Report results (Step 7)
 
-### Step 4: Prepare Context for Agent
+### Step 4: Execute — Phase Mode
 
-Gather essential context to pass to the executor agent:
-- Project name and tech stack (from SPEC.md)
-- Current phase name and objectives (from phase's SPEC.md)
-- Task description
-- Any relevant decisions (from global or phase STATE.md)
+For full-phase execution:
+
+1. Read selected phase's `CHECKLIST.md`
+2. Collect all unchecked tasks (`- [ ]`)
+3. Read phase's `SPEC.md` for context
+4. Initialize tracking: `completed = []`, `failed = []`, `skipped = []`
+
+**For each unchecked task sequentially:**
+   a. Delegate to executor (Step 5)
+   b. Run spec compliance review (Step 5.5)
+   c. Run code quality review (Step 5.6)
+   d. **On success (both reviews pass):** Add to `completed[]`, continue to next task
+   e. **On failure/blocker:** Report issue to user, ask fix/skip:
+      - **Fix:** Re-dispatch executor with specific issues, re-review, loop until pass
+      - **Skip:** Add to `skipped[]`, continue to next task
+      - **Stop:** Halt phase execution, report partial progress
+   f. Continue to next task regardless of previous task outcome
+
+After all tasks processed: Go to Step 7 (phase summary report).
 
 ### Step 5: Delegate to Executor Agent
 
@@ -203,7 +238,7 @@ Task tool:
 
 ### Step 6: Handle Reviewed Results
 
-After both review stages pass:
+After both review stages pass for a task:
 
 **On Success (both reviews ✅/APPROVED):**
 1. Task marked complete by agent in phase CHECKLIST.md
@@ -217,6 +252,7 @@ After both review stages pass:
 
 ### Step 7: Report Results
 
+**Task mode report:**
 ```
 Task Completed: [Task Description]
 Phase: N - [Phase Name]
@@ -229,7 +265,32 @@ Commits Made: N
 Next Task:
   [] [Next task description]
 
-Run `/mpx-execute-task` to continue.
+Run `/mpx-execute` to continue.
+Run `/mpx-show-project-status` for full progress overview.
+```
+
+**Phase mode report:**
+```
+Phase N Execution Summary: [Phase Name]
+
+Results:
+  ✅ Completed: X tasks
+  ❌ Failed:    Y tasks
+  ⏭️ Skipped:   Z tasks
+
+Task Details:
+  ✅ [Task 1 description]
+  ✅ [Task 2 description]
+  ❌ [Task 3 description] — [failure reason]
+  ✅ [Task 4 description]
+
+Phase Progress: X/Y tasks complete
+[If phase complete: "Phase N Complete!"]
+[If failed tasks exist: "Failed tasks may need manual intervention or re-execution."]
+
+Commits Made: N
+
+Run `/mpx-execute` to continue with next phase.
 Run `/mpx-show-project-status` for full progress overview.
 ```
 
@@ -238,11 +299,11 @@ Run `/mpx-show-project-status` for full progress overview.
 - **No phases found:** "No project found. Run `/mpx-init-project` or `/mpx-parse-spec` first."
 - **All phases complete:** "All phases complete! Project finished."
 - **No eligible phases:** "All remaining phases are blocked. Check dependencies in ROADMAP.md."
-- **Agent fails:** Report error and suggest manual intervention
+- **Agent fails:** Report error, record in `failed[]` (phase mode) or suggest manual intervention (task mode)
 
 ## Parallel Execution Note
 
-Multiple `/mpx-execute-task` commands can run in parallel on different phases if:
+Multiple `/mpx-execute` commands can run in parallel on different phases if:
 - The phases have no mutual dependencies
 - Both phases' dependencies are already satisfied
 
@@ -255,3 +316,5 @@ Example: Phase 2 and Phase 3 can both run if they only depend on Phase 1 (comple
 - STATE.md provides continuity between tasks and sessions
 - Agent commits after each task to preserve progress
 - ROADMAP.md is the source of truth for phase completion status
+- Phase mode continues on failure — all tasks get attempted
+- Two-stage review runs after EVERY task, even in phase mode

@@ -263,7 +263,7 @@ Report what was created:
 > 2. [Feature] (N tasks)
 > ...
 >
-> Run `/mpx-execute-task` to start with the first task."
+> Run `/mpx-execute` to start with the first task."
 
 ## Task Breakdown Guidelines
 

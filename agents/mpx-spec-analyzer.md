@@ -66,7 +66,10 @@ Generate all required files in `.mpx/` directory:
 - Too small: "Add import statement for bcrypt"
 
 ### Phase Size
-- Aim for 6-15 tasks per phase
+- Aim for 3-6 tasks per phase for maximum cohesion
+- Larger phases (up to 10) acceptable when tasks are tightly coupled
+- Prefer more phases with fewer tasks over fewer phases with many tasks
+- Group tasks by functional area (data layer, API layer, UI, etc.)
 - Each phase should take 1-3 focused sessions
 - Phases should produce demonstrable progress
 

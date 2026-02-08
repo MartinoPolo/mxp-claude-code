@@ -59,7 +59,7 @@ Session Notes:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Commands:
-  /mpx-execute-task          Continue with next task
+  /mpx-execute               Continue with next task
   /mpx-parse-spec       Regenerate plan
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
@@ -68,9 +68,9 @@ Commands:
 
 Based on project state, suggest relevant next commands:
 
-- If no tasks done: "Start with `/mpx-execute-task` to execute the first task"
-- If phase incomplete: "Continue with `/mpx-execute-task`"
-- If phase complete: "Ready for next phase with `/mpx-execute-task`"
+- If no tasks done: "Start with `/mpx-execute` to execute the first task"
+- If phase incomplete: "Continue with `/mpx-execute`"
+- If phase complete: "Ready for next phase with `/mpx-execute`"
 - If blockers exist: "Resolve blockers before continuing"
 - If all phases done: "Project complete! Consider final review"
 

@@ -71,7 +71,7 @@ This document provides background knowledge about spec-driven development workfl
 3. Review and adjust as needed
 
 ### "Context is getting degraded"
-1. Use `/mpx-execute-task` for complex work
+1. Use `/mpx-execute` for complex work
 2. This spawns fresh agent with clean context
 3. STATE.md maintains continuity
 
@@ -105,7 +105,7 @@ This document provides background knowledge about spec-driven development workfl
 /mpx-create-spec        - Interactive spec creation
 /mpx-init-repo          - Git initialization only
 /mpx-parse-spec         - Generate checklists from spec
-/mpx-execute-task            - Execute next task (simple or complex)
+/mpx-execute                  - Execute tasks (full phase or single)
 /mpx-show-project-status     - Show progress and next steps
 /mpx-add-requirements   - Add new requirements to existing project
 ```

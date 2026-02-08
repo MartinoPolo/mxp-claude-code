@@ -279,7 +279,7 @@ Phases: [N] phases focusing on new work
   [...]
 
 Next Steps:
-  Run `/mpx-execute-task` to start Phase 1 with fresh context.
+  Run `/mpx-execute` to start Phase 1 with fresh context.
   Run `/mpx-show-project-status` to check progress at any time.
 ```
 

@@ -88,7 +88,7 @@ Auto-detects tech stack, scans codebase, creates `.mpx/` structure from existing
 /mpx-parse-spec            ◄── SPEC.md → ROADMAP.md + phase folders
         │
         ▼
-/mpx-execute-task          ◄── Pick phase, execute next task (loop)
+/mpx-execute               ◄── Pick phase, execute tasks (loop)
         │
         ▼
 /mpx-show-project-status   ◄── Check progress anytime
@@ -131,7 +131,7 @@ All mpx projects use phase-based organization inside `.mpx/`:
 | `/mpx-create-spec` | Interactive spec creation |
 | `/mpx-init-repo` | Initialize git repo |
 | `/mpx-parse-spec` | Parse SPEC.md → ROADMAP.md + phases |
-| `/mpx-execute-task` | Select phase, execute next task |
+| `/mpx-execute` | Select phase, execute tasks (full phase or single) |
 | `/mpx-show-project-status` | Show progress |
 | `/mpx-add-requirements` | Add requirements with conflict detection |
 | `/mpx-handoff` | Update STATE.md with session handoff info |
