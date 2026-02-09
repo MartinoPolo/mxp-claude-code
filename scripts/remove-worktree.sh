@@ -13,7 +13,9 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 CYAN='\033[0;36m'
 
-WORKTREE_DIR="../worktrees"
+GIT_COMMON_DIR=$(git rev-parse --git-common-dir)
+MAIN_REPO=$(dirname "$(cd "$GIT_COMMON_DIR" && pwd)")
+WORKTREE_DIR="$MAIN_REPO/../worktrees"
 
 # Parse arguments
 NAMES=()
@@ -100,8 +102,8 @@ for i in "${!NAMES[@]}"; do
   if ! git worktree remove --force "$WORKTREE_PATH" 2>/dev/null; then
     echo -e "  ${DIM}Git worktree remove failed, unregistering manually...${RESET}"
 
-    GIT_DIR=$(git rev-parse --git-dir)
-    WORKTREE_ADMIN="$GIT_DIR/worktrees/$NAME"
+    GIT_COMMON=$(git rev-parse --git-common-dir)
+    WORKTREE_ADMIN="$GIT_COMMON/worktrees/$NAME"
     if [ -d "$WORKTREE_ADMIN" ]; then
       rm -rf "$WORKTREE_ADMIN"
       echo -e "  ${DIM}Worktree unregistered.${RESET}"

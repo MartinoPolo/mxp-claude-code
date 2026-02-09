@@ -20,9 +20,11 @@ if [ -z "$NAME" ]; then
 fi
 
 CURRENT_BRANCH=$(git branch --show-current)
-WORKTREE_DIR="../worktrees"
+GIT_COMMON_DIR=$(git rev-parse --git-common-dir)
+MAIN_REPO=$(dirname "$(cd "$GIT_COMMON_DIR" && pwd)")
+SOURCE_DIR=$(pwd)
+WORKTREE_DIR="$MAIN_REPO/../worktrees"
 WORKTREE_PATH="$WORKTREE_DIR/$NAME"
-MAIN_REPO=$(pwd)
 
 copy_dir() {
   local source="$1"
@@ -52,15 +54,15 @@ git worktree add -b "$NAME" "$WORKTREE_PATH"
 cd "$WORKTREE_PATH"
 
 echo -e "${CYAN}→${RESET} Copying IDE configs..."
-copy_dir "$MAIN_REPO/.vscode" "$PWD/.vscode"
-copy_dir "$MAIN_REPO/.cursor" "$PWD/.cursor"
+copy_dir "$SOURCE_DIR/.vscode" "$PWD/.vscode"
+copy_dir "$SOURCE_DIR/.cursor" "$PWD/.cursor"
 
 echo -e "${CYAN}→${RESET} Copying Claude Code local settings..."
-copy_file "$MAIN_REPO/.claude/settings.local.json" "$PWD/.claude/settings.local.json"
+copy_file "$SOURCE_DIR/.claude/settings.local.json" "$PWD/.claude/settings.local.json"
 
 echo ""
 echo -e "${CYAN}?${RESET} How should .env files be set up?"
-echo "  1) Copy current .env files from main repo (default)"
+echo "  1) Copy current .env files from source repo (default)"
 echo "  2) Create from .env.example files"
 read -p "  Choose [1/2]: " ENV_CHOICE
 ENV_CHOICE=${ENV_CHOICE:-1}
@@ -72,9 +74,9 @@ if [ "$ENV_CHOICE" = "2" ]; then
     echo "  Copied: $1 -> ${1%.example}"
   ' _ {} \;
 else
-  echo -e "${CYAN}→${RESET} Copying .env files from main repo..."
-  find "$MAIN_REPO" -name ".env" -not -path "*/node_modules/*" -not -path "*/.git/*" | while read -r envfile; do
-    rel_path="${envfile#$MAIN_REPO/}"
+  echo -e "${CYAN}→${RESET} Copying .env files from source repo..."
+  find "$SOURCE_DIR" -name ".env" -not -path "*/node_modules/*" -not -path "*/.git/*" | while read -r envfile; do
+    rel_path="${envfile#$SOURCE_DIR/}"
     target="$PWD/$rel_path"
     mkdir -p "$(dirname "$target")"
     cp "$envfile" "$target"
@@ -107,7 +109,7 @@ fi
 echo ""
 echo -e "${GREEN}✓${RESET} Done! Worktree ready"
 echo ""
-echo -e "   ┌──────────────────────────────────┐"
-printf "   │  ${BOLD}cd ../worktrees/%-15s${RESET}  │\n" "$NAME"
-echo -e "   └──────────────────────────────────┘"
+DISPLAY_PATH=$(cd "$WORKTREE_PATH" && pwd)
+echo "$DISPLAY_PATH" > "${TMPDIR:-/tmp}/worktree-cd-path"
+echo -e "   ${BOLD}cd $DISPLAY_PATH${RESET}"
 echo ""
