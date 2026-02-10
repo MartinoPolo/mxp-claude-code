@@ -178,3 +178,4 @@ Bad:
 - Quality over speed
 - When in doubt, document and ask
 - Your work enables the next task
+- You may be one of several sequential executors in a batch — focus on your assigned task only

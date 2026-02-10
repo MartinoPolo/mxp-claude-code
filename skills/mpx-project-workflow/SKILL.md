@@ -80,6 +80,11 @@ This document provides background knowledge about spec-driven development workfl
 2. Regenerate with `/mpx-parse-spec`
 3. Completed work is preserved in git
 
+### "I want to control what gets executed"
+- `/mpx-execute phase 3` — target specific phase
+- `/mpx-execute next` — force single task
+- `/mpx-execute all` — force entire remaining phase
+
 ### "I need to add new requirements"
 1. Run `/mpx-add-requirements "description"`
 2. Reviews current state and detects conflicts
@@ -105,7 +110,7 @@ This document provides background knowledge about spec-driven development workfl
 /mpx-create-spec        - Interactive spec creation
 /mpx-init-repo          - Git initialization only
 /mpx-parse-spec         - Generate checklists from spec
-/mpx-execute                  - Execute tasks (full phase or single)
+/mpx-execute                  - Execute tasks (auto-selects phase and scope)
 /mpx-show-project-status     - Show progress and next steps
 /mpx-add-requirements   - Add new requirements to existing project
 ```

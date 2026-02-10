@@ -1,18 +1,22 @@
 ---
 name: mpx-execute
-description: Execute tasks. Prompts for phase, then choose full-phase or single-task execution mode.
+description: Execute tasks autonomously. Auto-selects phase and scope, only asks when genuinely unsure.
+args: "[phase N | all | next]"
 disable-model-invocation: true
 allowed-tools: Read, Write, Task, Bash, AskUserQuestion, Glob
 ---
 
 # Execute Tasks
 
-Execute tasks by selecting a phase and choosing between full-phase or single-task execution mode.
+Autonomously execute tasks — auto-selects the next eligible phase and decides scope based on task complexity.
 
 ## Usage
 
 ```
-/mpx-execute           # Select phase, choose execution mode
+/mpx-execute           # Auto-select phase and scope
+/mpx-execute phase 3   # Target specific phase
+/mpx-execute next      # Force single task execution
+/mpx-execute all       # Force entire remaining phase
 ```
 
 ## Workflow
@@ -35,50 +39,47 @@ HANDOFF.md may not exist if `/mpx-handoff` was not run. This is normal — proce
 3. Delete the HANDOFF.md file after reading — it is ephemeral, single-use
 4. If not found, skip — no handoff context needed
 
-### Step 2: Prompt for Phase Selection
+### Step 2: Auto-Select Phase
 
-Use `AskUserQuestion` to let user choose which phase to work on.
+Determine which phase to execute without prompting.
 
-**Rules:**
+**Logic:**
 
-- Only offer phases whose dependencies are satisfied
-- First option = first incomplete phase (Recommended)
-- Next 3 options = next eligible phases
-- "Other" allows manual phase number entry
+1. Collect all non-completed phases whose dependencies are satisfied
+2. Sort by phase number ascending
+3. Pick the lowest — this is almost always correct
 
-**Example prompt:**
+**If user passed `phase N` arg:** Use that phase instead (validate its dependencies are satisfied; error if blocked).
 
-```
-Question: "Which phase to execute?"
-Header: "Phase"
-Options:
-  1. "Phase 1: Foundation (Recommended)" - "First incomplete phase, 3/10 tasks done"
-  2. "Phase 2: Core API" - "Dependencies met, 0/8 tasks done"
-  3. "Phase 3: UI Components" - "Dependencies met, 0/12 tasks done"
-  4. "Phase 4: Integration" - "Blocked by Phase 2, 3"
-```
+**Edge cases:**
+- No phases found → error: "No project found. Run `/mpx-init-project` or `/mpx-parse-spec` first."
+- All phases complete → done: "All phases complete! Project finished."
+- All remaining phases blocked → error: "All remaining phases are blocked. Check dependencies in ROADMAP.md."
 
-**If only one phase available:** Skip prompt, proceed with that phase.
+**Log:** `Auto-selected Phase N: [Name] (X remaining tasks)`
 
-**If user selects "Other":** Parse phase number from input.
+### Step 3: Decide Task Scope
 
-### Step 3: Prompt for Execution Mode
+Evaluate remaining unchecked tasks (`- [ ]`) in the selected phase's CHECKLIST.md and decide scope autonomously.
 
-Count remaining unchecked tasks (`- [ ]`) in the selected phase's CHECKLIST.md.
+**User override args (skip heuristic):**
+- `all` → execute entire remaining phase
+- `next` → execute single next task
 
-**If only 1 task remaining:** Skip prompt, execute it directly.
+**Complexity heuristic per task:**
+- Spec paragraph 1-2 lines → **small**
+- Spec paragraph 3+ lines → **large**
 
-**If multiple tasks remaining:** Use `AskUserQuestion`:
+**Scope rules (when no override):**
+1. **1 task remaining** → execute it
+2. **All small AND under same section heading** → batch up to 5 tasks
+3. **Mixed sizes or large tasks** → execute 1 task (conservative default)
 
-```
-Question: "How do you want to execute Phase N?"
-Header: "Mode"
-Options:
-  1. "Execute entire phase (N remaining tasks) (Recommended)" - "Run all tasks sequentially with review after each"
-  2. "Execute next task only" - "Run single task then stop"
-```
+**Log:** `Scope: Executing N task(s) — [reason]`
 
-### Step 4: Execute — Task Mode
+Example reasons: "single remaining task", "3 small tasks in same section", "conservative: mixed complexity"
+
+### Step 4: Execute — Single Task
 
 For single-task execution:
 
@@ -88,9 +89,9 @@ For single-task execution:
 4. Run reviews (Steps 5.5 + 5.6)
 5. Report results (Step 7)
 
-### Step 4: Execute — Phase Mode
+### Step 4: Execute — Multiple Tasks
 
-For full-phase execution:
+For multi-task (batch or full-phase) execution:
 
 1. Read selected phase's `CHECKLIST.md`
 2. Collect all unchecked tasks (`- [ ]`) — each includes inline spec paragraph
@@ -336,3 +337,5 @@ Example: Phase 2 and Phase 3 can both run if they only depend on Phase 1 (comple
 - Phase mode continues on failure — all tasks get attempted
 - Two-stage review runs after EVERY task, even in phase mode
 - HANDOFF.md is ephemeral — read once at start, then deleted
+- Autonomous by default — phase and scope are auto-decided; user is only prompted for fix/skip/stop after review failures
+- Use args (`phase N`, `next`, `all`) to override autonomous decisions when needed
