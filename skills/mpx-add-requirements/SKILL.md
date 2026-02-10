@@ -10,6 +10,19 @@ args: "[requirements]"
 
 Add new requirements to an existing project, updating all relevant files and detecting conflicts.
 
+## Iron Law
+
+**DOCUMENTATION ONLY.** This skill updates `.mpx/` files (SPEC.md, ROADMAP.md, CHECKLIST.md). It NEVER modifies source code, configs, tests, or any non-`.mpx/` file. No implementation. No code changes. No exceptions.
+
+## Requirements Format
+
+- Concise but complete — no filler words, no lost information
+- State WHAT, not HOW (behavior, not implementation)
+- Include constraints and edge cases inline
+- One requirement = one clear deliverable
+- Bad: "We should probably add some kind of dark mode support that lets users toggle between light and dark themes"
+- Good: "Dark mode toggle. Persist preference. Respect system setting as default."
+
 ## Usage
 
 ```

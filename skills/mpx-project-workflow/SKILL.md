@@ -50,6 +50,11 @@ This document provides background knowledge about spec-driven development workfl
 - Foundation phase always comes first
 - Polish/testing phase always comes last
 
+### Requirements vs Implementation
+- Requirements skills (`/mpx-add-requirements`, `/mpx-create-spec`, `/mpx-parse-spec`) are documentation-only
+- They update `.mpx/` files — never source code, configs, or tests
+- Implementation happens only via `/mpx-execute`
+
 ### Session Handoff
 - Run `/mpx-handoff` at end of each session to create ephemeral HANDOFF.md
 - HANDOFF.md only exists if `/mpx-handoff` was run — it is optional, not always present

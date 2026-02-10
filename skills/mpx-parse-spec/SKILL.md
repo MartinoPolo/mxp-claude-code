@@ -9,6 +9,10 @@ allowed-tools: Read, Write, Bash
 
 Convert SPEC.md into a phased implementation plan with tracking files.
 
+## Iron Law
+
+**DOCUMENTATION ONLY.** Creates/updates `.mpx/` files only. Never modifies source code.
+
 ## Prerequisites
 
 - `.mpx/SPEC.md` must exist

@@ -9,6 +9,10 @@ allowed-tools: Read, Write, Bash, AskUserQuestion
 
 Interactive specification creation with intelligent tech stack suggestions.
 
+## Iron Law
+
+**DOCUMENTATION ONLY.** Creates `.mpx/SPEC.md` only. Never modifies source code.
+
 ## Workflow
 
 ### Step 1: Gather Project Idea
