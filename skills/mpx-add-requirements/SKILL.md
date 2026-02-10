@@ -48,6 +48,7 @@ If no argument, ask the user:
 ### Step 2: Read Current State
 
 Read all relevant project files:
+
 - `.mpx/SPEC.md` - Master requirements
 - `.mpx/ROADMAP.md` - Phase overview + tracking
 - `.claude/CLAUDE.md` - Project context (if exists)
@@ -58,16 +59,19 @@ Read all relevant project files:
 Check the new requirements against existing specifications:
 
 **Tech Stack Conflicts:**
+
 - Adding MongoDB when SPEC.md says "Database: PostgreSQL"
 - Adding React when SPEC.md says "Framework: Vue"
 - Adding Python when SPEC.md says "Language: TypeScript"
 
 **Requirement Conflicts:**
+
 - "Remove authentication" when existing tasks depend on auth
 - "Add offline support" that contradicts "Real-time sync" requirement
 - Contradicting business logic requirements
 
 **Scope Conflicts:**
+
 - Adding features explicitly marked as "Out of Scope"
 - Requirements that dramatically change project complexity
 - Features that depend on non-existent infrastructure
@@ -147,16 +151,19 @@ Run `/mpx-execute` to start working on new tasks.
 ## Conflict Detection Rules
 
 ### Hard Conflicts (Block by default)
+
 - Contradicting tech stack (different databases, frameworks, languages)
 - Removing features that have dependent tasks
 - Adding features marked as "Out of Scope"
 
 ### Soft Conflicts (Warn but allow)
+
 - Adding features that increase complexity
 - Adding features to completed phases
 - Features that may need additional infrastructure
 
 ### No Conflict
+
 - New features that fit naturally
 - Enhancements to existing features
 - Additional polish/testing tasks
@@ -164,6 +171,7 @@ Run `/mpx-execute` to start working on new tasks.
 ## Task Generation Guidelines
 
 When generating tasks for new requirements:
+
 - Each task should be atomic
 - Follow existing task style in the project
 - Include setup tasks if needed
@@ -172,7 +180,7 @@ When generating tasks for new requirements:
 
 ## Error Handling
 
-- **No SPEC.md:** "No project found. Run `/mpx-init-project` first."
+- **No SPEC.md:** "No project found. Stop and suggest running `/mpx-setup` first."
 - **Empty requirements:** "Please specify what requirements to add."
 - **Unresolvable conflict:** "Cannot add requirements due to fundamental conflicts. Manual review required."
 

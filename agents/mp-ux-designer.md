@@ -9,15 +9,6 @@ model: sonnet
 
 Jobs-to-be-Done analysis, user journey mapping, and UX research artifacts.
 
-## When to Spawn
-
-Trigger on requests involving:
-- New feature design
-- User flow planning
-- "Design a [feature]"
-- "User experience for..."
-- Pre-design research needs
-
 ## Core Principle
 
 **Understand users before designing UI.**

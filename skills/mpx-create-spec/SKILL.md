@@ -24,6 +24,7 @@ Ask the user to describe their project idea in free-form text:
 ### Step 2: Analyze and Extract
 
 From the user's description, identify:
+
 - Core functionality
 - Target users
 - Key features (list them)
@@ -34,6 +35,7 @@ From the user's description, identify:
 Use `AskUserQuestion` to ask about technology choices. Ask contextually relevant questions based on the project type:
 
 **Language Selection:**
+
 ```
 question: "What programming language would you like to use?"
 options:
@@ -44,6 +46,7 @@ options:
 ```
 
 **If TypeScript/JavaScript selected:**
+
 ```
 question: "Which package manager do you prefer?"
 options:
@@ -56,6 +59,7 @@ options:
 **Framework (contextual based on project type):**
 
 For web frontend:
+
 ```
 question: "Which frontend framework?"
 options:
@@ -66,6 +70,7 @@ options:
 ```
 
 For backend API:
+
 ```
 question: "Which backend framework?"
 options:
@@ -76,6 +81,7 @@ options:
 ```
 
 **Database (if needed):**
+
 ```
 question: "Do you need a database?"
 options:
@@ -86,6 +92,7 @@ options:
 ```
 
 **Testing:**
+
 ```
 question: "Which testing framework?"
 options:
@@ -103,12 +110,15 @@ Create `.mpx/SPEC.md` with all gathered information:
 # Project Specification
 
 ## Project Name
+
 [Name from user]
 
 ## Description
+
 [User's description, cleaned up]
 
 ## Tech Stack
+
 - Language: [selected]
 - Package Manager: [selected]
 - Framework: [selected]
@@ -116,19 +126,23 @@ Create `.mpx/SPEC.md` with all gathered information:
 - Testing: [selected]
 
 ## Core Features
+
 1. [Feature 1]
 2. [Feature 2]
-...
+   ...
 
 ## Technical Requirements
+
 - [ ] [Auto-generated based on tech stack]
 - [ ] [e.g., "Set up TypeScript configuration"]
 - [ ] [e.g., "Configure ESLint and Prettier"]
 
 ## Success Criteria
+
 - [Generated from features]
 
 ## Notes
+
 [Any additional context from conversation]
 ```
 
@@ -139,13 +153,14 @@ Show the user what was created and suggest next steps:
 > "Created `.mpx/SPEC.md` with your project specification.
 >
 > **Summary:**
+>
 > - Project: [name]
 > - Tech: [stack summary]
 > - Features: [count]
 >
 > **Next steps:**
+>
 > - Run `/mpx-parse-spec` to generate phased implementation plan
-> - Or run `/mpx-init-project` to also initialize git"
 
 ## Notes
 

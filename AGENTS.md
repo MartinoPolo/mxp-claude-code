@@ -116,3 +116,5 @@ Choose one of these:
 Conventional commits: `type(scope): description`
 
 **Types**: feat, fix, refactor, chore, docs, style, test, perf, ci, build, revert
+
+- **No AI attribution**: Never include "Co-authored-by: Claude" or similar

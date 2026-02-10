@@ -94,7 +94,7 @@ Use 20 characters for the bar.
 
 ## Error Cases
 
-- **No ROADMAP.md or phases/:** "No project tracking found. Run `/mpx-init-project` or `/mpx-parse-spec` first."
+- **No ROADMAP.md or phases/:** "No project tracking found. Run `/mpx-setup` or `/mpx-parse-spec` first."
 - **Empty phase checklist:** "Phase checklist has no tasks. Check phase's `CHECKLIST.md`"
 - **Corrupted ROADMAP.md:** "Could not parse ROADMAP.md. Consider regenerating with `/mpx-parse-spec`"
 

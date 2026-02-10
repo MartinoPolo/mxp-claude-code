@@ -58,25 +58,15 @@ mklink "%USERPROFILE%\.claude\AGENTS.md" "C:\path\to\mxp-claude-code\AGENTS.md"
 ```bash
 cd your-project
 # Then in Claude Code:
-/mpx-init-project
+/mpx-setup
 ```
 
-Creates spec interactively, initializes git, generates phased roadmap and checklists.
-
-**Existing project:**
-
-```bash
-cd your-project
-# Then in Claude Code:
-/mpx-convert-project
-```
-
-Auto-detects tech stack, scans codebase, creates `.mpx/` structure from existing code.
+Auto-detects project state — fresh init, existing codebase, or restructure. Creates spec, initializes git, generates phased roadmap and checklists.
 
 ## MPX Workflow
 
 ```
-/mpx-init-project          ◄── New projects (or /mpx-convert-project for existing)
+/mpx-setup                 ◄── Auto-detects: fresh init, convert existing, or restructure
         │
         ▼
 /mpx-create-spec           ◄── Interactive tech stack Q&A → SPEC.md
@@ -124,8 +114,7 @@ All mpx projects use phase-based organization inside `.mpx/`:
 
 | Skill | Description |
 |-------|-------------|
-| `/mpx-init-project` | Full project setup (spec + git + phases) |
-| `/mpx-convert-project` | Convert existing project to mpx structure |
+| `/mpx-setup` | Unified project setup (auto-detects: fresh init, convert existing, restructure) |
 | `/mpx-create-spec` | Interactive spec creation |
 | `/mpx-init-repo` | Initialize git repo |
 | `/mpx-parse-spec` | Parse SPEC.md → ROADMAP.md + phases |

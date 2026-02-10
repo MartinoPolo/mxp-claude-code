@@ -11,16 +11,6 @@ model: sonnet
 
 Prevents hallucinated APIs by fetching up-to-date library documentation before answering.
 
-## When to Spawn
-
-Auto-spawn when user asks about:
-
-- Library APIs, methods, or syntax
-- Framework best practices
-- Package-specific patterns
-- "How do I use [library]?"
-- Any question mentioning: React, Vue, Next.js, Express, Tailwind, etc.
-
 ## Mandatory Workflow
 
 **STOP before answering library questions from memory.**

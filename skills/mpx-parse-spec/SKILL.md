@@ -92,13 +92,10 @@ Each phase gets its own folder with a single CHECKLIST.md file — the single so
 Set up the project infrastructure and development environment.
 
 ## Scope
-- Initialize project structure
-- Set up build tools
-- Configure development environment
+- Initialize project, build tools, dev environment
 
 ## Out of Scope
-- Feature implementation
-- Production deployment
+- Feature implementation, production deployment
 
 ---
 
@@ -106,51 +103,21 @@ Set up the project infrastructure and development environment.
 
 ### Setup
 
-- [ ] Initialize [package manager] project
-  Create project with appropriate config. Set up package.json/pyproject.toml
-  with correct metadata, scripts, and engine requirements.
-
-- [ ] Install core dependencies
-  Add runtime and dev dependencies per tech stack. Pin major versions
-  for stability. Include linting, formatting, and testing tools.
+- [ ] Initialize project and install dependencies
+  Create project config, add runtime/dev dependencies per tech stack.
 
 - [ ] Configure TypeScript/linting
-  Set up tsconfig.json with strict mode, ESLint with project conventions,
-  Prettier for formatting. Ensure IDE integration works.
+  Set up tsconfig.json strict mode, ESLint, Prettier.
 
 ### Project Structure
 
-- [ ] Create directory structure
-  Set up src/, tests/, config/ directories per project conventions.
-  Add index/barrel files where appropriate.
-
-- [ ] Set up entry point
-  Create main application entry point with minimal bootstrap code.
-  Ensure it runs without errors.
-
-- [ ] Configure build process
-  Set up build tooling (esbuild/tsc/vite). Verify output is correct
-  and source maps work.
-
-### Development Environment
-
-- [ ] Set up dev server
-  Configure development server with appropriate port and settings.
-  Add proxy configuration if needed for API calls.
-
-- [ ] Configure hot reload
-  Enable HMR or watch mode for fast development feedback loop.
-  Verify changes reflect without manual restart.
-
-- [ ] Add debug configuration
-  Create VS Code launch.json or equivalent. Ensure breakpoints work
-  in source files (not compiled output).
+- [ ] Create directory structure and entry point
+  Set up src/, tests/, config/. Create main entry point.
 
 ### Completion Criteria
 
 - [ ] Project builds without errors
 - [ ] Dev server runs successfully
-- [ ] Basic tests pass
 
 ---
 Progress: 0/N tasks complete

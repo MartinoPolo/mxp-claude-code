@@ -52,7 +52,8 @@ Determine which phase to execute without prompting.
 **If user passed `phase N` arg:** Use that phase instead (validate its dependencies are satisfied; error if blocked).
 
 **Edge cases:**
-- No phases found → error: "No project found. Run `/mpx-init-project` or `/mpx-parse-spec` first."
+
+- No phases found → error: "No project found. Stop and suggest running `/mpx-setup`"
 - All phases complete → done: "All phases complete! Project finished."
 - All remaining phases blocked → error: "All remaining phases are blocked. Check dependencies in ROADMAP.md."
 
@@ -63,14 +64,17 @@ Determine which phase to execute without prompting.
 Evaluate remaining unchecked tasks (`- [ ]`) in the selected phase's CHECKLIST.md and decide scope autonomously.
 
 **User override args (skip heuristic):**
+
 - `all` → execute entire remaining phase
 - `next` → execute single next task
 
 **Complexity heuristic per task:**
+
 - Spec paragraph 1-2 lines → **small**
 - Spec paragraph 3+ lines → **large**
 
 **Scope rules (when no override):**
+
 1. **1 task remaining** → execute it
 2. **All small AND under same section heading** → batch up to 5 tasks
 3. **Mixed sizes or large tasks** → execute 1 task (conservative default)
@@ -133,21 +137,11 @@ Task tool:
     [Full task line + indented spec paragraph from CHECKLIST.md]
 
     ## Instructions
-    1. Implement the task
-    2. Commit after completing (use descriptive message)
-       - Format: "type(scope): description"
-    3. Mark task complete: change `- [ ]` to `- [x]` in phase CHECKLIST.md
-    4. If you made significant decisions, add them to the Decisions section in CHECKLIST.md
-    5. If you encounter blockers, document them in the Blockers section and stop
-    6. Report summary when done
+    Follow your standard execution process (understand, implement, verify, commit, report).
+    Update this phase's CHECKLIST.md when tasks complete.
 
     ## Working Directory
     [Current working directory]
-
-    ## Important
-    - Do NOT modify files outside the project scope
-    - Do NOT skip the task without documenting why
-    - Do NOT make architectural changes not in the spec
 ```
 
 ### Step 5.5: Stage 1 — Spec Compliance Review
@@ -313,7 +307,7 @@ Run `/mpx-show-project-status` for full progress overview.
 
 ## Error Handling
 
-- **No phases found:** "No project found. Run `/mpx-init-project` or `/mpx-parse-spec` first."
+- **No phases found:** "No project found. Run `/mpx-setup` or `/mpx-parse-spec` first."
 - **All phases complete:** "All phases complete! Project finished."
 - **No eligible phases:** "All remaining phases are blocked. Check dependencies in ROADMAP.md."
 - **Agent fails:** Report error, record in `failed[]` (phase mode) or suggest manual intervention (task mode)

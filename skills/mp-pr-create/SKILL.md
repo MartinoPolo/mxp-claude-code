@@ -25,12 +25,9 @@ Create a draft PR from existing commits on current branch. $ARGUMENTS
 
 ### Critical
 - **Always draft**: Use `--draft` flag
-- **No AI attribution**: Never include "Co-authored-by: Claude" or similar
 
 ### Title Format
 `type(scope): Description`
-
-Types: feat, fix, refactor, chore, docs, style, test, perf, ci, build
 
 ### Description Template
 ```

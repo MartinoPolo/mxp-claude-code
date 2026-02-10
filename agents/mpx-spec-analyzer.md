@@ -84,9 +84,8 @@ Generate all required files in `.mpx/` directory:
 └── CHECKLIST.md     # Specs + tasks + state (single source of truth)
 ```
 
-## Example Phase Folder Content
+## Example CHECKLIST.md
 
-**CHECKLIST.md:**
 ```markdown
 # Phase 2: User Authentication
 
@@ -97,14 +96,10 @@ Generate all required files in `.mpx/` directory:
 Implement user registration and login functionality.
 
 ## Scope
-- User registration
-- User login
-- JWT authentication
+- User registration, login, JWT authentication
 
 ## Out of Scope
-- OAuth
-- Password reset
-- Email verification
+- OAuth, password reset, email verification
 
 ---
 
@@ -113,49 +108,26 @@ Implement user registration and login functionality.
 ### Data Layer
 
 - [ ] Create User model with schema
-  Define the user schema with fields for email, hashed password, created/updated
-  timestamps. Add unique constraint on email. Include validation rules.
+  Define user schema: email, hashed password, timestamps. Unique email constraint.
 
 - [ ] Add password hashing utility
-  Implement bcrypt-based password hashing and comparison functions. Use
-  appropriate salt rounds for security.
-
-- [ ] Create user repository methods
-  Add CRUD operations for user model: create, findByEmail, findById. Return
-  typed results without exposing password hashes.
+  Bcrypt-based hashing and comparison. Appropriate salt rounds.
 
 ### API Layer
 
 - [ ] Add /register endpoint
-  POST endpoint accepting email/password. Validate input, check for existing
-  user, hash password, create user, return JWT. Return 409 on duplicate email.
+  POST email/password. Validate, hash, create user, return JWT. 409 on duplicate.
 
 - [ ] Add /login endpoint
-  POST endpoint accepting email/password. Validate credentials against stored
-  hash, return JWT on success, 401 on failure. Include rate limiting.
-
-- [ ] Implement JWT token generation
-  Create JWT utility with sign/verify functions. Use RS256 or HS256 based on
-  project requirements. Include configurable expiration.
-
-### Middleware
-
-- [ ] Create auth middleware
-  Express/Fastify middleware that extracts JWT from Authorization header,
-  verifies it, and attaches user to request context. Return 401 on invalid token.
-
-- [ ] Add route protection
-  Apply auth middleware to protected routes. Ensure public routes remain
-  accessible. Add role-based access if specified in project spec.
+  POST email/password. Verify against hash, return JWT or 401.
 
 ### Completion Criteria
 
-- [ ] Users can register with email/password
-- [ ] Users can log in and receive JWT
+- [ ] Users can register and log in
 - [ ] Protected routes reject unauthenticated requests
 
 ---
-Progress: 0/10 tasks complete
+Progress: 0/4 tasks complete
 
 ## Decisions
 [Decisions made during execution, with reasoning]
@@ -163,12 +135,3 @@ Progress: 0/10 tasks complete
 ## Blockers
 None
 ```
-
-## Remember
-
-- You have fresh context - use it efficiently
-- Focus on creating actionable, clear tasks
-- Consider the developer experience
-- Make handoff between sessions seamless
-- All files go in `.mpx/` directory only
-- Each phase folder needs only CHECKLIST.md

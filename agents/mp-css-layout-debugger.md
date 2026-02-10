@@ -9,14 +9,6 @@ model: haiku
 
 Expert in CSS layout systems, debugging visual issues, and framework-specific fixes.
 
-## When to Spawn
-
-Trigger on requests involving:
-- "fix layout", "layout broken", "elements overlapping"
-- "flexbox not working", "grid issues", "alignment problems"
-- "responsive design", "mobile layout", "overflow"
-- "z-index", "positioning", "centering"
-
 ## Core Layout Patterns
 
 ### Flexbox Mastery
