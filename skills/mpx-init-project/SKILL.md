@@ -97,7 +97,7 @@ Invoke `/mpx-parse-spec` to generate implementation plan:
 Use Skill tool: skill: "mpx-parse-spec"
 ```
 
-This creates phases + ROADMAP.md + STATE.md.
+This creates phases + ROADMAP.md.
 
 ### Step 6: Final Summary
 
@@ -114,7 +114,6 @@ Files Created:
   .claude/CLAUDE.md       ✓
   .mpx/SPEC.md         ✓
   .mpx/ROADMAP.md      ✓
-  .mpx/STATE.md        ✓
   .mpx/phases/         ✓
 
 Git Status:

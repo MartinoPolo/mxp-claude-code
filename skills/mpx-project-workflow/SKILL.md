@@ -19,7 +19,6 @@ This document provides background knowledge about spec-driven development workfl
            │         │           │
            ▼         ▼           ▼
         SPEC.md  ROADMAP.md   Commits
-                 STATE.md
                  phases/
 ```
 
@@ -28,9 +27,8 @@ This document provides background knowledge about spec-driven development workfl
 | File | Purpose | When Updated |
 |------|---------|--------------|
 | SPEC.md | Requirements, tech stack, scope | Initial creation, scope changes |
-| ROADMAP.md | Phase overview, dependencies, high-level tracking | Phase completion |
-| STATE.md | Global state, session handoff, decisions, blockers | Each session |
-| phases/NN-name/ | Phase folder with SPEC.md, CHECKLIST.md, STATE.md | During phase execution |
+| ROADMAP.md | Phase overview, dependencies, tracking, decisions, blockers | Phase completion, decisions |
+| phases/NN-name/ | Phase folder with CHECKLIST.md (specs + tasks + state) | During phase execution |
 
 ## Best Practices
 
@@ -53,16 +51,18 @@ This document provides background knowledge about spec-driven development workfl
 - Polish/testing phase always comes last
 
 ### Session Handoff
-- Update STATE.md at end of each session
+- Run `/mpx-handoff` at end of each session to create ephemeral HANDOFF.md
+- HANDOFF.md only exists if `/mpx-handoff` was run — it is optional, not always present
 - Note any decisions made and why
 - Document blockers clearly
 - Leave "next step" note for continuity
+- HANDOFF.md is consumed and deleted by `/mpx-execute` at next session start
 
 ## Troubleshooting
 
 ### "I'm lost in my project"
 1. Run `/mpx-show-project-status` to see current state
-2. Read STATE.md for recent context
+2. Read ROADMAP.md for overall progress and decisions
 3. Check last commits with `git log --oneline -10`
 
 ### "The plan doesn't match reality"
@@ -73,7 +73,7 @@ This document provides background knowledge about spec-driven development workfl
 ### "Context is getting degraded"
 1. Use `/mpx-execute` for complex work
 2. This spawns fresh agent with clean context
-3. STATE.md maintains continuity
+3. CHECKLIST.md maintains continuity (HANDOFF.md adds optional session context if `/mpx-handoff` was run)
 
 ### "I need to change scope"
 1. Update SPEC.md with new requirements

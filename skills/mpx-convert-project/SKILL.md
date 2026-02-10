@@ -237,7 +237,6 @@ Create or update `.claude/CLAUDE.md` in the **project directory** (not the globa
 ## MPX Project
 - Spec: `.mpx/SPEC.md`
 - Roadmap: `.mpx/ROADMAP.md`
-- State: `.mpx/STATE.md`
 - Phases: `.mpx/phases/`
 ```
 
@@ -269,8 +268,7 @@ New Requirements (planned):
 Files Created:
   .mpx/SPEC.md           ✓
   .mpx/ROADMAP.md        ✓
-  .mpx/STATE.md          ✓
-  .mpx/phases/           ✓
+  .mpx/phases/           ✓  (CHECKLIST.md per phase)
   .claude/CLAUDE.md      ✓ [created/updated]
 
 Phases: [N] phases focusing on new work

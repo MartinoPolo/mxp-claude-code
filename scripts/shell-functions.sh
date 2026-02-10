@@ -13,7 +13,7 @@ setup-worktree() {
   rm -f "${TMPDIR:-/tmp}/worktree-cd-path"
   if [ -n "$target" ] && [ -d "$target" ]; then
     cd "$target" || return
-    cc
+    claude
   fi
 }
 

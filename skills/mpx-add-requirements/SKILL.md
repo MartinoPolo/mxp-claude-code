@@ -1,6 +1,6 @@
 ---
 name: mpx-add-requirements
-description: Add new requirements to project. Parses current spec, checklist, state, and roadmap. Updates all files and detects conflicts.
+description: Add new requirements to project. Parses current spec, checklist, and roadmap. Updates all files and detects conflicts.
 disable-model-invocation: false
 allowed-tools: Read, Write, Bash, AskUserQuestion
 args: "[requirements]"
@@ -37,10 +37,8 @@ If no argument, ask the user:
 Read all relevant project files:
 - `.mpx/SPEC.md` - Master requirements
 - `.mpx/ROADMAP.md` - Phase overview + tracking
-- `.mpx/STATE.md` - Current progress + session handoff
 - `.claude/CLAUDE.md` - Project context (if exists)
-- `.mpx/phases/*/SPEC.md` - Phase requirements
-- `.mpx/phases/*/CHECKLIST.md` - Phase tasks
+- `.mpx/phases/*/CHECKLIST.md` - Phase specs, tasks, and state
 
 ### Step 3: Analyze for Conflicts
 
@@ -66,7 +64,7 @@ Check the new requirements against existing specifications:
 If conflicts detected, present them to the user:
 
 ```
-⚠️ Potential Conflicts Detected:
+Warning: Potential Conflicts Detected:
 
 1. Tech Stack Conflict:
    - New: "Add MongoDB database"
@@ -94,20 +92,17 @@ Use `AskUserQuestion` for conflict resolution.
 
 2. **Determine placement:**
    - Can it fit in an existing phase? → Add to that phase's CHECKLIST.md
-   - Needs new phase? → Create new phase folder
+   - Needs new phase? → Create new phase folder with CHECKLIST.md
    - Spans multiple phases? → Distribute tasks appropriately
 
 3. **Update ROADMAP.md:**
    - Add tasks to phase summary
    - Update task counts
 
-4. **Update phase files:**
-   - Add new tasks to appropriate phase's CHECKLIST.md
-   - Update phase's SPEC.md if scope changes
-
-5. **Update STATE.md:**
-   - Add note about requirements change
-   - Update task counts
+4. **Update phase CHECKLIST.md files:**
+   - Add new tasks with inline spec paragraphs to appropriate phase's CHECKLIST.md
+   - Update Scope section if phase scope changes
+   - Update Progress counter
 
 ### Step 6: Report Changes
 
@@ -118,10 +113,9 @@ New Requirements:
   - [Description]
 
 Files Updated:
-  ✓ .mpx/SPEC.md - Added to Core Features
-  ✓ .mpx/ROADMAP.md - Updated Phase 3 task count
-  ✓ .mpx/phases/03-secondary/CHECKLIST.md - Added tasks
-  ✓ .mpx/phases/03-secondary/SPEC.md - Updated scope
+  - .mpx/SPEC.md - Added to Core Features
+  - .mpx/ROADMAP.md - Updated Phase 3 task count
+  - .mpx/phases/03-secondary/CHECKLIST.md - Added tasks + updated scope
 
 New Tasks Generated:
   - [ ] [Task 1]
@@ -129,7 +123,7 @@ New Tasks Generated:
   - [ ] [Task 3]
 
 [If conflicts were noted:]
-⚠️ Conflicts Noted:
+Warning: Conflicts Noted:
   - Database conflict noted in SPEC.md
   - Consider reviewing Phase 2 dependencies
 

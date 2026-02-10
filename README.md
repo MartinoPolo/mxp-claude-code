@@ -94,7 +94,7 @@ Auto-detects tech stack, scans codebase, creates `.mpx/` structure from existing
 /mpx-show-project-status   ◄── Check progress anytime
 ```
 
-Between sessions, use `/mpx-handoff` to save context to `STATE.md` for continuity.
+Between sessions, optionally use `/mpx-handoff` to save context to phase `HANDOFF.md` for continuity.
 
 ## Project Structure
 
@@ -103,22 +103,20 @@ All mpx projects use phase-based organization inside `.mpx/`:
 ```
 .mpx/
 ├── SPEC.md              # Master project specification
-├── ROADMAP.md           # Phase overview + completion tracking
-├── STATE.md             # Global state + session handoff
+├── ROADMAP.md           # Phase overview + tracking + decisions + blockers
 └── phases/
     ├── 01-foundation/
-    │   ├── SPEC.md      # Phase requirements
-    │   ├── CHECKLIST.md # Phase tasks
-    │   └── STATE.md     # Phase state + session handoff
+    │   ├── CHECKLIST.md  # Phase specs + tasks + state
+    │   └── HANDOFF.md    # (optional) Ephemeral session handoff — only if /mpx-handoff was run
     ├── 02-core-feature/
-    │   └── ...
+    │   └── CHECKLIST.md
     └── 03-polish/
-        └── ...
+        └── CHECKLIST.md
 ```
 
-- `ROADMAP.md` — tracks phase completion status
-- `STATE.md` — session handoff info (what was done, what's next)
-- Each phase has its own `CHECKLIST.md` for granular task tracking
+- `ROADMAP.md` — tracks phase completion, project-level decisions and blockers
+- Each phase has `CHECKLIST.md` (single source of truth for specs + tasks + state)
+- `HANDOFF.md` is ephemeral and optional — created only if `/mpx-handoff` was run, consumed by `/mpx-execute`
 
 ## Skills Reference
 
@@ -134,7 +132,7 @@ All mpx projects use phase-based organization inside `.mpx/`:
 | `/mpx-execute` | Select phase, execute tasks (full phase or single) |
 | `/mpx-show-project-status` | Show progress |
 | `/mpx-add-requirements` | Add requirements with conflict detection |
-| `/mpx-handoff` | Update STATE.md with session handoff info |
+| `/mpx-handoff` | Create ephemeral HANDOFF.md for session bridging |
 
 ### mp- Skills (General Purpose)
 

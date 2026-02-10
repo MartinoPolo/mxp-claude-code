@@ -19,10 +19,9 @@ Display current project progress, completed tasks, and next steps.
 
 ### Step 1: Gather Progress Data
 
-1. Read `.mpx/STATE.md` for current status
-2. Read `.mpx/ROADMAP.md` for phase overview
-3. For current phase, read phase folder's CHECKLIST.md for task progress
-4. Compile overall statistics
+1. Read `.mpx/ROADMAP.md` for overall status, phase overview, decisions, and blockers
+2. For each phase, read phase folder's CHECKLIST.md for task progress and status
+3. Compile overall statistics
 
 ### Step 2: Generate Status Display
 ```
@@ -52,9 +51,6 @@ Current Phase Progress:
 
 Blockers:
   None
-
-Session Notes:
-  [Latest note from STATE.md]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -98,9 +94,9 @@ Use 20 characters for the bar.
 
 ## Error Cases
 
-- **No STATE.md or phases/:** "No project tracking found. Run `/mpx-init-project` or `/mpx-parse-spec` first."
+- **No ROADMAP.md or phases/:** "No project tracking found. Run `/mpx-init-project` or `/mpx-parse-spec` first."
 - **Empty phase checklist:** "Phase checklist has no tasks. Check phase's `CHECKLIST.md`"
-- **Corrupted STATE.md:** "Could not parse STATE.md. Consider regenerating with `/mpx-parse-spec`"
+- **Corrupted ROADMAP.md:** "Could not parse ROADMAP.md. Consider regenerating with `/mpx-parse-spec`"
 
 ## Notes
 

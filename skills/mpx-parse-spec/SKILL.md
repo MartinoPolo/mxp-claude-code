@@ -1,6 +1,6 @@
 ---
 name: mpx-parse-spec
-description: Parse SPEC.md into phased implementation. Creates phase folders + ROADMAP.md + STATE.md.
+description: Parse SPEC.md into phased implementation. Creates phase folders + ROADMAP.md.
 disable-model-invocation: false
 allowed-tools: Read, Write, Bash
 ---
@@ -26,15 +26,14 @@ Read `.mpx/SPEC.md` and extract:
 ### Step 2: Create Phase Structure
 
 Create the following:
-- `.mpx/ROADMAP.md` (phase overview + high-level tracking)
-- `.mpx/STATE.md` (global state + session handoff)
+- `.mpx/ROADMAP.md` (phase overview + tracking + decisions + blockers)
 - `.mpx/phases/` directory with **phase folders**
 
 Smaller projects may have just 1-2 phases; larger projects may have more.
 
 ### Step 3: Create Files
 
-**ROADMAP.md** (phase overview + tracking):
+**ROADMAP.md** (phase overview + tracking + decisions + blockers):
 ```markdown
 # Implementation Roadmap
 
@@ -45,28 +44,15 @@ Total Phases: N
 ## Overview
 [Brief summary of the full implementation approach]
 
-## Phase Summary
+## Phases
 
-| Phase | Name | Status | Tasks | Dependencies |
-|-------|------|--------|-------|--------------|
-| 1 | Foundation | Not Started | N | None |
-| 2 | [Feature] | Not Started | N | Phase 1 |
-| 3 | [Feature] | Not Started | N | Phase 2 |
-| 4 | Polish | Not Started | N | Phase 3 |
+- [ ] **Phase 1: Foundation** — N tasks | Dependencies: None
+- [ ] **Phase 2: [Feature]** — N tasks | Dependencies: Phase 1
+- [ ] **Phase 3: [Feature]** — N tasks | Dependencies: Phase 2
+- [ ] **Phase 4: Polish** — N tasks | Dependencies: Phase 3
 
 ## Dependency Graph
-```
-Phase 1 (Foundation)
-    │
-    ▼
-Phase 2 (Core Feature)
-    │
-    ▼
-Phase 3 (Secondary)
-    │
-    ▼
-Phase 4 (Polish)
-```
+Phase 1 (Foundation) → Phase 2 (Core) → Phase 3 (Secondary) → Phase 4 (Polish)
 
 ## Phase Details
 
@@ -79,73 +65,21 @@ Phase 4 (Polish)
 **Deliverables:** [Specific outputs]
 
 [Continue for all phases...]
-```
 
-**STATE.md** (global state + session handoff):
-```markdown
-# Project State
-
-Last Updated: [Date]
-
-## Current Status
-- **Active Phase:** Phase 1 - Foundation
-- **Phase Status:** Not Started
-- **Overall Progress:** 0%
-
-## Completed Phases
-None
-
-## Phase Progress
-| Phase | Status | Progress |
-|-------|--------|----------|
-| 1 | Not Started | 0/N tasks |
-| 2 | Blocked | - |
-| 3 | Blocked | - |
-| 4 | Blocked | - |
-
-## Decisions Made
-[Record important decisions here for context]
+## Decisions
+[Project-level decisions with reasoning]
 
 ## Blockers
 None
-
----
-
-## Session Handoff
-
-### [Date] - Session Start
-**Progress:**
-- Initial project setup
-- Created implementation plan
-
-**Key Decisions:**
-- [Decisions made]
-
-**Issues Encountered:**
-- What went wrong: None
-- What NOT to do: [Lessons learned]
-- What we tried: [Approaches attempted]
-- How we handled it: [Solutions found]
-
-**Next Steps:**
-1. Start Phase 1: Foundation
-2. [Next action]
-
-**Critical Files:**
-- `.mpx/SPEC.md`
-- `.mpx/ROADMAP.md`
-
-**Working Memory:**
-[Accumulated context, patterns, file relationships]
 ```
 
 **Phase Folders** (`.mpx/phases/01-foundation/`):
 
-Each phase gets its own folder with three files:
+Each phase gets its own folder with a single CHECKLIST.md file — the single source of truth for phase specs, tasks, and state.
 
-**SPEC.md** (phase-specific requirements):
+**CHECKLIST.md** (specs + tasks + state):
 ```markdown
-# Phase 1: Foundation - Specification
+# Phase 1: Foundation
 
 **Status:** Not Started
 **Dependencies:** None
@@ -162,87 +96,66 @@ Set up the project infrastructure and development environment.
 - Feature implementation
 - Production deployment
 
-## Deliverables
-- Working dev environment
-- Basic project structure
-- Build configuration
+---
 
-## Notes
-[Phase-specific considerations]
-```
+## Tasks
 
-**CHECKLIST.md** (phase tasks):
-```markdown
-# Phase 1: Foundation - Checklist
+### Setup
 
-## Setup
 - [ ] Initialize [package manager] project
+  Create project with appropriate config. Set up package.json/pyproject.toml
+  with correct metadata, scripts, and engine requirements.
+
 - [ ] Install core dependencies
+  Add runtime and dev dependencies per tech stack. Pin major versions
+  for stability. Include linting, formatting, and testing tools.
+
 - [ ] Configure TypeScript/linting
+  Set up tsconfig.json with strict mode, ESLint with project conventions,
+  Prettier for formatting. Ensure IDE integration works.
 
-## Project Structure
+### Project Structure
+
 - [ ] Create directory structure
+  Set up src/, tests/, config/ directories per project conventions.
+  Add index/barrel files where appropriate.
+
 - [ ] Set up entry point
+  Create main application entry point with minimal bootstrap code.
+  Ensure it runs without errors.
+
 - [ ] Configure build process
+  Set up build tooling (esbuild/tsc/vite). Verify output is correct
+  and source maps work.
 
-## Development Environment
+### Development Environment
+
 - [ ] Set up dev server
-- [ ] Configure hot reload
-- [ ] Add debug configuration
+  Configure development server with appropriate port and settings.
+  Add proxy configuration if needed for API calls.
 
-## Completion Criteria
+- [ ] Configure hot reload
+  Enable HMR or watch mode for fast development feedback loop.
+  Verify changes reflect without manual restart.
+
+- [ ] Add debug configuration
+  Create VS Code launch.json or equivalent. Ensure breakpoints work
+  in source files (not compiled output).
+
+### Completion Criteria
+
 - [ ] Project builds without errors
 - [ ] Dev server runs successfully
 - [ ] Basic tests pass
 
 ---
 Progress: 0/N tasks complete
-```
 
-**STATE.md** (phase state + session handoff):
-```markdown
-# Phase 1: Foundation - State
-
-Last Updated: [Date]
-
-## Status
-Not Started
-
-## Progress
-0/N tasks complete (0%)
-
-## Decisions Made
+## Decisions
 [Phase-specific decisions]
 
 ## Blockers
 None
-
----
-
-## Session Handoff
-
-### [Date]
-**Progress This Session:**
-- [What was accomplished]
-
-**Key Decisions:**
-- [Decisions made this session]
-
-**Issues Encountered:**
-- What went wrong: [...]
-- What NOT to do: [...]
-- What we tried: [...]
-- How we handled it: [...]
-
-**Next Steps:**
-1. [...]
-2. [...]
-
-**Critical Files:**
-- [Files involved in current work]
-
-**Working Memory:**
-[Accumulated context, patterns, file relationships]
 ```
 
 ### Step 4: Update CLAUDE.md
@@ -254,9 +167,8 @@ If `.claude/CLAUDE.md` exists and has template content, update it with actual pr
 Report what was created:
 
 > "Created phased implementation plan:
-> - `.mpx/ROADMAP.md` - Phase overview, dependencies, and tracking
-> - `.mpx/STATE.md` - Global state and session handoff
-> - `.mpx/phases/` - Phase folders with SPEC.md, CHECKLIST.md, STATE.md each
+> - `.mpx/ROADMAP.md` - Phase overview, dependencies, tracking, decisions, and blockers
+> - `.mpx/phases/` - Phase folders with CHECKLIST.md each
 >
 > **Phases Created:**
 > 1. Foundation (N tasks)
@@ -280,21 +192,15 @@ When breaking features into tasks, ensure:
 ```
 .mpx/
 ├── SPEC.md              # Master project specification
-├── ROADMAP.md           # Phase overview + high-level tracking
-├── STATE.md             # Global state + session handoff
+├── ROADMAP.md           # Phase overview + tracking + decisions + blockers
 └── phases/
     ├── 01-foundation/
-    │   ├── SPEC.md      # Phase requirements
-    │   ├── CHECKLIST.md # Phase tasks
-    │   └── STATE.md     # Phase state + session handoff
+    │   ├── CHECKLIST.md  # Phase specs + tasks + state
+    │   └── HANDOFF.md    # (optional) Ephemeral session handoff — only if /mpx-handoff was run
     ├── 02-core-feature/
-    │   ├── SPEC.md
-    │   ├── CHECKLIST.md
-    │   └── STATE.md
+    │   └── CHECKLIST.md
     └── 03-polish/
-        ├── SPEC.md
-        ├── CHECKLIST.md
-        └── STATE.md
+        └── CHECKLIST.md
 ```
 
 ## Notes
@@ -303,5 +209,5 @@ When breaking features into tasks, ensure:
 - Never create duplicate files in project root
 - If files already exist, ask before overwriting
 - Phase folders should be numbered (01-, 02-, etc.) for ordering
-- Each phase folder contains its own SPEC.md, CHECKLIST.md, STATE.md
-- ROADMAP.md tracks phase completion (update Status column when phases complete)
+- Each phase folder contains only CHECKLIST.md (single source of truth)
+- ROADMAP.md tracks phase completion (check phase checkbox when phases complete)

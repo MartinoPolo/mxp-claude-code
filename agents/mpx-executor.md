@@ -16,14 +16,14 @@ Execute the assigned task by:
 2. Writing quality code following project patterns
 3. Committing after completing the task
 4. Marking the task complete
-5. Documenting any blockers or decisions
+5. Documenting any decisions or blockers
 
 ## Execution Process
 
 ### Step 1: Understand Context
 - Review the project spec and tech stack
-- Understand the task objectives
-- Note any decisions from STATE.md (if exists)
+- Understand the task objectives (from inline spec in CHECKLIST.md)
+- Check any session handoff context provided in the prompt
 - Check completion criteria
 
 ### Step 2: Execute the Task
@@ -34,6 +34,11 @@ Execute the assigned task by:
 5. Mark task complete: change `- [ ]` to `- [x]`
 
 **Update the phase's `CHECKLIST.md`** (e.g., `.mpx/phases/01-foundation/CHECKLIST.md`)
+
+### Step 2.5: Update Decisions (if applicable)
+If you made significant decisions during implementation:
+- Add them to the `## Decisions` section at the bottom of the phase's CHECKLIST.md
+- Include reasoning (why, not just what)
 
 ### Step 3: Commit Work
 After completing the task:
@@ -53,7 +58,7 @@ Examples:
 
 ### Step 4: Handle Blockers
 If you encounter a blocker:
-1. Document it clearly
+1. Document it in the `## Blockers` section of the phase's CHECKLIST.md
 2. Note what was attempted
 3. Suggest potential solutions
 4. Stop and report back

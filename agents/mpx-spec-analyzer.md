@@ -15,8 +15,8 @@ Given a SPEC.md file, create:
 1. A phased implementation plan
 2. Detailed task breakdowns for each phase
 3. Dependency mapping between phases
-4. Progress tracking files (STATE.md, ROADMAP.md)
-5. Phase folders with their own SPEC.md, CHECKLIST.md, STATE.md
+4. ROADMAP.md with phase tracking, decisions, and blockers
+5. Phase folders with a single CHECKLIST.md each (specs + tasks + state)
 
 ## Analysis Process
 
@@ -49,14 +49,11 @@ For each phase, create atomic tasks that:
 
 ### Step 5: Create Output Files
 Generate all required files in `.mpx/` directory:
-- ROADMAP.md (phase overview + high-level tracking)
-- STATE.md (global state + session handoff)
+- ROADMAP.md (phase overview + tracking + decisions + blockers)
 - phases/NN-name/ (phase folders)
 
-**Each phase folder contains:**
-- SPEC.md (phase-specific requirements)
-- CHECKLIST.md (phase tasks)
-- STATE.md (phase state + session handoff)
+**Each phase folder contains a single file:**
+- CHECKLIST.md (phase specs + tasks + state — single source of truth)
 
 ## Output Quality Standards
 
@@ -82,16 +79,14 @@ Generate all required files in `.mpx/` directory:
 
 ```
 .mpx/phases/02-user-auth/
-├── SPEC.md          # Phase requirements and scope
-├── CHECKLIST.md     # Phase tasks
-└── STATE.md         # Phase progress tracking
+└── CHECKLIST.md     # Specs + tasks + state (single source of truth)
 ```
 
 ## Example Phase Folder Content
 
-**SPEC.md:**
+**CHECKLIST.md:**
 ```markdown
-# Phase 2: User Authentication - Specification
+# Phase 2: User Authentication
 
 **Status:** Not Started
 **Dependencies:** Phase 1 (Foundation)
@@ -109,86 +104,62 @@ Implement user registration and login functionality.
 - Password reset
 - Email verification
 
-## Deliverables
-- Working registration endpoint
-- Working login endpoint
-- JWT-protected routes
-```
+---
 
-**CHECKLIST.md:**
-```markdown
-# Phase 2: User Authentication - Checklist
+## Tasks
 
-## Data Layer
+### Data Layer
+
 - [ ] Create User model with schema
+  Define the user schema with fields for email, hashed password, created/updated
+  timestamps. Add unique constraint on email. Include validation rules.
+
 - [ ] Add password hashing utility
+  Implement bcrypt-based password hashing and comparison functions. Use
+  appropriate salt rounds for security.
+
 - [ ] Create user repository methods
+  Add CRUD operations for user model: create, findByEmail, findById. Return
+  typed results without exposing password hashes.
 
-## API Layer
+### API Layer
+
 - [ ] Add /register endpoint
+  POST endpoint accepting email/password. Validate input, check for existing
+  user, hash password, create user, return JWT. Return 409 on duplicate email.
+
 - [ ] Add /login endpoint
+  POST endpoint accepting email/password. Validate credentials against stored
+  hash, return JWT on success, 401 on failure. Include rate limiting.
+
 - [ ] Implement JWT token generation
+  Create JWT utility with sign/verify functions. Use RS256 or HS256 based on
+  project requirements. Include configurable expiration.
 
-## Middleware
+### Middleware
+
 - [ ] Create auth middleware
+  Express/Fastify middleware that extracts JWT from Authorization header,
+  verifies it, and attaches user to request context. Return 401 on invalid token.
+
 - [ ] Add route protection
+  Apply auth middleware to protected routes. Ensure public routes remain
+  accessible. Add role-based access if specified in project spec.
 
-## Testing
-- [ ] Write unit tests for User model
-- [ ] Write integration tests for auth endpoints
+### Completion Criteria
 
-## Completion Criteria
 - [ ] Users can register with email/password
 - [ ] Users can log in and receive JWT
 - [ ] Protected routes reject unauthenticated requests
 
 ---
 Progress: 0/10 tasks complete
-```
 
-**STATE.md:**
-```markdown
-# Phase 2: User Authentication - State
-
-Last Updated: [Date]
-
-## Status
-Not Started
-
-## Progress
-0/10 tasks complete (0%)
-
-## Decisions Made
-[Phase-specific decisions]
+## Decisions
+[Decisions made during execution, with reasoning]
 
 ## Blockers
 None
-
----
-
-## Session Handoff
-
-### [Date]
-**Progress This Session:**
-- [What was accomplished]
-
-**Key Decisions:**
-- [Decisions made]
-
-**Issues Encountered:**
-- What went wrong: [...]
-- What NOT to do: [...]
-- What we tried: [...]
-- How we handled it: [...]
-
-**Next Steps:**
-1. [...]
-
-**Critical Files:**
-- [Files involved]
-
-**Working Memory:**
-[Context, patterns, relationships]
 ```
 
 ## Remember
@@ -198,4 +169,4 @@ None
 - Consider the developer experience
 - Make handoff between sessions seamless
 - All files go in `.mpx/` directory only
-- Each phase folder needs SPEC.md, CHECKLIST.md, STATE.md
+- Each phase folder needs only CHECKLIST.md

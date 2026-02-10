@@ -2,7 +2,7 @@
 name: mpx-execute
 description: Execute tasks. Prompts for phase, then choose full-phase or single-task execution mode.
 disable-model-invocation: true
-allowed-tools: Read, Write, Task, Bash, AskUserQuestion
+allowed-tools: Read, Write, Task, Bash, AskUserQuestion, Glob
 ---
 
 # Execute Tasks
@@ -19,25 +19,35 @@ Execute tasks by selecting a phase and choosing between full-phase or single-tas
 
 ### Step 1: Find Available Phases
 
-1. Read `.mpx/STATE.md` for overall status
-2. Read `.mpx/ROADMAP.md` for phase dependencies
-3. Find all phase folders in `.mpx/phases/`
-4. For each phase, check:
+1. Read `.mpx/ROADMAP.md` for overall status and phase dependencies
+2. Find all phase folders in `.mpx/phases/`
+3. For each phase, check:
    - Status from ROADMAP.md (Not Started / In Progress / Completed)
    - Dependencies from ROADMAP.md
    - Whether dependencies are satisfied (all dependency phases = Completed)
+
+### Step 1.5: Check for HANDOFF.md
+
+HANDOFF.md may not exist if `/mpx-handoff` was not run. This is normal — proceed without handoff context.
+
+1. Check if active phase folder has `HANDOFF.md` (phase handoff)
+2. If exists, read it and store the context for inclusion in the executor prompt
+3. Delete the HANDOFF.md file after reading — it is ephemeral, single-use
+4. If not found, skip — no handoff context needed
 
 ### Step 2: Prompt for Phase Selection
 
 Use `AskUserQuestion` to let user choose which phase to work on.
 
 **Rules:**
+
 - Only offer phases whose dependencies are satisfied
 - First option = first incomplete phase (Recommended)
 - Next 3 options = next eligible phases
 - "Other" allows manual phase number entry
 
 **Example prompt:**
+
 ```
 Question: "Which phase to execute?"
 Header: "Phase"
@@ -73,31 +83,26 @@ Options:
 For single-task execution:
 
 1. Read selected phase's `CHECKLIST.md`
-2. Find first unchecked task (`- [ ]`)
-3. Read phase's `SPEC.md` for context
-4. Delegate to executor (Step 5)
-5. Run reviews (Steps 5.5 + 5.6)
-6. Report results (Step 7)
+2. Find first unchecked task (`- [ ]`) — task text includes inline spec paragraph
+3. Delegate to executor (Step 5)
+4. Run reviews (Steps 5.5 + 5.6)
+5. Report results (Step 7)
 
 ### Step 4: Execute — Phase Mode
 
 For full-phase execution:
 
 1. Read selected phase's `CHECKLIST.md`
-2. Collect all unchecked tasks (`- [ ]`)
-3. Read phase's `SPEC.md` for context
-4. Initialize tracking: `completed = []`, `failed = []`, `skipped = []`
+2. Collect all unchecked tasks (`- [ ]`) — each includes inline spec paragraph
+3. Initialize tracking: `completed = []`, `failed = []`, `skipped = []`
 
 **For each unchecked task sequentially:**
-   a. Delegate to executor (Step 5)
-   b. Run spec compliance review (Step 5.5)
-   c. Run code quality review (Step 5.6)
-   d. **On success (both reviews pass):** Add to `completed[]`, continue to next task
-   e. **On failure/blocker:** Report issue to user, ask fix/skip:
-      - **Fix:** Re-dispatch executor with specific issues, re-review, loop until pass
-      - **Skip:** Add to `skipped[]`, continue to next task
-      - **Stop:** Halt phase execution, report partial progress
-   f. Continue to next task regardless of previous task outcome
+a. Delegate to executor (Step 5)
+b. Run spec compliance review (Step 5.5)
+c. Run code quality review (Step 5.6)
+d. **On success (both reviews pass):** Add to `completed[]`, continue to next task
+e. **On failure/blocker:** Report issue to user, ask fix/skip: - **Fix:** Re-dispatch executor with specific issues, re-review, loop until pass - **Skip:** Add to `skipped[]`, continue to next task - **Stop:** Halt phase execution, report partial progress
+f. Continue to next task regardless of previous task outcome
 
 After all tasks processed: Go to Step 7 (phase summary report).
 
@@ -114,21 +119,26 @@ Task tool:
     You are an executor agent with fresh context.
 
     ## Project Context
-    [Include relevant SPEC.md content]
+    [Include relevant content from CHECKLIST.md header: Objective, Scope, Out of Scope]
+
+    [If HANDOFF.md context was captured in Step 1.5:]
+    ## Session Handoff Context
+    [Include HANDOFF.md content — previous session's progress, decisions, issues, working memory]
 
     ## Your Mission
     Execute this task from Phase N: [Task Description]
 
     ## Task Details
-    [Task description and any relevant context]
+    [Full task line + indented spec paragraph from CHECKLIST.md]
 
     ## Instructions
     1. Implement the task
     2. Commit after completing (use descriptive message)
-       - Format: "phase-N: description"
+       - Format: "type(scope): description"
     3. Mark task complete: change `- [ ]` to `- [x]` in phase CHECKLIST.md
-    4. If you encounter blockers, document them and stop
-    5. Report summary when done
+    4. If you made significant decisions, add them to the Decisions section in CHECKLIST.md
+    5. If you encounter blockers, document them in the Blockers section and stop
+    6. Report summary when done
 
     ## Working Directory
     [Current working directory]
@@ -152,7 +162,7 @@ Task tool:
     You are reviewing whether an implementation matches its specification.
 
     ## What Was Requested
-    [FULL TEXT of original task from CHECKLIST.md]
+    [FULL TEXT of task line + spec paragraph from CHECKLIST.md]
 
     ## What Implementer Claims They Built
     [Executor's report summary]
@@ -185,6 +195,7 @@ Task tool:
 ```
 
 **If spec reviewer reports ❌:**
+
 1. Report issues to user
 2. Ask: fix now or skip?
 3. If fix: re-dispatch executor with specific issues to fix, then re-review
@@ -229,6 +240,7 @@ Task tool:
 ```
 
 **If reviewer reports NEEDS CHANGES with Critical issues:**
+
 1. Report to user
 2. Ask: fix now or skip?
 3. If fix: re-dispatch executor, then re-review
@@ -241,18 +253,21 @@ Task tool:
 After both review stages pass for a task:
 
 **On Success (both reviews ✅/APPROVED):**
+
 1. Task marked complete by agent in phase CHECKLIST.md
 2. Check if all phase tasks complete
-3. If phase complete: update STATE.md, ROADMAP.md
+3. If phase complete: check phase checkbox in ROADMAP.md (`- [ ]` → `- [x]`)
 4. Report completion + review summaries to user
 
 **On Blocker:**
-1. Update STATE.md with blocker + review findings
+
+1. Update Blockers section in phase CHECKLIST.md
 2. Report to user
 
 ### Step 7: Report Results
 
 **Task mode report:**
+
 ```
 Task Completed: [Task Description]
 Phase: N - [Phase Name]
@@ -270,6 +285,7 @@ Run `/mpx-show-project-status` for full progress overview.
 ```
 
 **Phase mode report:**
+
 ```
 Phase N Execution Summary: [Phase Name]
 
@@ -304,6 +320,7 @@ Run `/mpx-show-project-status` for full progress overview.
 ## Parallel Execution Note
 
 Multiple `/mpx-execute` commands can run in parallel on different phases if:
+
 - The phases have no mutual dependencies
 - Both phases' dependencies are already satisfied
 
@@ -313,8 +330,9 @@ Example: Phase 2 and Phase 3 can both run if they only depend on Phase 1 (comple
 
 - The subagent gets fresh 200k context, preventing degradation
 - Each task should be atomic and completable in one execution
-- STATE.md provides continuity between tasks and sessions
+- CHECKLIST.md is the single source of truth per phase (specs + tasks + state)
 - Agent commits after each task to preserve progress
 - ROADMAP.md is the source of truth for phase completion status
 - Phase mode continues on failure — all tasks get attempted
 - Two-stage review runs after EVERY task, even in phase mode
+- HANDOFF.md is ephemeral — read once at start, then deleted

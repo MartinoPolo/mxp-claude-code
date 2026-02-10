@@ -1,17 +1,17 @@
 ---
 name: mpx-handoff
-description: Update STATE.md with session handoff information capturing progress, decisions, and working memory.
+description: Create ephemeral HANDOFF.md capturing session progress, decisions, and working memory for the next session.
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, TaskList
 ---
 
-# Update Session Handoff
+# Session Handoff
 
-Updates the "Session Handoff" section in STATE.md files (global and/or phase-level) with current session context.
+Creates ephemeral phase-level `HANDOFF.md` that bridges between sessions. Also persists decisions to CHECKLIST.md and ROADMAP.md.
 
 ## Purpose
 
-Capture accumulated knowledge, context, and insights that would be lost when starting a new conversation. This includes progress, decisions, problems solved, dead ends, and implicit context that's hard to reconstruct.
+Capture accumulated knowledge, context, and insights that would be lost when starting a new conversation. HANDOFF.md is ephemeral — created here, consumed and deleted by `/mpx-execute` at the start of the next session.
 
 ## Workflow
 
@@ -32,67 +32,91 @@ Use `TaskList` to see current task status:
 - In-progress tasks
 - Pending tasks
 
-### Step 3: Identify Which STATE.md to Update
+### Step 3: Identify Active Phase
 
 1. Check if in a phased project (`.mpx/phases/` exists)
-2. If yes, identify the current active phase from `.mpx/STATE.md`
-3. Update both:
-   - `.mpx/STATE.md` (global) - for overall session context
-   - `.mpx/phases/NN-name/STATE.md` (phase) - for phase-specific work
+2. If yes, identify the current active phase from `.mpx/ROADMAP.md`
+3. Read the active phase's `CHECKLIST.md` for current state
 
-### Step 4: Update Session Handoff Section
+### Step 4: Create or Update HANDOFF.md
 
-Append or update the "Session Handoff" section in STATE.md:
+1. Check if `HANDOFF.md` already exists in the active phase folder
+2. If exists: read it, merge previous context with current session context (preserve still-relevant items, update/replace stale ones)
+3. If not: create new from scratch
+
+Write **ephemeral** `HANDOFF.md` in the active phase folder only (`.mpx/phases/NN-name/HANDOFF.md`):
 
 ```markdown
----
+# Session Handoff
 
-## Session Handoff
+Date: [Today's date]
 
-### [TODAY'S DATE]
-**Progress This Session:**
+## Progress This Session
 - [What was accomplished]
 
-**Key Decisions:**
-- [Decisions and their reasoning]
+## Key Decisions
+- [Decisions and reasoning]
 
-**Issues Encountered:**
+## Issues Encountered
 - What went wrong: [Mistakes made]
 - What NOT to do: [Dead ends discovered]
 - What we tried: [All attempted approaches]
 - How we handled it: [Solutions found]
 
-**Next Steps:**
+## Next Steps
 1. [Prioritized next actions]
-2. [...]
 
-**Critical Files:**
+## Critical Files
 - [Key files with brief description]
 
-**Working Memory:**
+## Working Memory
 [Accumulated knowledge, mental models, file relationships, patterns, implicit context]
 ```
 
-### Step 5: Confirm Update
+### Step 5: Persist Decisions
 
-Show the user what was updated:
+If decisions were made during this session:
 
-> "Session handoff updated in:
-> - `.mpx/STATE.md` (global)
-> - `.mpx/phases/02-feature/STATE.md` (current phase)
+1. Update `## Decisions` in the active phase's `CHECKLIST.md` (phase-specific decisions)
+2. Update `## Decisions` in `.mpx/ROADMAP.md` (project-level decisions)
+
+Decisions are persistent (unlike HANDOFF.md which is ephemeral).
+
+Format:
+```markdown
+## Decisions
+- [Date]: [Decision description] — [reasoning]
+```
+
+### Step 6: Confirm
+
+Show the user what was created:
+
+> "Session handoff created:
+> - `.mpx/phases/02-feature/HANDOFF.md` (phase-level, ephemeral)
+> - Updated Decisions in `.mpx/phases/02-feature/CHECKLIST.md`
+> - Updated Decisions in `.mpx/ROADMAP.md` (project-level)
 >
 > Captured:
 > - [X] items of progress
-> - [X] decisions
+> - [X] decisions (persisted to CHECKLIST.md + ROADMAP.md)
 > - [X] lessons learned
 > - [X] next steps
 >
-> Start your next session by reading STATE.md."
+> HANDOFF.md will be consumed automatically by `/mpx-execute` in your next session."
+
+## HANDOFF.md Lifecycle
+
+1. `/mpx-handoff` **creates** HANDOFF.md (phase folder only)
+2. `/mpx-execute` **reads** HANDOFF.md at start, passes context to executor
+3. `/mpx-execute` **deletes** HANDOFF.md after processing
+4. Purpose: bridge between sessions only — not a permanent record
 
 ## Notes
 
-- Updates existing STATE.md files, doesn't create new ones
-- If no STATE.md exists, suggest running `/mpx-init-project` or `/mpx-parse-spec`
-- Focus on "why" not just "what" - reasoning is crucial
+- HANDOFF.md is ephemeral — it exists only between sessions
+- Decisions are also persisted to CHECKLIST.md (permanent record)
+- If no `.mpx/phases/` exists, skip HANDOFF.md creation (no phase folder to write to)
+- Focus on "why" not just "what" — reasoning is crucial
 - Capture implicit knowledge that isn't documented elsewhere
-- Previous session entries are preserved (append new entry)
+- If HANDOFF.md already exists, it is read and merged with current session context (update-or-create)
