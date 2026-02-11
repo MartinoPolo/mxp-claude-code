@@ -38,6 +38,9 @@ paste-cache/
 # Notes (personal)
 *-notes.md
 
+# Platform-specific setup (not shared)
+WINDOWS-SETUP.md
+
 # OS files
 .DS_Store
 Thumbs.db

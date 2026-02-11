@@ -119,6 +119,26 @@ round_n() {
     LC_ALL=C awk -v n="$num" -v d="$dec" 'BEGIN{ if(n=="" || n=="null") exit 1; printf("%.*f", d, n+0) }' 2>/dev/null
 }
 
+time_until() {
+    local iso="$1"
+    [[ -z "$iso" || "$iso" == "null" ]] && return
+    local reset_epoch now_epoch diff
+    reset_epoch=$(date -d "$iso" +%s 2>/dev/null) || return
+    now_epoch=$(date +%s)
+    diff=$((reset_epoch - now_epoch))
+    [[ $diff -le 0 ]] && return
+    local days=$((diff / 86400))
+    local hours=$(((diff % 86400) / 3600))
+    local mins=$(((diff % 3600) / 60))
+    if [[ $days -gt 0 ]]; then
+        printf '%dd %dh' "$days" "$hours"
+    elif [[ $hours -gt 0 ]]; then
+        printf '%dh %dm' "$hours" "$mins"
+    else
+        printf '%dm' "$mins"
+    fi
+}
+
 get_oauth_token() {
     # 1) env var
     if [[ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
@@ -205,6 +225,8 @@ aerr=$(echo "$USAGE_DATA" | jq -r '.error.type // empty' 2>/dev/null)
 if [[ -z "$aerr" ]]; then
     five_raw=$(echo "$USAGE_DATA" | jq -r '.five_hour.utilization // empty' 2>/dev/null)
     seven_raw=$(echo "$USAGE_DATA" | jq -r '.seven_day.utilization // empty' 2>/dev/null)
+    five_resets=$(echo "$USAGE_DATA" | jq -r '.five_hour.resets_at // empty' 2>/dev/null)
+    seven_resets=$(echo "$USAGE_DATA" | jq -r '.seven_day.resets_at // empty' 2>/dev/null)
 
     five_pct=$(format_pct "$five_raw")
     seven_pct=$(format_pct "$seven_raw")
@@ -212,12 +234,16 @@ if [[ -z "$aerr" ]]; then
     if [[ -n "$five_pct" && "$five_pct" =~ ^[0-9]+$ ]]; then
         [[ $five_pct -gt 100 ]] && five_pct=100
         five_bar=$(progress_bar "$five_pct" 8)
+        five_countdown=$(time_until "$five_resets")
         quota_line="${C_GRAY}5h ${five_bar} ${five_pct}%"
+        [[ -n "$five_countdown" ]] && quota_line+=" ⏳${five_countdown}"
 
         if [[ -n "$seven_pct" && "$seven_pct" =~ ^[0-9]+$ ]]; then
             [[ $seven_pct -gt 100 ]] && seven_pct=100
             seven_bar=$(progress_bar "$seven_pct" 8)
+            seven_countdown=$(time_until "$seven_resets")
             quota_line+="${C_GRAY} | 7d ${seven_bar} ${seven_pct}%"
+            [[ -n "$seven_countdown" ]] && quota_line+=" ⏳${seven_countdown}"
         else
             quota_line+="${C_GRAY} | 7d n/a"
         fi
