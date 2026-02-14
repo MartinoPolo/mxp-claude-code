@@ -79,6 +79,12 @@ Use `ToolSearch` to load deferred tools only when needed.
 - "Fix lint errors", "Fix type errors", "Check and fix", "Run checks"
 - Before committing if build/lint issues suspected
 
+**Use `/mpx-report-issue-or-bug` skill when:**
+
+- "Track this bug", "Add issue to project", "Log this bug"
+- User reports a bug for internal .mpx/ tracking (not GitHub)
+- "Add bug to checklist", "Track issue in phases"
+
 **Use `/mp-brainstorm` skill when:**
 
 - User wants to explore/design before coding

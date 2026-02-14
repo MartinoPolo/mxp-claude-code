@@ -83,6 +83,7 @@ All mpx projects use phase-based organization inside `.mpx/`:
 | `/mpx-execute`             | Select phase, execute tasks (full phase or single)                              |
 | `/mpx-show-project-status` | Show progress                                                                   |
 | `/mpx-add-requirements`    | Add requirements with conflict detection                                        |
+| `/mpx-report-issue-or-bug`           | Track bugs/issues in .mpx/ phase system                                         |
 | `/mpx-handoff`             | Create ephemeral HANDOFF.md for session bridging                                |
 
 ### mp- Skills (General Purpose)

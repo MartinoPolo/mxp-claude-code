@@ -55,7 +55,7 @@ This document provides background knowledge about spec-driven development workfl
 
 ### Requirements vs Implementation
 
-- Requirements skills (`/mpx-add-requirements`, `/mpx-create-spec`, `/mpx-parse-spec`) are documentation-only
+- Requirements skills (`/mpx-add-requirements`, `/mpx-report-issue-or-bug`, `/mpx-create-spec`, `/mpx-parse-spec`) are documentation-only
 - They update `.mpx/` files — never source code, configs, or tests
 - Implementation happens only via `/mpx-execute`
 
@@ -106,6 +106,12 @@ This document provides background knowledge about spec-driven development workfl
 2. Reviews current state and detects conflicts
 3. Updates SPEC.md and generates new tasks
 
+### "I found a bug to track"
+
+1. Run `/mpx-report-issue-or-bug "description of the bug"`
+2. Finds related phase, adds Fix + Verify task pair
+3. Creates bugfix phase if no matching phase exists
+
 ## Quick Reference
 
 ```
@@ -116,4 +122,5 @@ This document provides background knowledge about spec-driven development workfl
 /mpx-execute                  - Execute tasks (auto-selects phase and scope)
 /mpx-show-project-status     - Show progress and next steps
 /mpx-add-requirements   - Add new requirements to existing project
+/mpx-report-issue-or-bug          - Track bugs/issues in phase system
 ```
