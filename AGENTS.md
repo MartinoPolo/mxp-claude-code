@@ -54,6 +54,16 @@ Use `ToolSearch` to load deferred tools only when needed.
 - Adding echo/printf output to scripts
 - Scripts have success/error/warning messages
 
+**Spawn `mp-gh-issue-finder` agent when:**
+
+- Creating a PR and need to find linked issue
+- Called from mp-pr-create or mp-commit-push-pr skills
+
+**Use `/mp-gh-issue-create` skill when:**
+
+- "Create issue", "Open issue", "File a bug", "Report issue"
+- User wants to create a GitHub issue
+
 **Use `/mp-commit` skill when:**
 
 - User asks to commit changes
