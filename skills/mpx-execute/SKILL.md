@@ -251,13 +251,67 @@ After both review stages pass for a task:
 
 1. Task marked complete by agent in phase CHECKLIST.md
 2. Check if all phase tasks complete
-3. If phase complete: check phase checkbox in ROADMAP.md (`- [ ]` → `- [x]`)
-4. Report completion + review summaries to user
+3. If all complete → proceed to Step 6.5 (phase wrap-up review)
+4. If not all complete → report task completion, continue to next task
 
 **On Blocker:**
 
 1. Update Blockers section in phase CHECKLIST.md
 2. Report to user
+
+**Important:** Do NOT mark the phase complete in ROADMAP.md here. That happens in Step 6.5 after the wrap-up review passes.
+
+### Step 6.5: Phase Wrap-Up Review
+
+**Trigger:** ALL tasks in the current phase are complete (no unchecked `- [ ]` tasks remain).
+
+If the phase is not fully complete, skip this step entirely.
+
+**Model selection:**
+- Phase had **3+ tasks** → spawn with `model: opus`
+- Phase had **1-2 tasks** → spawn with `model: sonnet`
+
+**6.5a: Dispatch the phase reviewer:**
+
+```
+Task tool:
+  subagent_type: "mpx-phase-reviewer"
+  model: [opus or sonnet per above]
+  description: "Phase N wrap-up review"
+  prompt: |
+    Review the completed Phase N: [Phase Name].
+
+    ## Phase CHECKLIST.md
+    [Full content of the phase's CHECKLIST.md]
+
+    ## Instructions
+    1. Run `git diff` for commits made during this phase to see full diff
+    2. Check if AGENTS.md, CLAUDE.md, or README.md need updates
+    3. Verify mxp tracking (CHECKLIST.md decisions, ROADMAP.md status)
+    4. Assess cross-task integration and pattern consistency
+    5. Commit any doc updates: `docs(phase-N): update documentation after phase completion`
+    6. Report findings with severity (Critical / Important / Minor) and assessment (PASS / NEEDS FIXES)
+    7. Use category labels: duplication, type-safety, readability, separation-of-concerns, pattern-consistency, integration, security
+
+    ## Working Directory
+    [Current working directory]
+```
+
+**6.5b: Act on findings:**
+
+**If reviewer reports PASS (no critical or important issues):**
+1. Mark phase complete in ROADMAP.md (`- [ ]` → `- [x]`)
+2. Store review summary for Step 7 report
+3. Proceed to Step 7
+
+**If reviewer reports NEEDS FIXES (critical and/or important issues found):**
+1. Report all critical + important issues to user
+2. Ask: **fix / skip / stop**
+   - **Fix:** Dispatch executor agent (Step 5) with all critical + important issues as fix instructions. After executor completes, re-run the phase reviewer (loop back to 6.5a). Loop until PASS or user says skip/stop.
+   - **Skip:** Mark phase complete in ROADMAP.md despite issues. Note skipped issues in Step 7 report.
+   - **Stop:** Do NOT mark phase complete. Report partial progress. User can re-run `/mpx-execute` later.
+
+**If reviewer agent fails/errors:** Report failure to user, ask whether to mark phase complete anyway or stop. Do not silently proceed.
 
 ### Step 7: Report Results
 
@@ -268,12 +322,20 @@ Task Completed: [Task Description]
 Phase: N - [Phase Name]
 
 Phase Progress: X/Y tasks complete
-[If phase complete: "Phase N Complete!"]
 
-Commits Made: N
-
+[If phase NOT complete:]
 Next Task:
   [] [Next task description]
+
+[If phase complete:]
+Phase N Complete!
+
+Wrap-Up Review: [PASS / NEEDS FIXES (N fix rounds) / Skipped]
+  Doc Updates: [list of files updated, or "None needed"]
+  Quality: [assessment summary]
+  [If issues were skipped: "⚠️ Skipped issues: [list]"]
+
+Commits Made: N
 
 Run `/mpx-execute` to continue.
 Run `/mpx-show-project-status` for full progress overview.
@@ -296,8 +358,16 @@ Task Details:
   ✅ [Task 4 description]
 
 Phase Progress: X/Y tasks complete
-[If phase complete: "Phase N Complete!"]
 [If failed tasks exist: "Failed tasks may need manual intervention or re-execution."]
+
+[If phase complete:]
+Phase N Complete!
+
+Wrap-Up Review: [PASS / NEEDS FIXES (N fix rounds) / Skipped]
+  Doc Updates: [list of files updated, or "None needed"]
+  Quality: [assessment summary]
+  Fix Rounds: [N — only if fixes were needed]
+  [If issues were skipped: "⚠️ Skipped issues: [list]"]
 
 Commits Made: N
 
