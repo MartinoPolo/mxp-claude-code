@@ -127,6 +127,24 @@ Choose one of these:
 - 🔵 PR created/updated (include link)
 - 🟣 Question/needs input
 
+## Session Activity Tracking
+
+At end of each response where agents were spawned or skills invoked, append:
+
+**Session Activity:**
+- `agent-name` (model) — brief purpose [× count if >1]
+- `/skill-name` — brief purpose
+
+Hierarchical for sub-agents:
+- `mpx-executor` (opus) — Implement login form
+  - `mp-context7-docs-fetcher` (sonnet) — React docs lookup
+
+Rules:
+- Omit entirely if no agents/skills used
+- Include model (opus/sonnet/haiku) for agents
+- Show parallel runs as × count
+- Keep descriptions to ~5 words
+
 ## Git Commits
 
 Conventional commits: `type(scope): description`

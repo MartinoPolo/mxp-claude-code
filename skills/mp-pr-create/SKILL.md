@@ -93,3 +93,4 @@ After creating PR, display:
 - PR number
 - Title
 - Draft status confirmation
+- **Session Activity:** list agents dispatched (e.g. `mp-gh-issue-finder (haiku) — Find linked issue`)

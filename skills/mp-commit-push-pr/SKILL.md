@@ -119,3 +119,4 @@ After completion, display:
 - Base branch used
 - PR URL and number
 - Draft status confirmation
+- **Session Activity:** list agents dispatched (e.g. `mp-gh-issue-finder (haiku) — Find linked issue`)
