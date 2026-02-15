@@ -8,15 +8,15 @@ allowed-tools: Read, Write, Task, Bash, AskUserQuestion, Glob
 
 # Execute Tasks
 
-Autonomously execute tasks — auto-selects the next eligible phase and decides scope based on task complexity.
+Autonomously execute tasks — auto-selects the next eligible phase and executes all remaining tasks in batches.
 
 ## Usage
 
 ```
-/mpx-execute           # Auto-select phase and scope
+/mpx-execute           # Execute entire phase in batches
 /mpx-execute phase 3   # Target specific phase
 /mpx-execute next      # Force single task execution
-/mpx-execute all       # Force entire remaining phase
+/mpx-execute all       # Same as default (entire phase)
 ```
 
 ## Workflow
@@ -59,61 +59,54 @@ Determine which phase to execute without prompting.
 
 **Log:** `Auto-selected Phase N: [Name] (X remaining tasks)`
 
-### Step 3: Decide Task Scope
+### Step 3: Batch Grouping
 
-Evaluate remaining unchecked tasks (`- [ ]`) in the selected phase's CHECKLIST.md and decide scope autonomously.
+Read selected phase's `CHECKLIST.md`. Collect all unchecked tasks (`- [ ]`).
 
-**User override args (skip heuristic):**
+**If `next` arg:** Single task mode — take only the first unchecked task, skip to Step 4 (single task).
 
-- `all` → execute entire remaining phase
-- `next` → execute single next task
+**Default / `all` arg:** Group unchecked tasks into batches:
 
-**Complexity heuristic per task:**
+1. Group tasks by their `### Section` heading in CHECKLIST.md
+2. Each batch = tasks under the same section heading, max 3 tasks per batch
+3. If a section has >3 tasks, split into multiple batches of 1-3
+4. Preserve task order within and across batches
 
-- Spec paragraph 1-2 lines → **small**
-- Spec paragraph 3+ lines → **large**
-
-**Scope rules (when no override):**
-
-1. **1 task remaining** → execute it
-2. **All small AND under same section heading** → batch up to 5 tasks
-3. **Mixed sizes or large tasks** → execute 1 task (conservative default)
-
-**Log:** `Scope: Executing N task(s) — [reason]`
-
-Example reasons: "single remaining task", "3 small tasks in same section", "conservative: mixed complexity"
+**Log:** `Scope: N tasks in M batches — executing entire phase`
 
 ### Step 4: Execute — Single Task
 
-For single-task execution:
+For `next` mode only:
 
-1. Read selected phase's `CHECKLIST.md`
-2. Find first unchecked task (`- [ ]`) — task text includes inline spec paragraph
-3. Delegate to executor (Step 5)
-4. Run reviews (Steps 5.5 + 5.6)
-5. Report results (Step 7)
+1. Find first unchecked task (`- [ ]`) — task text includes inline spec paragraph
+2. Delegate to executor (Step 5, single-task prompt)
+3. Report results (Step 7)
 
-### Step 4: Execute — Multiple Tasks
+### Step 4: Execute — Batch Loop
 
-For multi-task (batch or full-phase) execution:
+For default/`all` mode:
 
-1. Read selected phase's `CHECKLIST.md`
-2. Collect all unchecked tasks (`- [ ]`) — each includes inline spec paragraph
-3. Initialize tracking: `completed = []`, `failed = []`, `skipped = []`
+1. Initialize tracking: `completed = []`, `failed = []`, `skipped = []`
 
-**For each unchecked task sequentially:**
-a. Delegate to executor (Step 5)
-b. Run spec compliance review (Step 5.5)
-c. Run code quality review (Step 5.6)
-d. **On success (both reviews pass):** Add to `completed[]`, continue to next task
-e. **On failure/blocker:** Report issue to user, ask fix/skip: - **Fix:** Re-dispatch executor with specific issues, re-review, loop until pass - **Skip:** Add to `skipped[]`, continue to next task - **Stop:** Halt phase execution, report partial progress
-f. Continue to next task regardless of previous task outcome
+**For each batch sequentially:**
 
-After all tasks processed: Go to Step 7 (phase summary report).
+a. Delegate to executor (Step 5, batch prompt with 1-3 tasks)
+b. **On success:** Add tasks to `completed[]`, continue to next batch
+c. **On failure/blocker:** Report issue to user, ask fix/skip/stop:
+   - **Fix:** Re-dispatch executor with specific issues, loop until pass
+   - **Skip:** Add failed tasks to `skipped[]`, continue to next batch
+   - **Stop:** Halt execution, report partial progress
+d. Continue to next batch regardless of previous batch outcome
+
+After all batches processed → check if phase complete → Step 6.5 if yes, else Step 7.
+
+### Agent Tracking
+
+Track every Task tool dispatch throughout execution: agent type, model, purpose, result (✅/❌). Use this data for Step 7 report.
 
 ### Step 5: Delegate to Executor Agent
 
-Use the Task tool to spawn a subagent:
+**Single-task prompt** (for `next` mode):
 
 ```
 Task tool:
@@ -144,115 +137,53 @@ Task tool:
     [Current working directory]
 ```
 
-### Step 5.5: Stage 1 — Spec Compliance Review
-
-After executor reports back, dispatch a spec compliance reviewer (Sonnet agent):
+**Batch prompt** (for default/`all` mode, 1-3 tasks per batch):
 
 ```
 Task tool:
-  subagent_type: "general-purpose"
-  model: sonnet
-  description: "Review spec compliance for: [task_name]"
+  subagent_type: "mpx-executor"
+  model: opus
+  description: "Execute batch: [section_name] (N tasks)"
   prompt: |
-    You are reviewing whether an implementation matches its specification.
+    You are an executor agent with fresh context.
 
-    ## What Was Requested
-    [FULL TEXT of task line + spec paragraph from CHECKLIST.md]
+    ## Project Context
+    [Include relevant content from CHECKLIST.md header: Objective, Scope, Out of Scope]
 
-    ## What Implementer Claims They Built
-    [Executor's report summary]
+    [If HANDOFF.md context was captured in Step 1.5:]
+    ## Session Handoff Context
+    [Include HANDOFF.md content — previous session's progress, decisions, issues, working memory]
 
-    ## CRITICAL: Do Not Trust the Report
-    The implementer may be incomplete, inaccurate, or optimistic.
-    Verify everything independently by reading actual code.
+    ## Your Mission
+    Execute these tasks from Phase N, section "[Section Name]":
 
-    DO NOT: Take their word, trust claims about completeness, accept their interpretation
-    DO: Read actual code, compare to requirements line by line, check for missing pieces
+    ## Tasks (execute in order)
+    1. [Full task line + indented spec paragraph from CHECKLIST.md]
+    2. [Full task line + indented spec paragraph from CHECKLIST.md]
+    3. [Full task line + indented spec paragraph from CHECKLIST.md]
 
-    ## Check For
+    ## Instructions
+    - Execute all tasks in order
+    - Follow your standard execution process for each (understand, implement, verify)
+    - Update this phase's CHECKLIST.md as each task completes
+    - Make a single commit covering all tasks in this batch
+    - Commit message: `feat(phase-N): [brief description of batch work]`
+    - If a task fails, complete remaining tasks if possible and report which failed
+    - Report results for each task: ✅ completed / ❌ failed (reason)
 
-    **Missing requirements:**
-    - Everything requested actually implemented?
-    - Requirements skipped or missed?
-    - Claims something works but didn't actually implement it?
-
-    **Extra/unneeded work:**
-    - Built things not requested? (YAGNI violations)
-    - Over-engineered or added unnecessary features?
-
-    **Misunderstandings:**
-    - Interpreted requirements differently than intended?
-    - Solved the wrong problem?
-
-    ## Report
-    - ✅ Spec compliant (everything matches after code inspection)
-    - ❌ Issues: [list what's missing/extra with file:line references]
+    ## Working Directory
+    [Current working directory]
 ```
 
-**If spec reviewer reports ❌:**
+### Step 6: Track Batch Results
 
-1. Report issues to user
-2. Ask: fix now or skip?
-3. If fix: re-dispatch executor with specific issues to fix, then re-review
-4. Loop until ✅ or user says skip
+After executor returns for each batch:
 
-### Step 5.6: Stage 2 — Code Quality Review
-
-Only after spec compliance passes (✅). Dispatch code quality reviewer (Sonnet agent):
-
-```
-Task tool:
-  subagent_type: "general-purpose"
-  model: sonnet
-  description: "Review code quality for: [task_name]"
-  prompt: |
-    You are reviewing code quality of a task implementation.
-
-    ## What Was Implemented
-    [Executor's report]
-
-    ## Files Changed
-    Run `git diff HEAD~1 --name-only` to see changed files.
-    Run `git diff HEAD~1` to see the full diff.
-
-    ## Review Checklist
-    - Code patterns match existing codebase?
-    - Error handling adequate?
-    - Naming clear and descriptive?
-    - No DRY violations?
-    - No tight coupling?
-    - Tests verify real behavior?
-    - No security issues (injection, XSS, secrets)?
-    - No performance issues (N+1, memory leaks)?
-    - CLAUDE.md/project conventions followed?
-
-    ## Report
-    - Strengths: [what's good]
-    - Issues (Critical): [must fix — blocks completion]
-    - Issues (Important): [should fix]
-    - Issues (Minor): [nice to have]
-    - Assessment: APPROVED / NEEDS CHANGES
-```
-
-**If reviewer reports NEEDS CHANGES with Critical issues:**
-
-1. Report to user
-2. Ask: fix now or skip?
-3. If fix: re-dispatch executor, then re-review
-4. Loop until APPROVED or user says skip
-
-**Important/Minor issues:** Report to user but don't block completion.
-
-### Step 6: Handle Reviewed Results
-
-After both review stages pass for a task:
-
-**On Success (both reviews ✅/APPROVED):**
-
-1. Task marked complete by agent in phase CHECKLIST.md
-2. Check if all phase tasks complete
-3. If all complete → proceed to Step 6.5 (phase wrap-up review)
-4. If not all complete → report task completion, continue to next task
+1. Parse executor report — which tasks completed, which failed
+2. Update tracking arrays (`completed[]`, `failed[]`, `skipped[]`)
+3. If all phase tasks complete → proceed to Step 6.5 (phase wrap-up review)
+4. If batches remain → continue to next batch
+5. If all batches done but phase incomplete → proceed to Step 7
 
 **On Blocker:**
 
@@ -286,12 +217,19 @@ Task tool:
 
     ## Instructions
     1. Run `git diff` for commits made during this phase to see full diff
-    2. Check if AGENTS.md, CLAUDE.md, or README.md need updates
-    3. Verify mxp tracking (CHECKLIST.md decisions, ROADMAP.md status)
-    4. Assess cross-task integration and pattern consistency
-    5. Commit any doc updates: `docs(phase-N): update documentation after phase completion`
-    6. Report findings with severity (Critical / Important / Minor) and assessment (PASS / NEEDS FIXES)
-    7. Use category labels: duplication, type-safety, readability, separation-of-concerns, pattern-consistency, integration, security
+    2. **Spec compliance check** — for each completed task:
+       - Read the task's spec paragraph from CHECKLIST.md
+       - Read the actual implementation code
+       - Verify implementation matches spec: all requirements met, nothing missing
+       - Flag YAGNI violations (built things not requested)
+       - Flag misunderstandings (solved wrong problem, misinterpreted requirements)
+    3. Check if AGENTS.md, CLAUDE.md, or README.md need updates
+    4. Verify mxp tracking (CHECKLIST.md decisions, ROADMAP.md status)
+    5. Assess cross-task integration and pattern consistency
+    6. Code quality review: naming, DRY, error handling, security, conventions
+    7. Commit any doc updates: `docs(phase-N): update documentation after phase completion`
+    8. Report findings with severity (Critical / Important / Minor) and assessment (PASS / NEEDS FIXES)
+    9. Use category labels: spec-compliance, duplication, type-safety, readability, separation-of-concerns, pattern-consistency, integration, security
 
     ## Working Directory
     [Current working directory]
@@ -315,7 +253,7 @@ Task tool:
 
 ### Step 7: Report Results
 
-**Task mode report:**
+**Single task mode report (`next`):**
 
 ```
 Task Completed: [Task Description]
@@ -330,10 +268,14 @@ Next Task:
 [If phase complete:]
 Phase N Complete!
 
-Wrap-Up Review: [PASS / NEEDS FIXES (N fix rounds) / Skipped]
+Comprehensive Review: [PASS / NEEDS FIXES (N fix rounds) / Skipped]
   Doc Updates: [list of files updated, or "None needed"]
   Quality: [assessment summary]
   [If issues were skipped: "⚠️ Skipped issues: [list]"]
+
+Agents Dispatched:
+  mpx-executor (opus) — [task description] — [✅/❌]
+  mpx-phase-reviewer (opus|sonnet) — Wrap-up review — [PASS / N fix rounds]
 
 Commits Made: N
 
@@ -341,7 +283,7 @@ Run `/mpx-execute` to continue.
 Run `/mpx-show-project-status` for full progress overview.
 ```
 
-**Phase mode report:**
+**Batch mode report (default/`all`):**
 
 ```
 Phase N Execution Summary: [Phase Name]
@@ -350,6 +292,11 @@ Results:
   ✅ Completed: X tasks
   ❌ Failed:    Y tasks
   ⏭️ Skipped:   Z tasks
+
+Batch Details:
+  Batch 1 ([Section Name]): N/N tasks ✅
+  Batch 2 ([Section Name]): N/N tasks ✅
+  Batch 3 ([Section Name]): N/N tasks [✅/⚠️ partial]
 
 Task Details:
   ✅ [Task 1 description]
@@ -363,11 +310,16 @@ Phase Progress: X/Y tasks complete
 [If phase complete:]
 Phase N Complete!
 
-Wrap-Up Review: [PASS / NEEDS FIXES (N fix rounds) / Skipped]
+Comprehensive Review: [PASS / NEEDS FIXES (N fix rounds) / Skipped]
   Doc Updates: [list of files updated, or "None needed"]
-  Quality: [assessment summary]
+  Spec Compliance: [summary]
+  Code Quality: [summary]
   Fix Rounds: [N — only if fixes were needed]
   [If issues were skipped: "⚠️ Skipped issues: [list]"]
+
+Agents Dispatched: (N total)
+  mpx-executor (opus) × N — Batch execution (N success, N retry)
+  mpx-phase-reviewer (opus|sonnet) — Comprehensive review — [PASS / N fix rounds]
 
 Commits Made: N
 
@@ -380,7 +332,7 @@ Run `/mpx-show-project-status` for full progress overview.
 - **No phases found:** "No project found. Run `/mpx-setup` or `/mpx-parse-spec` first."
 - **All phases complete:** "All phases complete! Project finished."
 - **No eligible phases:** "All remaining phases are blocked. Check dependencies in ROADMAP.md."
-- **Agent fails:** Report error, record in `failed[]` (phase mode) or suggest manual intervention (task mode)
+- **Agent fails:** Report error, record in `failed[]` (batch mode) or suggest manual intervention (single task mode)
 
 ## Parallel Execution Note
 
@@ -396,10 +348,10 @@ Example: Phase 2 and Phase 3 can both run if they only depend on Phase 1 (comple
 - The subagent gets fresh 200k context, preventing degradation
 - Each task should be atomic and completable in one execution
 - CHECKLIST.md is the single source of truth per phase (specs + tasks + state)
-- Agent commits after each task to preserve progress
+- Agent commits per batch (not per task) to reduce commit noise
 - ROADMAP.md is the source of truth for phase completion status
-- Phase mode continues on failure — all tasks get attempted
-- Two-stage review runs after EVERY task, even in phase mode
+- Batch mode continues on failure — all batches get attempted
+- Reviews consolidated at phase end — no per-task review overhead
 - HANDOFF.md is ephemeral — read once at start, then deleted
-- Autonomous by default — phase and scope are auto-decided; user is only prompted for fix/skip/stop after review failures
+- Autonomous by default — phase and scope are auto-decided; user is only prompted for fix/skip/stop after batch failures or review failures
 - Use args (`phase N`, `next`, `all`) to override autonomous decisions when needed
