@@ -37,6 +37,8 @@ project/
 
 ## Notes
 
-- The script is idempotent for the .gitignore (won't duplicate entries)
+- `.gitignore` is copied from `templates/gitignore.template` — deterministic, no LLM generation
+- Project-specific ignores (e.g., Obsidian's `main.js`, `data.json`) should be appended after init
+- `.mpx/` is intentionally NOT ignored — it contains plans/roadmap that should be versioned
 - Creates templates in `.claude/` for project documentation
 - Makes an initial commit with message "Initial project setup"

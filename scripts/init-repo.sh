@@ -20,77 +20,17 @@ else
     git init
 fi
 
-# Create comprehensive .gitignore
+# Copy .gitignore from template
 echo "Creating .gitignore..."
-cat > .gitignore << 'EOF'
-# Dependencies
-node_modules/
-__pycache__/
-*.pyc
-.venv/
-venv/
-.eggs/
-*.egg-info/
-vendor/
-
-# Build outputs
-dist/
-build/
-out/
-.next/
-coverage/
-*.egg
-*.whl
-target/
-bin/
-obj/
-
-# Environment & secrets
-.env
-.env.local
-.env.*.local
-*.pem
-*.key
-.secrets/
-credentials.json
-
-# IDE & OS
-.idea/
-.vscode/
-*.swp
-*.swo
-.DS_Store
-Thumbs.db
-*.code-workspace
-
-# Logs & debug
-*.log
-npm-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-debug/
-
-# Backup folders
-**/backup/
-
-
-# Testing
-.coverage
-htmlcov/
-.pytest_cache/
-.nyc_output/
-jest-cache/
-
-# Claude Code local files
-.claude/CLAUDE.local.md
-.claude/settings.local.json
-.claude/*.local.*
-
-# Package manager locks (optional - uncomment if desired)
-# package-lock.json
-# yarn.lock
-# pnpm-lock.yaml
-EOF
+TEMPLATE_DIR="$(dirname "$0")/../templates"
+if [ ! -f "$TEMPLATE_DIR/gitignore.template" ]; then
+    TEMPLATE_DIR="$HOME/.claude/templates"
+fi
+if [ ! -f "$TEMPLATE_DIR/gitignore.template" ]; then
+    echo -e "${RED}Error: gitignore.template not found in scripts/../templates/ or ~/.claude/templates/${NC}"
+    exit 1
+fi
+cp "$TEMPLATE_DIR/gitignore.template" .gitignore
 
 # Create .gitattributes for cross-platform line ending normalization
 echo "Creating .gitattributes..."
