@@ -38,13 +38,11 @@ This review is **READ-ONLY**. It does NOT:
 
 ## Phase 2: Parallel Review (6 Sonnet Agents)
 
-Same as /mp-review-branch:
-- Agent 1: Tech Stack Best Practices
-- Agent 2: Security Review (OWASP)
-- Agent 3: Performance Analysis
-- Agent 4: Error Handling & Reliability
-- Agent 5: Code Quality, CLAUDE.md & Overcomplicated Code
-- Agent 6: Spec/Plan Alignment
+Launch 6 parallel Sonnet agents. Each receives the PR diff, changed files, and tech stack info.
+
+> **Full agent specifications:** See `references/review-agents.md`
+
+Launch 6 parallel Sonnet agents covering: Tech Stack Best Practices, Security (OWASP), Performance, Error Handling & Reliability, Code Quality & CLAUDE.md, Spec/Plan Alignment.
 
 ## Phase 3: Confidence Scoring (Haiku Agents)
 
