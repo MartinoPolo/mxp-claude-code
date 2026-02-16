@@ -1,6 +1,6 @@
 ### Step 5: Delegate to Executor Agent
 
-**Single-task prompt** (for `next` mode):
+**Single-task prompt** (for `task` mode):
 
 ```
 Task tool:

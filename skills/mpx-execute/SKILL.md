@@ -1,7 +1,7 @@
 ---
 name: mpx-execute
 description: 'Execute tasks autonomously. Auto-selects phase and scope, only asks when genuinely unsure. Use when: "execute phase", "run tasks", "start building"'
-args: "[phase N | all | next]"
+args: "[phase N | all | task]"
 disable-model-invocation: true
 allowed-tools: Read, Write, Task, Bash, AskUserQuestion, Glob
 metadata:
@@ -19,7 +19,7 @@ Autonomously execute tasks — auto-selects the next eligible phase and executes
 ```
 /mpx-execute           # Execute entire phase in batches
 /mpx-execute phase 3   # Target specific phase
-/mpx-execute next      # Force single task execution
+/mpx-execute task      # Force single task execution
 /mpx-execute all       # Same as default (entire phase)
 ```
 
@@ -29,7 +29,7 @@ Autonomously execute tasks — auto-selects the next eligible phase and executes
 **Actions:** Auto-select next eligible phase, group tasks into batches, execute sequentially
 **Result:** Full phase completed with batch commits and wrap-up review
 
-**User says:** "/mpx-execute next"
+**User says:** "/mpx-execute task"
 **Actions:** Find first unchecked task in current phase, execute single task
 **Result:** One task completed and checked off in CHECKLIST.md
 
@@ -81,7 +81,7 @@ Determine which phase to execute without prompting.
 
 Read selected phase's `CHECKLIST.md`. Collect all unchecked tasks (`- [ ]`).
 
-**If `next` arg:** Single task mode — take only the first unchecked task, skip to Step 4 (single task).
+**If `task` arg:** Single task mode — take only the first unchecked task, skip to Step 4 (single task).
 
 **Default / `all` arg:** Group unchecked tasks into batches:
 
@@ -94,7 +94,7 @@ Read selected phase's `CHECKLIST.md`. Collect all unchecked tasks (`- [ ]`).
 
 ### Step 4: Execute — Single Task
 
-For `next` mode only:
+For `task` mode only:
 
 1. Find first unchecked task (`- [ ]`) — task text includes inline spec paragraph
 2. Delegate to executor (Step 5, single-task prompt)
@@ -206,7 +206,7 @@ Task tool:
 
 ### Step 7: Report Results
 
-**Single task mode report (`next`):**
+**Single task mode report (`task`):**
 
 ```
 Task Completed: [Task Description]
@@ -317,4 +317,4 @@ Example: Phase 2 and Phase 3 can both run if they only depend on Phase 1 (comple
 - Reviews consolidated at phase end — no per-task review overhead
 - HANDOFF.md is ephemeral — read once at start, then deleted
 - Autonomous by default — phase and scope are auto-decided; user is only prompted for fix/skip/stop after batch failures or review failures
-- Use args (`phase N`, `next`, `all`) to override autonomous decisions when needed
+- Use args (`phase N`, `task`, `all`) to override autonomous decisions when needed
