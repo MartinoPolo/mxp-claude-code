@@ -34,7 +34,45 @@ Otherwise, spawn `mp-base-branch-detector` agent (via Task tool, subagent_type `
 - **Null with candidates** → ask user with `AskUserQuestion` to pick from candidates
 - **Null without candidates** → ask user with `AskUserQuestion` to specify manually
 
-### Step 3: Fetch and Preview
+### Step 3: Sync Check
+
+**3a. Uncommitted changes:**
+
+```bash
+git status --porcelain
+```
+
+If output is non-empty → AskUserQuestion: "Uncommitted changes detected. Rebase requires a clean working tree."
+- "Stash changes and continue" → `git stash push -m "Auto-stash before rebase"`
+- "Abort"
+
+**3b. Remote sync (current branch):**
+
+```bash
+git branch --show-current
+git rev-parse --verify origin/<current> 2>/dev/null
+```
+
+If no tracking branch exists → skip to Step 4.
+
+Otherwise:
+
+```bash
+git fetch origin <current>
+git rev-list --left-right --count HEAD...origin/<current>
+```
+
+Based on ahead/behind counts:
+- **Behind only** → AskUserQuestion: "Current branch is N behind remote. Pull first?"
+  - "Pull remote changes (Recommended)" → `git pull --rebase origin <current>`
+  - "Continue anyway"
+- **Ahead only** → inform user, continue silently
+- **Diverged** → AskUserQuestion: "Branch diverged (N ahead, M behind). Pull with rebase first?"
+  - "Pull with rebase (Recommended)" → `git pull --rebase origin <current>`
+  - "Continue anyway"
+- **In sync** → continue silently
+
+### Step 4: Fetch and Preview
 
 ```bash
 git fetch origin <target>
@@ -51,7 +89,7 @@ If incoming commits > 15 OR local commits ahead > 15 → ask user with `AskUserQ
 Options: "Merge instead (Recommended)", "Rebase anyway"
 If user picks merge → switch to merge mode.
 
-### Step 4: Execute
+### Step 5: Execute
 
 **Rebase mode (default):**
 
@@ -65,7 +103,7 @@ git rebase origin/<target>
 git merge origin/<target>
 ```
 
-### Step 5: Resolve Conflicts (if any)
+### Step 6: Resolve Conflicts (if any)
 
 If conflicts occur:
 
