@@ -91,8 +91,10 @@ All mpx projects use phase-based organization inside `.mpx/`:
 | Skill                     | Description                                     |
 | ------------------------- | ----------------------------------------------- |
 | `/mp-commit`              | Stage and commit with conventional format       |
-| `/mp-pr-create`           | Create draft PR from existing commits           |
-| `/mp-commit-push-pr`      | Full workflow — commit, push, create draft PR   |
+| `/mp-commit-push`         | Commit and push (no PR)                         |
+| `/mp-pr`                  | Create or update draft PR from existing commits |
+| `/mp-commit-push-pr`      | Full workflow — commit, push, create/update PR  |
+| `/mp-rebase`              | Rebase or merge target branch into current      |
 | `/mp-review-branch`       | Multi-agent code review of current branch       |
 | `/mp-review-pr`           | PR review with confidence scoring               |
 | `/mp-review-design`       | Visual design inspection via chrome-devtools    |
@@ -112,6 +114,7 @@ All mpx projects use phase-based organization inside `.mpx/`:
 | mp-gh-issue-analyzer     | Opus   | Analyzes GitHub issues, creates fix plans          |
 | mp-context7-docs-fetcher | Sonnet | Fetches library docs via Context7 MCP              |
 | mp-css-layout-debugger   | Haiku  | CSS layout debugging                               |
+| mp-base-branch-detector  | Haiku  | Detect base branch for PRs and rebases             |
 | mp-bash-script-colorizer | Haiku  | Bash script coloring guidelines                    |
 | mp-ux-designer           | Sonnet | UX research and design artifacts                   |
 

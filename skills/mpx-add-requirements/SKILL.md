@@ -1,9 +1,13 @@
 ---
 name: mpx-add-requirements
-description: Add new requirements to project. Parses current spec, checklist, and roadmap. Updates all files and detects conflicts.
+description: 'Add new requirements to project. Parses current spec, checklist, and roadmap. Updates all files and detects conflicts. Use when: "add requirement", "new feature to spec", "update spec"'
 disable-model-invocation: false
 allowed-tools: Read, Write, Bash, AskUserQuestion
 args: "[requirements]"
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: project-management
 ---
 
 # Add Requirements

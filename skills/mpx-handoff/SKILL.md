@@ -3,6 +3,10 @@ name: mpx-handoff
 description: Create ephemeral HANDOFF.md capturing session progress, decisions, and working memory for the next session.
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, TaskList
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: project-management
 ---
 
 # Session Handoff

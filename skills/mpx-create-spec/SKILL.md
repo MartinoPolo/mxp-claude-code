@@ -1,8 +1,12 @@
 ---
 name: mpx-create-spec
-description: Create project specification interactively. Asks about your idea, suggests tech stack.
+description: 'Create project specification interactively. Asks about your idea, suggests tech stack. Use when: "create spec", "write specification", "new project spec"'
 disable-model-invocation: true
 allowed-tools: Read, Write, Bash, AskUserQuestion
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: project-management
 ---
 
 # Create Project Specification

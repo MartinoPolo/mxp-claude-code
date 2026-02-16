@@ -1,8 +1,12 @@
 ---
 name: mp-update-readme
-description: Analyze codebase and update README.md with current project information
+description: 'Analyze codebase and update README.md with current project information. Use when: "update readme", "refresh README"'
 disable-model-invocation: true
 allowed-tools: Read, Glob, Grep, Edit, Write
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: utility
 ---
 
 # Update README

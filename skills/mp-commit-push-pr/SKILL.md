@@ -1,12 +1,16 @@
 ---
 name: mp-commit-push-pr
-description: Full workflow - commit, push, and create draft PR
-allowed-tools: Bash(git *), Bash(gh pr create *), Task
+description: 'Full workflow - commit, push, and create or update draft PR. Use when: "commit push and PR", "full workflow", "ship with PR"'
+allowed-tools: Bash(git *), Bash(gh pr *), Task
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: git-workflow
 ---
 
-# Commit, Push, and Create PR
+# Commit, Push, and Create/Update PR
 
-Full workflow: stage → commit → push → detect base → create draft PR. $ARGUMENTS
+Full workflow: stage → commit → push → detect base → create or update draft PR. $ARGUMENTS
 
 ## Workflow
 
@@ -17,15 +21,23 @@ git status
 git diff --stat
 ```
 
-### Step 2: Stage Changes
+If nothing to commit (clean working tree + no staged changes) → skip to Step 4 (Push).
+
+### Step 2: Review Recent Commits
+
+```bash
+git log --oneline -5
+```
+
+Match repository's commit style.
+
+### Step 3: Stage and Commit
 
 ```bash
 git add <specific-files>
 ```
 
-Prefer specific files over `git add -A`.
-
-### Step 3: Commit
+Prefer specific files over `git add -A`. Avoid staging sensitive files (.env, credentials).
 
 ```bash
 git commit -m "$(cat <<'EOF'
@@ -39,9 +51,12 @@ EOF
 **Commit Rules:**
 
 - Conventional commit format: `type(scope): description`
-- Types: feat, fix, refactor, chore, docs, style, test, perf, ci, build
+- Types: feat, fix, refactor, chore, docs, style, test, perf, ci, build, revert
 - No AI attribution (no "Co-authored-by: Claude" or similar)
+- No `--amend` unless explicitly requested
 - Focus on "why" over "what"
+- Keep subject line under 72 characters
+- Imperative mood: "Add feature" not "Added feature"
 
 ### Step 4: Push
 
@@ -49,74 +64,98 @@ EOF
 git push -u origin $(git branch --show-current)
 ```
 
+If nothing to push (local and remote in sync) → skip to Step 5.
+
 ### Step 5: Detect Base Branch
 
-If `$ARGUMENTS` specifies a base branch, use it. Otherwise detect automatically:
+Spawn `mp-base-branch-detector` agent (via Task tool, subagent_type `mp-base-branch-detector`, model haiku) with:
+- Explicit base branch from `$ARGUMENTS` (if provided)
+- Remote branches: output of `git branch -r`
 
-1. Get current branch: `git branch --show-current`
-2. List remote branches: `git branch -r --list`
-3. Build candidate list from existing remote branches, priority order: `dev` > `develop` > `main` > `master`
-4. For each candidate, test: `git merge-base --fork-point origin/<candidate> HEAD`
-   - **One valid** → use it
-   - **Multiple valid** → count `git rev-list --count <merge-base>..HEAD` for each, pick closest (fewest commits). Tie → prefer priority order
-   - **None valid** → fallback: `git merge-base origin/<candidate> HEAD` for each, pick closest
-5. **Still ambiguous / no candidates** → ask user with `AskUserQuestion`
-6. Display detected base branch before proceeding
+**Based on result:**
+- **Branch returned** → use it, display to user
+- **Null with candidates** → ask user with `AskUserQuestion` to pick from candidates
+- **Null without candidates** → ask user with `AskUserQuestion` to specify manually
 
 ### Step 6: Find Linked Issue
 
 Spawn `mp-gh-issue-finder` agent (via Task tool, subagent_type `mp-gh-issue-finder`, model haiku) with:
 - Repo: detect from `git remote get-url origin`
 - Branch name: current branch
-- Commit messages: from Step 2/3 output
-- Diff summary: from Step 1 diff stat output
+- Commit messages: from commit log output
+- Diff summary: from diff stat output
 
 **Based on result:**
 - **High confidence match** → add `Closes #N` to PR body
 - **Candidates returned** → ask user with `AskUserQuestion` which (if any) to link
 - **No match** → proceed without linking
 
-### Step 7: Create Draft PR
-
-**PR Rules:**
-
-- **Always draft**: Use `--draft` flag
-- **No AI attribution**: Never include AI co-authorship
-
-**Title Format:** `type(scope): Description`
-
-**Description Template:**
-
-```
-## Changes
-- [bullet point 1]
-- [bullet point 2]
-
-## Why
-[business or technical reason]
-```
-
-**Command:**
+### Step 7: Check Existing PR
 
 ```bash
-gh pr create --draft --base <detected-base> --title "type(scope): Description" --body "$(cat <<'EOF'
-## Changes
-- Change 1
-- Change 2
+gh pr view --json number,title,body,url,state 2>/dev/null
+```
 
-## Why
-Reason for the change
+- **OPEN PR exists** → edit mode (Step 8a)
+- **No PR or not OPEN** → create mode (Step 8b)
+
+### Step 8a: Update Existing PR
+
+```bash
+gh pr edit --title "type(scope): Description" --body "$(cat <<'EOF'
+PR body here
 EOF
 )"
 ```
+
+### Step 8b: Create Draft PR
+
+```bash
+gh pr create --draft --base <base> --title "type(scope): Description" --body "$(cat <<'EOF'
+PR body here
+EOF
+)"
+```
+
+## PR Rules
+
+### Title
+
+`type(scope): Description` — conventional commit format
+
+### Description
+
+Review ALL commits `origin/<base>..HEAD`. Write 1-6 concise bullets summarizing full scope of changes. No section headers. Include reasoning inline where non-obvious.
+
+```
+- Extract base branch detection into reusable agent (was duplicated across 3 skills)
+- Add existing PR check to avoid duplicate PRs on repeated runs
+
+Closes #42
+```
+
+### Critical
+
+- **Always draft** on create (`--draft` flag)
+- **No AI attribution**: Never include AI co-authorship
+
+## Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| "PR creation fails" | Check `gh auth status`, verify remote exists with `git remote -v` |
+| "No commits to push" | Ensure working tree has staged/unstaged changes |
+| "Base branch not found" | Specify base explicitly: `/mp-commit-push-pr main` |
+| "Draft PR already exists" | Existing PR is updated automatically — this is expected |
 
 ## Output
 
 After completion, display:
 
-- Commit hash and message
+- Commit hash and message (if committed)
 - Push status
 - Base branch used
 - PR URL and number
-- Draft status confirmation
-- **Session Activity:** list agents dispatched (e.g. `mp-gh-issue-finder (haiku) — Find linked issue`)
+- Whether PR was created or updated
+- Steps skipped (if any)
+- **Session Activity:** list agents dispatched

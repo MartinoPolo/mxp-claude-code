@@ -3,6 +3,10 @@ name: mpx-parse-spec
 description: Parse SPEC.md into phased implementation. Creates phase folders + ROADMAP.md.
 disable-model-invocation: false
 allowed-tools: Read, Write, Bash
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: project-management
 ---
 
 # Parse Specification

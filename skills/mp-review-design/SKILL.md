@@ -1,6 +1,11 @@
 ---
 name: mp-review-design
 description: 'Visual inspection of websites to identify and fix design issues. Triggers on: "review design", "check the UI", "fix layout", "find design problems", "test responsive"'
+compatibility: Requires chrome-devtools MCP server
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: code-review
 ---
 
 # Web Design Reviewer

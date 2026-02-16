@@ -1,8 +1,12 @@
 ---
 name: mp-review-pr
-description: Multi-agent PR review with confidence scoring (works on drafts, read-only)
+description: 'Multi-agent PR review with confidence scoring (works on drafts, read-only). Use when: "review PR #N", "review pull request"'
 disable-model-invocation: true
 allowed-tools: Read, Glob, Grep, Bash(git status *), Bash(git log *), Bash(git diff *), Bash(git show *), Bash(git branch --list *), Bash(git branch --show-current *), Bash(git branch -r *), Bash(git branch -a *), Bash(git rev-parse *), Bash(git merge-base *), Bash(gh pr list *), Bash(gh pr view *), Bash(gh pr diff *), Bash(gh pr status *), Bash(gh pr checks *), Bash(gh issue list *), Bash(gh issue view *), Bash(gh repo view *), Bash(gh run list *), Bash(gh run view *), Bash(gh search *)
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: code-review
 ---
 
 # PR Review

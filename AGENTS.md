@@ -54,10 +54,15 @@ Use `ToolSearch` to load deferred tools only when needed.
 - Adding echo/printf output to scripts
 - Scripts have success/error/warning messages
 
+**Spawn `mp-base-branch-detector` agent when:**
+
+- Detecting base branch for PR creation/update
+- Called from mp-pr, mp-commit-push-pr, or mp-rebase skills
+
 **Spawn `mp-gh-issue-finder` agent when:**
 
 - Creating a PR and need to find linked issue
-- Called from mp-pr-create or mp-commit-push-pr skills
+- Called from mp-pr or mp-commit-push-pr skills
 
 **Use `/mp-gh-issue-create` skill when:**
 
@@ -69,10 +74,20 @@ Use `ToolSearch` to load deferred tools only when needed.
 - User asks to commit changes
 - "Commit this", "Stage and commit", "Make a commit"
 
-**Use `/mp-pr-create` skill when:**
+**Use `/mp-pr` skill when:**
 
-- User asks to create a PR (without committing)
-- "Create PR", "Open pull request", "Make a PR"
+- User asks to create or update a PR (without committing)
+- "Create PR", "Open pull request", "Make a PR", "Update PR"
+
+**Use `/mp-commit-push` skill when:**
+
+- User asks to commit and push (without PR)
+- "Commit and push", "Push my changes", "Ship it"
+
+**Use `/mp-rebase` skill when:**
+
+- User asks to rebase or merge upstream changes
+- "Rebase on main", "Update from dev", "Merge main into branch"
 
 **Use `/mp-check-fix` skill when:**
 

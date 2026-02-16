@@ -1,9 +1,13 @@
 ---
 name: mpx-execute
-description: Execute tasks autonomously. Auto-selects phase and scope, only asks when genuinely unsure.
+description: 'Execute tasks autonomously. Auto-selects phase and scope, only asks when genuinely unsure. Use when: "execute phase", "run tasks", "start building"'
 args: "[phase N | all | next]"
 disable-model-invocation: true
 allowed-tools: Read, Write, Task, Bash, AskUserQuestion, Glob
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: project-management
 ---
 
 # Execute Tasks
@@ -106,74 +110,9 @@ Track every Task tool dispatch throughout execution: agent type, model, purpose,
 
 ### Step 5: Delegate to Executor Agent
 
-**Single-task prompt** (for `next` mode):
+> **Full prompt templates:** See `references/agent-prompts.md`
 
-```
-Task tool:
-  subagent_type: "mpx-executor"
-  model: opus
-  description: "Execute task: [task_name]"
-  prompt: |
-    You are an executor agent with fresh context.
-
-    ## Project Context
-    [Include relevant content from CHECKLIST.md header: Objective, Scope, Out of Scope]
-
-    [If HANDOFF.md context was captured in Step 1.5:]
-    ## Session Handoff Context
-    [Include HANDOFF.md content — previous session's progress, decisions, issues, working memory]
-
-    ## Your Mission
-    Execute this task from Phase N: [Task Description]
-
-    ## Task Details
-    [Full task line + indented spec paragraph from CHECKLIST.md]
-
-    ## Instructions
-    Follow your standard execution process (understand, implement, verify, commit, report).
-    Update this phase's CHECKLIST.md when tasks complete.
-
-    ## Working Directory
-    [Current working directory]
-```
-
-**Batch prompt** (for default/`all` mode, 1-3 tasks per batch):
-
-```
-Task tool:
-  subagent_type: "mpx-executor"
-  model: opus
-  description: "Execute batch: [section_name] (N tasks)"
-  prompt: |
-    You are an executor agent with fresh context.
-
-    ## Project Context
-    [Include relevant content from CHECKLIST.md header: Objective, Scope, Out of Scope]
-
-    [If HANDOFF.md context was captured in Step 1.5:]
-    ## Session Handoff Context
-    [Include HANDOFF.md content — previous session's progress, decisions, issues, working memory]
-
-    ## Your Mission
-    Execute these tasks from Phase N, section "[Section Name]":
-
-    ## Tasks (execute in order)
-    1. [Full task line + indented spec paragraph from CHECKLIST.md]
-    2. [Full task line + indented spec paragraph from CHECKLIST.md]
-    3. [Full task line + indented spec paragraph from CHECKLIST.md]
-
-    ## Instructions
-    - Execute all tasks in order
-    - Follow your standard execution process for each (understand, implement, verify)
-    - Update this phase's CHECKLIST.md as each task completes
-    - Make a single commit covering all tasks in this batch
-    - Commit message: `feat(phase-N): [brief description of batch work]`
-    - If a task fails, complete remaining tasks if possible and report which failed
-    - Report results for each task: ✅ completed / ❌ failed (reason)
-
-    ## Working Directory
-    [Current working directory]
-```
+Spawn `mpx-executor` agent (model: opus) with project context from CHECKLIST.md header + handoff context (if any) + task details. Single-task mode sends one task; batch mode sends 1-3 tasks grouped by section.
 
 ### Step 6: Track Batch Results
 
@@ -333,6 +272,16 @@ Run `/mpx-show-project-status` for full progress overview.
 - **All phases complete:** "All phases complete! Project finished."
 - **No eligible phases:** "All remaining phases are blocked. Check dependencies in ROADMAP.md."
 - **Agent fails:** Report error, record in `failed[]` (batch mode) or suggest manual intervention (single task mode)
+
+## Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| "No project found" | Run `/mpx-setup` or `/mpx-parse-spec` first to create `.mpx/` structure |
+| "All phases complete" | Project is finished — verify with `/mpx-show-project-status` |
+| "All remaining phases blocked" | Check dependency chain in `ROADMAP.md` — a predecessor may need completion |
+| Executor agent fails | Check task spec in CHECKLIST.md — may be too vague or have missing context |
+| Phase reviewer loops | After 2 fix rounds, consider skipping remaining issues |
 
 ## Parallel Execution Note
 

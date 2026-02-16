@@ -1,8 +1,12 @@
 ---
 name: mpx-show-project-status
-description: Show current project progress. Displays phase status and next steps.
+description: 'Show current project progress. Displays phase status and next steps. Use when: "show status", "project progress", "what''s done"'
 disable-model-invocation: true
 allowed-tools: Read, Bash
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: project-management
 ---
 
 # Project Status

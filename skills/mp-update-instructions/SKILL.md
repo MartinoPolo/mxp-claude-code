@@ -1,8 +1,12 @@
 ---
 name: mp-update-instructions
-description: Analyze conversation history to identify gaps and suggest improvements to CLAUDE.md/AGENTS.md.
+description: 'Analyze conversation history to identify gaps and suggest improvements to CLAUDE.md/AGENTS.md. Use when: "update instructions", "improve CLAUDE.md", "improve AGENTS.md"'
 disable-model-invocation: true
 allowed-tools: Read, Glob, Grep, Write, Task, AskUserQuestion
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: utility
 ---
 
 # Update Instructions

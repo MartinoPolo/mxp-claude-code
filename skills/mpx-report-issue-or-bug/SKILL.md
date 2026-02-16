@@ -1,9 +1,13 @@
 ---
 name: mpx-report-issue-or-bug
-description: Track bugs/issues in .mpx/ phase system. Parses reports, finds related phases, adds fix tasks or creates bugfix phases.
+description: 'Track bugs/issues in .mpx/ phase system. Parses reports, finds related phases, adds fix tasks or creates bugfix phases. Use when: "track this bug", "add issue to project", "log this bug", "add bug to checklist"'
 disable-model-invocation: false
 allowed-tools: Read, Write, Bash, AskUserQuestion, Glob, Grep
 args: "[issue description]"
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: project-management
 ---
 
 # Report Issue or Bug

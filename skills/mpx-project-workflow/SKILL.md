@@ -2,6 +2,10 @@
 name: mpx-project-workflow
 description: Project workflow guidance for spec-driven development. Background knowledge auto-loaded when relevant.
 user-invocable: false
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: project-management
 ---
 
 # Project Workflow Guide

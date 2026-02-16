@@ -1,8 +1,12 @@
 ---
 name: mp-brainstorm
-description: "Design before implementation. Explores user intent, requirements and approaches through collaborative dialogue before writing code."
+description: 'Design before implementation. Explores intent, requirements and approaches through collaborative dialogue. Use when: "brainstorm", "design a...", "how should we approach..."'
 disable-model-invocation: true
 allowed-tools: Read, Glob, Grep, Bash(git log *), Bash(git diff *), Bash(git status *), Write, AskUserQuestion
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: utility
 ---
 
 # Brainstorm
