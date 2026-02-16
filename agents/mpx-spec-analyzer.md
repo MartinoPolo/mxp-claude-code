@@ -2,7 +2,7 @@
 name: mpx-spec-analyzer
 description: Analyzes project specifications and creates structured implementation phases. Use when parsing complex specs.
 tools: Read, Write, Bash
-model: sonnet
+model: opus
 ---
 
 # Spec Analyzer Agent

@@ -2,6 +2,7 @@
 name: mpx-phase-reviewer
 description: Reviews completed phase diffs and updates documentation/tracking files.
 tools: Read, Write, Edit, Bash, Grep, Glob
+model: sonnet
 ---
 
 # Phase Reviewer Agent

@@ -4,7 +4,7 @@ description: Fetches up-to-date library documentation via Context7 MCP. Use for 
 tools: Read
 mcpServers:
   - "plugin:context7:context7"
-model: sonnet
+model: haiku
 ---
 
 # Context7 Documentation Agent
