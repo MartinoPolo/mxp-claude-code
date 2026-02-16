@@ -13,6 +13,16 @@ metadata:
 
 Auto-detect and fix build, typecheck, and lint errors. $ARGUMENTS
 
+## Examples
+
+**User says:** "fix lint errors"
+**Actions:** Detect package manager, run lint script, parse errors, apply fixes
+**Result:** All lint errors fixed, verification run passes
+
+**User says:** "check and fix"
+**Actions:** Run build → typecheck → lint in sequence, fix errors at each stage
+**Result:** All checks pass with applied fixes listed
+
 ## Step 1: Detect Available Checks
 
 ```bash

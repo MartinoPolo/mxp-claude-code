@@ -13,6 +13,20 @@ metadata:
 
 Unified entry point for all project onboarding. Auto-detects project state and routes to the correct path.
 
+## Examples
+
+**User says:** "/mpx-setup" (in empty directory)
+**Actions:** Detect no code/no .mpx → Path A → interactive spec creation → git init → parse spec
+**Result:** Full project scaffolding with .mpx/ phases ready for execution
+
+**User says:** "/mpx-setup" (in existing codebase)
+**Actions:** Detect source files, no .mpx → Path B → scan codebase → generate spec → parse
+**Result:** Existing features marked [IMPLEMENTED], new requirements phased for execution
+
+**User says:** "/mpx-setup" (with outdated .mpx/)
+**Actions:** Health check fails → Path C → fix SPEC/CHECKLISTs, split oversized phases
+**Result:** Restructured .mpx/ with valid phases ready to continue
+
 ## Detection Logic
 
 Deterministic — no model reasoning needed:
@@ -454,6 +468,17 @@ Next Steps:
 - **`/mpx-create-spec` fails:** Stop and report error
 - **`/mpx-init-repo` fails (e.g., git not installed):** Continue but warn user
 - **No source files in Path B:** Suggest Path A instead
+
+## Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| Health check: "Missing/empty spec" | SPEC.md missing or empty — Path C will regenerate it |
+| Health check: "No phase directories" | `.mpx/phases/` is empty — restructure creates phases from spec |
+| Health check: "Legacy files detected" | Old TASKS.md/TODO.md found — restructure migrates to CHECKLIST.md format |
+| Health check: "Oversized phase(s)" | Phase has >10 uncompleted tasks — splitting algorithm breaks it up |
+| Health check: "Roadmap/directory mismatch" | Phase folders don't match ROADMAP.md entries — restructure syncs them |
+| Scanner agent fails | Try manual spec creation with `/mpx-create-spec` instead |
 
 ## Notes
 

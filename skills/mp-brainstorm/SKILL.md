@@ -13,6 +13,16 @@ metadata:
 
 Explore ideas and design solutions before implementation. $ARGUMENTS
 
+## Examples
+
+**User says:** "brainstorm how to add authentication"
+**Actions:** Explore auth patterns (JWT vs session), review existing code, discuss trade-offs
+**Result:** Design document with recommended approach, file structure, and implementation notes
+
+**User says:** "how should we approach real-time notifications?"
+**Actions:** Compare WebSocket vs SSE vs polling, assess infrastructure needs
+**Result:** Architecture recommendation with pros/cons for each approach
+
 ## Process
 
 ### Step 1: Understand Context

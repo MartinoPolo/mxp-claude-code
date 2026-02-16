@@ -20,6 +20,16 @@ Investigate a GitHub issue, analyze the codebase, plan a fix, and execute with u
 /mp-gh-issue-fix https://github.com/owner/repo/issues/123
 ```
 
+## Examples
+
+**User says:** "/mp-gh-issue-fix https://github.com/owner/repo/issues/42"
+**Actions:** Fetch issue, explore codebase for related code, analyze root cause, present fix plan
+**Result:** User approves plan → executor implements fix → commit with "fixes #42"
+
+**User says:** "fix issue #15"
+**Actions:** Fetch issue #15, identify affected files, plan minimal fix
+**Result:** Targeted code changes with verification tests
+
 ## Workflow
 
 ### Phase 1: Fetch Issue Data

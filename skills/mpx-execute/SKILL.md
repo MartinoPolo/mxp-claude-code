@@ -23,6 +23,20 @@ Autonomously execute tasks — auto-selects the next eligible phase and executes
 /mpx-execute all       # Same as default (entire phase)
 ```
 
+## Examples
+
+**User says:** "/mpx-execute"
+**Actions:** Auto-select next eligible phase, group tasks into batches, execute sequentially
+**Result:** Full phase completed with batch commits and wrap-up review
+
+**User says:** "/mpx-execute next"
+**Actions:** Find first unchecked task in current phase, execute single task
+**Result:** One task completed and checked off in CHECKLIST.md
+
+**User says:** "/mpx-execute phase 3"
+**Actions:** Target phase 3 specifically, verify dependencies met, execute all tasks
+**Result:** Phase 3 completed (or partial with failure report)
+
 ## Workflow
 
 ### Step 1: Find Available Phases

@@ -185,6 +185,15 @@ Test at 4 breakpoints using `mcp__chrome-devtools__resize_page`:
 - Consider container queries for card component
 ```
 
+## Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| Screenshots are blank/empty | Verify chrome-devtools MCP is connected and a page is open |
+| "Tool not found" errors | Run `ToolSearch` for `chrome-devtools` to load MCP tools first |
+| Page not loading | Check URL is accessible, try navigating manually first |
+| HMR not reflecting changes | Hard refresh or re-navigate to the URL after code edits |
+
 ## Chrome DevTools MCP Tools
 
 | Task | Tool |
