@@ -139,3 +139,20 @@ Review skills (`/mp-review-branch`, `/mp-review-pr`, `/mp-review-design`) are **
 **Categories checked:** tech stack best practices, security (OWASP top 10), performance, error handling, code quality.
 
 **Confidence scoring** (0–100): >80 must fix, 66–80 should address, 40–65 worth reviewing, <40 minor/stylistic.
+
+## Worktree Scripts
+
+Create isolated worktrees for parallel development:
+
+```bash
+bash scripts/setup-worktree.sh <name>    # Create worktree branched from current branch
+bash scripts/remove-worktree.sh <name>   # Remove worktree and its branch
+```
+
+**What `setup-worktree` copies automatically:**
+
+- **IDE configs** — `.vscode/`, `.cursor/`
+- **Claude Code settings** — `.claude/settings.local.json`
+- **`.env` files** — copied from source repo, with `.env.example` fallback for any missing ones
+- **`.mpx/` folder** — copied if gitignored (local-only project data that git won't track to worktrees)
+- **Dependencies** — runs `pnpm/yarn/npm install` based on detected lockfile

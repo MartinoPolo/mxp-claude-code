@@ -60,36 +60,27 @@ copy_dir "$SOURCE_DIR/.cursor" "$PWD/.cursor"
 echo -e "${CYAN}→${RESET} Copying Claude Code local settings..."
 copy_file "$SOURCE_DIR/.claude/settings.local.json" "$PWD/.claude/settings.local.json"
 
-echo ""
-echo -e "${CYAN}?${RESET} How should .env files be set up?"
-echo "  1) Copy current .env files from source repo (default)"
-echo "  2) Create from .env.example files"
-read -p "  Choose [1/2]: " ENV_CHOICE
-ENV_CHOICE=${ENV_CHOICE:-1}
+echo -e "${CYAN}→${RESET} Copying .env files from source repo..."
+find "$SOURCE_DIR" -name ".env" -not -path "*/node_modules/*" -not -path "*/.git/*" | while read -r envfile; do
+  rel_path="${envfile#$SOURCE_DIR/}"
+  target="$PWD/$rel_path"
+  mkdir -p "$(dirname "$target")"
+  cp "$envfile" "$target"
+  echo -e "  ${DIM}Copied: $rel_path${RESET}"
+done
+# Fallback: create from .env.example if .env doesn't exist
+find . -name ".env.example" | while read -r example; do
+  target="${example%.example}"
+  if [ ! -f "$target" ]; then
+    cp "$example" "$target"
+    echo -e "  ${DIM}Created: $target (from example)${RESET}"
+  fi
+done
 
-if [ "$ENV_CHOICE" = "2" ]; then
-  echo -e "${CYAN}→${RESET} Creating .env from .env.example files..."
-  find . -name ".env.example" -exec sh -c '
-    cp "$1" "${1%.example}"
-    echo "  Copied: $1 -> ${1%.example}"
-  ' _ {} \;
-else
-  echo -e "${CYAN}→${RESET} Copying .env files from source repo..."
-  find "$SOURCE_DIR" -name ".env" -not -path "*/node_modules/*" -not -path "*/.git/*" | while read -r envfile; do
-    rel_path="${envfile#$SOURCE_DIR/}"
-    target="$PWD/$rel_path"
-    mkdir -p "$(dirname "$target")"
-    cp "$envfile" "$target"
-    echo -e "  ${DIM}Copied: $rel_path${RESET}"
-  done
-  # Fallback: create from .env.example if .env doesn't exist
-  find . -name ".env.example" | while read -r example; do
-    target="${example%.example}"
-    if [ ! -f "$target" ]; then
-      cp "$example" "$target"
-      echo -e "  ${DIM}Created: $target (from example)${RESET}"
-    fi
-  done
+# Copy .mpx if gitignored (local-only project system)
+if git check-ignore -q .mpx 2>/dev/null && [ -d "$SOURCE_DIR/.mpx" ]; then
+  echo -e "${CYAN}→${RESET} Copying .mpx/ (gitignored, local-only)..."
+  copy_dir "$SOURCE_DIR/.mpx" "$PWD/.mpx"
 fi
 
 echo -e "${CYAN}→${RESET} Opening VSCode..."
