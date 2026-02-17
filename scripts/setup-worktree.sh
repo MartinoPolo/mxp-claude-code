@@ -78,9 +78,11 @@ find . -name ".env.example" | while read -r example; do
 done
 
 # Copy .mpx if gitignored (local-only project system)
-if git check-ignore -q .mpx 2>/dev/null && [ -d "$SOURCE_DIR/.mpx" ]; then
+if git -C "$SOURCE_DIR" check-ignore -q .mpx 2>/dev/null && [ -d "$SOURCE_DIR/.mpx" ]; then
   echo -e "${CYAN}→${RESET} Copying .mpx/ (gitignored, local-only)..."
   copy_dir "$SOURCE_DIR/.mpx" "$PWD/.mpx"
+elif [ -d "$SOURCE_DIR/.mpx" ]; then
+  echo -e "${DIM}  Skipped .mpx/ (not gitignored in source repo — commit .gitignore first?)${RESET}"
 fi
 
 echo -e "${CYAN}→${RESET} Opening VSCode..."
