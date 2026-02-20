@@ -17,10 +17,12 @@ Create or update a draft PR from existing commits on current branch. $ARGUMENTS
 ### Step 1: Detect Base Branch
 
 Spawn `mp-base-branch-detector` agent (via Task tool, subagent_type `mp-base-branch-detector`, model haiku) with:
+
 - Explicit base branch from `$ARGUMENTS` (if provided)
 - Remote branches: output of `git branch -r`
 
 **Based on result:**
+
 - **Branch returned** → use it, display to user
 - **Null with candidates** → ask user with `AskUserQuestion` to pick from candidates
 - **Null without candidates** → ask user with `AskUserQuestion` to specify manually
@@ -35,12 +37,14 @@ git diff origin/<base>..HEAD --stat
 ### Step 3: Find Linked Issue
 
 Spawn `mp-gh-issue-finder` agent (via Task tool, subagent_type `mp-gh-issue-finder`, model haiku) with:
+
 - Repo: detect from `git remote get-url origin`
 - Branch name: current branch
 - Commit messages: from commit log output
 - Diff summary: from diff stat output
 
 **Based on result:**
+
 - **High confidence match** → add `Closes #N` to PR body
 - **Candidates returned** → ask user with `AskUserQuestion` which (if any) to link
 - **No match** → proceed without linking

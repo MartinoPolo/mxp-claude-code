@@ -69,10 +69,12 @@ If nothing to push (local and remote in sync) → skip to Step 5.
 ### Step 5: Detect Base Branch
 
 Spawn `mp-base-branch-detector` agent (via Task tool, subagent_type `mp-base-branch-detector`, model haiku) with:
+
 - Explicit base branch from `$ARGUMENTS` (if provided)
 - Remote branches: output of `git branch -r`
 
 **Based on result:**
+
 - **Branch returned** → use it, display to user
 - **Null with candidates** → ask user with `AskUserQuestion` to pick from candidates
 - **Null without candidates** → ask user with `AskUserQuestion` to specify manually
@@ -80,12 +82,14 @@ Spawn `mp-base-branch-detector` agent (via Task tool, subagent_type `mp-base-bra
 ### Step 6: Find Linked Issue
 
 Spawn `mp-gh-issue-finder` agent (via Task tool, subagent_type `mp-gh-issue-finder`, model haiku) with:
+
 - Repo: detect from `git remote get-url origin`
 - Branch name: current branch
 - Commit messages: from commit log output
 - Diff summary: from diff stat output
 
 **Based on result:**
+
 - **High confidence match** → add `Closes #N` to PR body
 - **Candidates returned** → ask user with `AskUserQuestion` which (if any) to link
 - **No match** → proceed without linking
@@ -169,12 +173,12 @@ Closes #42
 
 ## Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
-| "PR creation fails" | Check `gh auth status`, verify remote exists with `git remote -v` |
-| "No commits to push" | Ensure working tree has staged/unstaged changes |
-| "Base branch not found" | Specify base explicitly: `/mp-commit-push-pr main` |
-| "Draft PR already exists" | Existing PR is updated automatically — this is expected |
+| Problem                   | Solution                                                          |
+| ------------------------- | ----------------------------------------------------------------- |
+| "PR creation fails"       | Check `gh auth status`, verify remote exists with `git remote -v` |
+| "No commits to push"      | Ensure working tree has staged/unstaged changes                   |
+| "Base branch not found"   | Specify base explicitly: `/mp-commit-push-pr main`                |
+| "Draft PR already exists" | Existing PR is updated automatically — this is expected           |
 
 ## Output
 
