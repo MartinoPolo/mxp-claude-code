@@ -170,8 +170,7 @@ When breaking features into tasks, ensure:
 ├── ROADMAP.md           # Phase overview + tracking + decisions + blockers
 └── phases/
     ├── 01-foundation/
-    │   ├── CHECKLIST.md  # Phase specs + tasks + state
-    │   └── HANDOFF.md    # (optional) Ephemeral session handoff — only if /mpx-handoff was run
+    │   └── CHECKLIST.md  # Phase specs + tasks + state
     ├── 02-core-feature/
     │   └── CHECKLIST.md
     └── 03-polish/

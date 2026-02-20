@@ -2,7 +2,7 @@
 name: mp-review-pr
 description: 'Multi-agent PR review with confidence scoring (works on drafts, read-only). Use when: "review PR #N", "review pull request"'
 disable-model-invocation: true
-allowed-tools: Read, Glob, Grep, Bash(git status *), Bash(git log *), Bash(git diff *), Bash(git show *), Bash(git branch --list *), Bash(git branch --show-current *), Bash(git branch -r *), Bash(git branch -a *), Bash(git rev-parse *), Bash(git merge-base *), Bash(gh pr list *), Bash(gh pr view *), Bash(gh pr diff *), Bash(gh pr status *), Bash(gh pr checks *), Bash(gh issue list *), Bash(gh issue view *), Bash(gh repo view *), Bash(gh run list *), Bash(gh run view *), Bash(gh search *)
+allowed-tools: Read, Write, Glob, Grep, Bash(git status *), Bash(git log *), Bash(git diff *), Bash(git show *), Bash(git branch --list *), Bash(git branch --show-current *), Bash(git branch -r *), Bash(git branch -a *), Bash(git rev-parse *), Bash(git merge-base *), Bash(gh pr list *), Bash(gh pr view *), Bash(gh pr diff *), Bash(gh pr status *), Bash(gh pr checks *), Bash(gh issue list *), Bash(gh issue view *), Bash(gh repo view *), Bash(gh run list *), Bash(gh run view *), Bash(gh search *)
 metadata:
   author: MartinoPolo
   version: "0.1"
@@ -90,6 +90,37 @@ Score each issue 0-100:
 **Overall Risk**: [Low/Medium/High/Critical]
 **Ready to Merge**: [Yes/No - reasons]
 
+## Phase 5: Write REVIEW-PR.md
+
+Write `REVIEW-PR.md` to project root with actionable checklist format.
+
+Map confidence scores to severity: Top (>80) + High (66-80) → Critical/Important. Medium + Low → Nice-to-Have.
+
+```markdown
+# Review: PR #[number] — [title]
+Generated: [date] | Files: N | Issues: N (Actionable: N)
+
+## Actionable Checklist
+
+### Critical
+- [ ] **[Category]** `file:line` — Title
+  Description (1-2 sentences: what + why it's a problem).
+  Suggested fix: [concrete action]
+
+### Important
+- [ ] **[Category]** `file:line` — Title
+  Description (1-2 sentences: what + why it's a problem).
+  Suggested fix: [concrete action]
+
+## Nice-to-Have
+- Brief mention of medium/low confidence issues (no checkboxes)
+```
+
+**What goes into Actionable:** bugs, DRY/SoC violations, code cleaning, quality improvements, high-confidence security issues.
+**What goes into Nice-to-Have:** stylistic preferences, micro-optimizations, speculative issues.
+
+Each checklist item is 2-7 lines with: category tag, file location, title, description, and suggested fix.
+
 ---
 
-**Note**: This review is read-only. To apply fixes or post comments to GitHub, use separate commands.
+**Note**: This review writes `REVIEW-PR.md` but does not modify source files or post to GitHub. To apply fixes, use the checklist or ask Claude to fix specific issues.

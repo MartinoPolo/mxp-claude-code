@@ -1,17 +1,17 @@
 ---
-name: mpx-handoff
+name: mp-handoff
 description: Create ephemeral HANDOFF.md capturing session progress, decisions, and working memory for the next session.
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, TaskList
 metadata:
   author: MartinoPolo
-  version: "0.1"
+  version: "0.2"
   category: project-management
 ---
 
 # Session Handoff
 
-Creates ephemeral phase-level `HANDOFF.md` that bridges between sessions. Also persists decisions to CHECKLIST.md and ROADMAP.md.
+Creates ephemeral `HANDOFF.md` in the project root that bridges between sessions. Optionally persists decisions to `.mpx/` if the project uses phased workflow.
 
 ## Purpose
 
@@ -36,19 +36,24 @@ Use `TaskList` to see current task status:
 - In-progress tasks
 - Pending tasks
 
-### Step 3: Identify Active Phase
+### Step 3: Identify Active Phase (Optional)
 
-1. Check if in a phased project (`.mpx/phases/` exists)
+1. Check if `.mpx/phases/` exists
 2. If yes, identify the current active phase from `.mpx/ROADMAP.md`
 3. Read the active phase's `CHECKLIST.md` for current state
+4. This context enriches the handoff but is not required
 
 ### Step 4: Create or Update HANDOFF.md
 
-1. Check if `HANDOFF.md` already exists in the active phase folder
+1. Check if `HANDOFF.md` already exists in the project root
 2. If exists: read it, merge previous context with current session context (preserve still-relevant items, update/replace stale ones)
 3. If not: create new from scratch
 
-Write **ephemeral** `HANDOFF.md` in the active phase folder only (`.mpx/phases/NN-name/HANDOFF.md`):
+Write `HANDOFF.md` to the **project root**.
+
+**Target 20-200 lines. Be thorough — this is the only context the next agent gets.**
+
+Write as if briefing a developer who has zero context. Every section should contain enough detail that the reader can continue work without re-investigating.
 
 ```markdown
 # Session Handoff
@@ -56,30 +61,42 @@ Write **ephemeral** `HANDOFF.md` in the active phase folder only (`.mpx/phases/N
 Date: [Today's date]
 
 ## Progress This Session
-- [What was accomplished]
+- [For each completed item: what was done and how]
+- [Include file paths, function names, specific changes]
+- [Not just "implemented X" — describe the approach taken]
 
 ## Key Decisions
-- [Decisions and reasoning]
+- [Each decision: what was decided, alternatives considered, why this choice]
+- [Include technical trade-offs and constraints that influenced the decision]
 
-## Issues Encountered
-- What went wrong: [Mistakes made]
-- What NOT to do: [Dead ends discovered]
-- What we tried: [All attempted approaches]
-- How we handled it: [Solutions found]
+## Dead Ends & Mistakes
+- [Failed approaches with WHY they failed — error messages, wrong assumptions]
+- [Paths that looked promising but weren't — save the next agent from repeating]
+- [Include specific error messages, stack traces, or symptoms encountered]
+
+## Bugs Found
+- [Any bugs discovered during work, whether fixed or not]
+- [Include reproduction steps and file locations]
 
 ## Next Steps
-1. [Prioritized next actions]
+1. [Prioritized, with enough context to start immediately]
+2. [Include file paths, function names, what specifically needs doing]
+3. [Note any prerequisites or ordering constraints]
 
 ## Critical Files
-- [Key files with brief description]
+- `path/to/file` — what it does, why it matters for this work
+- [Every file the next agent will need to read or modify]
 
 ## Working Memory
-[Accumulated knowledge, mental models, file relationships, patterns, implicit context]
+- [Implicit knowledge: "X depends on Y", "don't change Z because..."]
+- [Patterns discovered, architectural constraints]
+- [Environment quirks, config gotchas, version-specific behavior]
+- [Relationships between components that aren't obvious from code]
 ```
 
-### Step 5: Persist Decisions
+### Step 5: Persist Decisions (Conditional)
 
-If decisions were made during this session:
+Only if `.mpx/` structure exists and decisions were made during this session:
 
 1. Update `## Decisions` in the active phase's `CHECKLIST.md` (phase-specific decisions)
 2. Update `## Decisions` in `.mpx/ROADMAP.md` (project-level decisions)
@@ -97,13 +114,14 @@ Format:
 Show the user what was created:
 
 > "Session handoff created:
-> - `.mpx/phases/02-feature/HANDOFF.md` (phase-level, ephemeral)
+> - `HANDOFF.md` (project root, ephemeral)
+> [If .mpx/ exists:]
 > - Updated Decisions in `.mpx/phases/02-feature/CHECKLIST.md`
 > - Updated Decisions in `.mpx/ROADMAP.md` (project-level)
 >
 > Captured:
 > - [X] items of progress
-> - [X] decisions (persisted to CHECKLIST.md + ROADMAP.md)
+> - [X] decisions [persisted to .mpx/ if applicable]
 > - [X] lessons learned
 > - [X] next steps
 >
@@ -111,7 +129,7 @@ Show the user what was created:
 
 ## HANDOFF.md Lifecycle
 
-1. `/mpx-handoff` **creates** HANDOFF.md (phase folder only)
+1. `/mp-handoff` **creates** HANDOFF.md (project root)
 2. `/mpx-execute` **reads** HANDOFF.md at start, passes context to executor
 3. `/mpx-execute` **deletes** HANDOFF.md after processing
 4. Purpose: bridge between sessions only — not a permanent record
@@ -119,8 +137,8 @@ Show the user what was created:
 ## Notes
 
 - HANDOFF.md is ephemeral — it exists only between sessions
-- Decisions are also persisted to CHECKLIST.md (permanent record)
-- If no `.mpx/phases/` exists, skip HANDOFF.md creation (no phase folder to write to)
+- Decisions are also persisted to `.mpx/` CHECKLIST.md if project uses phased workflow
+- Always creates HANDOFF.md in project root regardless of `.mpx/` presence
 - Focus on "why" not just "what" — reasoning is crucial
 - Capture implicit knowledge that isn't documented elsewhere
 - If HANDOFF.md already exists, it is read and merged with current session context (update-or-create)

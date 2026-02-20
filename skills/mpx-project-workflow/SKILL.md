@@ -65,8 +65,8 @@ This document provides background knowledge about spec-driven development workfl
 
 ### Session Handoff
 
-- Run `/mpx-handoff` at end of each session to create ephemeral HANDOFF.md
-- HANDOFF.md only exists if `/mpx-handoff` was run — it is optional, not always present
+- Run `/mp-handoff` at end of each session to create ephemeral HANDOFF.md
+- HANDOFF.md only exists if `/mp-handoff` was run — it is optional, not always present
 - Note any decisions made and why
 - Document blockers clearly
 - Leave "next step" note for continuity
@@ -90,7 +90,7 @@ This document provides background knowledge about spec-driven development workfl
 
 1. Use `/mpx-execute` for complex work
 2. This spawns fresh agent with clean context
-3. CHECKLIST.md maintains continuity (HANDOFF.md adds optional session context if `/mpx-handoff` was run)
+3. CHECKLIST.md maintains continuity (HANDOFF.md adds optional session context if `/mp-handoff` was run)
 
 ### "I need to change scope"
 

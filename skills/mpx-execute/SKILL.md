@@ -50,9 +50,9 @@ Autonomously execute tasks — auto-selects the next eligible phase and executes
 
 ### Step 1.5: Check for HANDOFF.md
 
-HANDOFF.md may not exist if `/mpx-handoff` was not run. This is normal — proceed without handoff context.
+HANDOFF.md may not exist if `/mp-handoff` was not run. This is normal — proceed without handoff context.
 
-1. Check if active phase folder has `HANDOFF.md` (phase handoff)
+1. Check if project root has `HANDOFF.md`
 2. If exists, read it and store the context for inclusion in the executor prompt
 3. Delete the HANDOFF.md file after reading — it is ephemeral, single-use
 4. If not found, skip — no handoff context needed
@@ -155,7 +155,7 @@ If the phase is not fully complete, skip this step entirely.
 - Phase had **3+ tasks** → spawn with `model: opus`
 - Phase had **1-2 tasks** → spawn with `model: sonnet`
 
-**6.5a: Dispatch the phase reviewer:**
+**6.5a: Code quality review — dispatch the phase reviewer:**
 
 ```
 Task tool:
@@ -176,19 +176,45 @@ Task tool:
        - Verify implementation matches spec: all requirements met, nothing missing
        - Flag YAGNI violations (built things not requested)
        - Flag misunderstandings (solved wrong problem, misinterpreted requirements)
-    3. Check if AGENTS.md, CLAUDE.md, or README.md need updates
-    4. Verify mxp tracking (CHECKLIST.md decisions, ROADMAP.md status)
+    3. Flag which docs need updates (AGENTS.md, CLAUDE.md, README.md) — do NOT update them
+    4. Verify mxp tracking accuracy (CHECKLIST.md decisions, ROADMAP.md status) — flag discrepancies, do NOT fix them
     5. Assess cross-task integration and pattern consistency
     6. Code quality review: naming, DRY, error handling, security, conventions
-    7. Commit any doc updates: `docs(phase-N): update documentation after phase completion`
-    8. Report findings with severity (Critical / Important / Minor) and assessment (PASS / NEEDS FIXES)
-    9. Use category labels: spec-compliance, duplication, type-safety, readability, separation-of-concerns, pattern-consistency, integration, security
+    7. Report findings with severity (Critical / Important / Minor) and assessment (PASS / NEEDS FIXES)
+    8. Use category labels: spec-compliance, duplication, type-safety, readability, separation-of-concerns, pattern-consistency, integration, security
 
     ## Working Directory
     [Current working directory]
 ```
 
-**6.5b: Act on findings:**
+**6.5b: Documentation update — spawn doc updater after reviewer completes:**
+
+Regardless of reviewer PASS/NEEDS FIXES outcome, spawn the doc updater:
+
+```
+Task tool:
+  subagent_type: "general-purpose"
+  model: sonnet
+  description: "Phase N doc update"
+  prompt: |
+    Run the /mp-update-docs skill in auto mode.
+
+    mode: auto
+    context: phase N completion
+
+    Scope: all (instructions + readme + mpx tracking)
+
+    Phase reviewer flagged these documentation gaps:
+    [Include Documentation Gaps section from reviewer report]
+
+    Working directory: [Current working directory]
+```
+
+The doc updater handles all documentation commits independently.
+
+**6.5c: Act on code quality findings:**
+
+Based on the **6.5a reviewer report** (not the doc update):
 
 **If reviewer reports PASS (no critical or important issues):**
 1. Mark phase complete in ROADMAP.md (`- [ ]` → `- [x]`)
@@ -222,13 +248,14 @@ Next Task:
 Phase N Complete!
 
 Comprehensive Review: [PASS / NEEDS FIXES (N fix rounds) / Skipped]
+  Code Quality: [assessment summary]
   Doc Updates: [list of files updated, or "None needed"]
-  Quality: [assessment summary]
   [If issues were skipped: "⚠️ Skipped issues: [list]"]
 
 Agents Dispatched:
   mpx-executor (opus) — [task description] — [✅/❌]
-  mpx-phase-reviewer (opus|sonnet) — Wrap-up review — [PASS / N fix rounds]
+  mpx-phase-reviewer (opus|sonnet) — Code quality review — [PASS / N fix rounds]
+  mp-update-docs (sonnet) — Documentation update — [files updated / no changes]
 
 Commits Made: N
 
@@ -264,15 +291,16 @@ Phase Progress: X/Y tasks complete
 Phase N Complete!
 
 Comprehensive Review: [PASS / NEEDS FIXES (N fix rounds) / Skipped]
-  Doc Updates: [list of files updated, or "None needed"]
   Spec Compliance: [summary]
   Code Quality: [summary]
+  Doc Updates: [list of files updated, or "None needed"]
   Fix Rounds: [N — only if fixes were needed]
   [If issues were skipped: "⚠️ Skipped issues: [list]"]
 
 Agents Dispatched: (N total)
   mpx-executor (opus) × N — Batch execution (N success, N retry)
-  mpx-phase-reviewer (opus|sonnet) — Comprehensive review — [PASS / N fix rounds]
+  mpx-phase-reviewer (opus|sonnet) — Code quality review — [PASS / N fix rounds]
+  mp-update-docs (sonnet) — Documentation update — [files updated / no changes]
 
 Commits Made: N
 
@@ -315,6 +343,6 @@ Example: Phase 2 and Phase 3 can both run if they only depend on Phase 1 (comple
 - ROADMAP.md is the source of truth for phase completion status
 - Batch mode continues on failure — all batches get attempted
 - Reviews consolidated at phase end — no per-task review overhead
-- HANDOFF.md is ephemeral — read once at start, then deleted
+- HANDOFF.md is ephemeral — read once from project root at start, then deleted
 - Autonomous by default — phase and scope are auto-decided; user is only prompted for fix/skip/stop after batch failures or review failures
 - Use args (`phase N`, `task`, `all`) to override autonomous decisions when needed

@@ -59,6 +59,12 @@ Use `ToolSearch` to load deferred tools only when needed.
 - Detecting base branch for PR creation/update
 - Called from mp-pr, mp-commit-push-pr, or mp-rebase skills
 
+**Spawn `mp-chrome-tester` agent when:**
+
+- Parent agent needs to verify UI behavior via browser
+- Test requirements provided that need browser interaction
+- Called as sub-agent for visual/functional verification
+
 **Spawn `mp-gh-issue-finder` agent when:**
 
 - Creating a PR and need to find linked issue
@@ -99,6 +105,18 @@ Use `ToolSearch` to load deferred tools only when needed.
 - "Track this bug", "Add issue to project", "Log this bug"
 - User reports a bug for internal .mpx/ tracking (not GitHub)
 - "Add bug to checklist", "Track issue in phases"
+
+**Use `/mp-release` skill when:**
+
+- "Release", "Bump version", "Version bump", "Cut a release"
+- "npm version", "Tag and release", "Publish release"
+- User wants to bump version and push a release tag
+
+**Use `/mp-update-docs` skill when:**
+
+- "Update docs", "Refresh documentation", "Sync docs"
+- "Update README", "Update instructions", "Fix tracking"
+- Auto-spawned from mpx-execute after phase completion
 
 **Use `/mp-brainstorm` skill when:**
 

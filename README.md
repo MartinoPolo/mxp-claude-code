@@ -46,7 +46,7 @@ Auto-detects project state — fresh init, existing codebase, or restructure. Cr
 /mpx-show-project-status   ◄── Check progress anytime
 ```
 
-Between sessions, optionally use `/mpx-handoff` to save context to phase `HANDOFF.md` for continuity.
+Between sessions, optionally use `/mp-handoff` to save context to `HANDOFF.md` for continuity.
 
 ## Project Structure
 
@@ -58,8 +58,7 @@ All mpx projects use phase-based organization inside `.mpx/`:
 ├── ROADMAP.md           # Phase overview + tracking + decisions + blockers
 └── phases/
     ├── 01-foundation/
-    │   ├── CHECKLIST.md  # Phase specs + tasks + state
-    │   └── HANDOFF.md    # (optional) Ephemeral session handoff — only if /mpx-handoff was run
+    │   └── CHECKLIST.md  # Phase specs + tasks + state
     ├── 02-core-feature/
     │   └── CHECKLIST.md
     └── 03-polish/
@@ -68,7 +67,7 @@ All mpx projects use phase-based organization inside `.mpx/`:
 
 - `ROADMAP.md` — tracks phase completion, project-level decisions and blockers
 - Each phase has `CHECKLIST.md` (single source of truth for specs + tasks + state)
-- `HANDOFF.md` is ephemeral and optional — created only if `/mpx-handoff` was run, consumed by `/mpx-execute`
+- `HANDOFF.md` is ephemeral and optional — created in project root by `/mp-handoff`, consumed by `/mpx-execute`
 
 ## Skills Reference
 
@@ -84,8 +83,6 @@ All mpx projects use phase-based organization inside `.mpx/`:
 | `/mpx-show-project-status` | Show progress                                                                   |
 | `/mpx-add-requirements`    | Add requirements with conflict detection                                        |
 | `/mpx-report-issue-or-bug`           | Track bugs/issues in .mpx/ phase system                                         |
-| `/mpx-handoff`             | Create ephemeral HANDOFF.md for session bridging                                |
-
 ### mp- Skills (General Purpose)
 
 | Skill                     | Description                                     |
@@ -97,11 +94,13 @@ All mpx projects use phase-based organization inside `.mpx/`:
 | `/mp-rebase`              | Rebase or merge target branch into current      |
 | `/mp-review-branch`       | Multi-agent code review of current branch       |
 | `/mp-review-pr`           | PR review with confidence scoring               |
+| `/mp-review-changes`      | Lightweight review of uncommitted changes        |
 | `/mp-review-design`       | Visual design inspection via chrome-devtools    |
 | `/mp-gh-issue-fix`        | Investigate and fix GitHub issues               |
 | `/mp-update-readme`       | Update README.md                                |
 | `/mp-update-instructions` | Analyze history, improve CLAUDE.md/AGENTS.md    |
 | `/mp-check-fix`           | Auto-detect and fix build/typecheck/lint errors |
+| `/mp-handoff`             | Create ephemeral HANDOFF.md for session bridging |
 | `/mp-gemini-fetch`        | Fetch blocked sites via Gemini CLI              |
 
 ## Agents
@@ -111,6 +110,7 @@ All mpx projects use phase-based organization inside `.mpx/`:
 | mpx-executor             | Opus   | Executes tasks with fresh context                  |
 | mpx-spec-analyzer        | Sonnet | Analyzes specs and creates phase structure         |
 | mpx-codebase-scanner     | Sonnet | Scans codebase for tech stack, features, structure |
+| mp-chrome-tester         | Sonnet | Browser test automation via Chrome DevTools MCP     |
 | mp-gh-issue-analyzer     | Opus   | Analyzes GitHub issues, creates fix plans          |
 | mp-context7-docs-fetcher | Sonnet | Fetches library docs via Context7 MCP              |
 | mp-css-layout-debugger   | Haiku  | CSS layout debugging                               |
@@ -134,7 +134,9 @@ Configured via `scripts/context-bar.sh`.
 
 ## Review Skills
 
-Review skills (`/mp-review-branch`, `/mp-review-pr`, `/mp-review-design`) are **read-only** — no files modified, no commits, no GitHub comments posted.
+Review skills (`/mp-review-branch`, `/mp-review-pr`, `/mp-review-changes`, `/mp-review-design`) are **read-only** (except writing review report files) — no commits, no GitHub comments posted.
+
+**Report files:** `/mp-review-branch` → `REVIEW-BRANCH.md`, `/mp-review-pr` → `REVIEW-PR.md`, `/mp-review-changes` → `REVIEW-CHANGES.md` (project root, actionable checklists).
 
 **Categories checked:** tech stack best practices, security (OWASP top 10), performance, error handling, code quality.
 

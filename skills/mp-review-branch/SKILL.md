@@ -2,7 +2,7 @@
 name: mp-review-branch
 description: 'Multi-agent code review of current branch changes (read-only, no GitHub posting). Use when: "review branch", "review my changes", "code review"'
 disable-model-invocation: true
-allowed-tools: Read, Glob, Grep, Bash(git status *), Bash(git log *), Bash(git diff *), Bash(git show *), Bash(git branch --list *), Bash(git branch --show-current *), Bash(git branch -r *), Bash(git branch -a *), Bash(git branch -v *), Bash(git remote -v *), Bash(git remote show *), Bash(git describe *), Bash(git blame *), Bash(git ls-files *), Bash(git ls-tree *), Bash(git rev-parse *), Bash(git rev-list *), Bash(git merge-base *), Bash(git shortlog *), Bash(git tag --list *), Bash(git tag -l *), Bash(git config --get *), Bash(git config --list *), Bash(git stash list *), Bash(git for-each-ref *), Bash(git cat-file *), Bash(git name-rev *)
+allowed-tools: Read, Write, Glob, Grep, Bash(git status *), Bash(git log *), Bash(git diff *), Bash(git show *), Bash(git branch --list *), Bash(git branch --show-current *), Bash(git branch -r *), Bash(git branch -a *), Bash(git branch -v *), Bash(git remote -v *), Bash(git remote show *), Bash(git describe *), Bash(git blame *), Bash(git ls-files *), Bash(git ls-tree *), Bash(git rev-parse *), Bash(git rev-list *), Bash(git merge-base *), Bash(git shortlog *), Bash(git tag --list *), Bash(git tag -l *), Bash(git config --get *), Bash(git config --list *), Bash(git stash list *), Bash(git for-each-ref *), Bash(git cat-file *), Bash(git name-rev *)
 metadata:
   author: MartinoPolo
   version: "0.1"
@@ -108,6 +108,37 @@ For each issue found, score confidence 0-100:
 | Code Quality | N | N | N | N |
 | Spec Alignment | N | N | N | N |
 
+## Phase 5: Write REVIEW-BRANCH.md
+
+Write `REVIEW-BRANCH.md` to project root with actionable checklist format.
+
+Map confidence scores to severity: Top (>80) + High (66-80) → Critical/Important. Medium + Low → Nice-to-Have.
+
+```markdown
+# Review: [branch-name] vs [base-branch]
+Generated: [date] | Files: N | Issues: N (Actionable: N)
+
+## Actionable Checklist
+
+### Critical
+- [ ] **[Category]** `file:line` — Title
+  Description (1-2 sentences: what + why it's a problem).
+  Suggested fix: [concrete action]
+
+### Important
+- [ ] **[Category]** `file:line` — Title
+  Description (1-2 sentences: what + why it's a problem).
+  Suggested fix: [concrete action]
+
+## Nice-to-Have
+- Brief mention of medium/low confidence issues (no checkboxes)
+```
+
+**What goes into Actionable:** bugs, DRY/SoC violations, code cleaning, quality improvements, high-confidence security issues.
+**What goes into Nice-to-Have:** stylistic preferences, micro-optimizations, speculative issues.
+
+Each checklist item is 2-7 lines with: category tag, file location, title, description, and suggested fix.
+
 ---
 
-**Note**: This review is read-only. To fix issues, copy the suggested changes and apply them manually, or ask Claude to fix specific issues in a separate conversation.
+**Note**: This review writes `REVIEW-BRANCH.md` but does not modify source files. To fix issues, use the checklist or ask Claude to fix specific issues.

@@ -1,0 +1,192 @@
+---
+name: mp-update-docs
+description: 'Unified documentation updater — instructions, README, .mpx tracking. Use when: "update docs", "refresh README", "update instructions", "sync docs"'
+args: "[instructions | readme | mpx | all]"
+disable-model-invocation: true
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion
+metadata:
+  author: MartinoPolo
+  version: "0.1"
+  category: utility
+---
+
+# Update Documentation
+
+Unified doc maintenance — detects instruction files, README, and .mpx tracking. Updates all or scoped subset.
+
+## Usage
+
+```
+/mp-update-docs                # Update all docs (interactive)
+/mp-update-docs instructions   # Only CLAUDE.md / AGENTS.md
+/mp-update-docs readme         # Only README.md
+/mp-update-docs mpx            # Only .mpx/ tracking files
+/mp-update-docs all            # Same as default
+```
+
+## Modes
+
+**Interactive** (standalone invocation): Show analysis, ask user which updates to apply before editing.
+
+**Auto** (spawned from mpx-execute): Apply all updates silently, report summary. Auto mode is indicated by the spawning prompt containing `mode: auto`.
+
+## Workflow
+
+### Step 1: Detect Doc Inventory
+
+Glob for all documentation files — no hardcoded paths:
+
+```
+# Instruction files
+~/.claude/CLAUDE.md
+~/.claude/AGENTS.md
+.claude/CLAUDE.md
+.claude/AGENTS.md
+./CLAUDE.md
+./AGENTS.md
+
+# README
+./README.md
+
+# .mpx tracking
+.mpx/ROADMAP.md
+.mpx/phases/*/CHECKLIST.md
+.mpx/DECISIONS.md (if exists)
+
+# Other docs
+*.md in project root (excluding node_modules, .git)
+```
+
+Build inventory of found files with their last-modified timestamps.
+
+**Scope filtering:** If arg is `instructions`, `readme`, or `mpx`, only include files matching that category. Skip others entirely.
+
+### Step 2: Gather Context
+
+Read existing docs from inventory, plus:
+
+- `package.json` (if exists) — name, description, scripts, dependencies
+- Project structure — `ls` top-level dirs, glob for src/lib/app patterns
+- `git log --oneline -20` — recent changes
+- `git diff HEAD~10..HEAD --stat` — files changed recently
+
+For **instructions** scope, also read recent conversation history:
+- Find project folder in `~/.claude/projects/` (path with slashes→dashes)
+- Read 5-10 most recent `.jsonl` files (last few days)
+- Extract user corrections, repeated patterns, workflow friction
+
+### Step 3: Analyze Gaps
+
+Per category, identify what needs updating:
+
+**Instructions (CLAUDE.md / AGENTS.md):**
+- Violated rules (from conversation history)
+- Missing patterns (repeated corrections, undocumented conventions)
+- Outdated content (deprecated tools, old workflows)
+- Placement: global (`~/.claude/`) vs project (`.claude/`)
+
+**README:**
+- Description/features mismatch with actual codebase
+- Scripts listed vs scripts in package.json
+- Install instructions accuracy
+- Missing or outdated sections
+
+**.mpx Tracking:**
+- ROADMAP.md status vs actual git log (phases marked incomplete but code exists)
+- CHECKLIST.md tasks vs actual code (checked items with no implementation, unchecked items already done)
+- Empty or stale Decisions/Blockers sections
+
+**Other Docs:**
+- Stale API signatures or examples
+- Missing workflow documentation
+
+### Step 4: Present or Apply Updates
+
+**Interactive mode:**
+
+Show analysis summary organized by file:
+
+```
+## Documentation Analysis
+
+### AGENTS.md (3 updates)
+1. Add missing spawn rule for [tool]
+2. Remove outdated [section]
+3. Reinforce [violated instruction]
+
+### README.md (2 updates)
+1. Update scripts section (3 new scripts)
+2. Fix install instructions (uses pnpm, not npm)
+
+### .mpx/ROADMAP.md (1 update)
+1. Phase 2 marked "Not Started" but has commits
+```
+
+Then ask user:
+
+```
+question: "Which documentation updates should I apply?"
+options:
+  - Apply all updates
+  - Review each file individually
+  - Show detailed analysis first
+  - Cancel
+```
+
+**Auto mode:**
+
+Apply all updates directly. No prompts. Log what changed.
+
+### Step 5: Apply Changes
+
+Edit files directly using Edit tool. Preserve:
+- Existing structure and formatting
+- Badges, license sections, custom content
+- `<!-- CUSTOM -->` marked sections
+- YAML frontmatter
+
+For each file changed, track: file path, what changed, why.
+
+### Step 6: Commit
+
+If any files were modified:
+
+```bash
+git add [changed doc files only]
+git commit -m "docs: update documentation after [context]"
+```
+
+Context examples: "phase 3 completion", "instruction review", "README sync".
+
+Do NOT create empty commits if nothing changed.
+
+### Step 7: Report
+
+```
+Documentation Update Summary
+
+Files Updated:
+- [file]: [changes made]
+- [file]: [changes made]
+
+Files Skipped:
+- [file]: No updates needed
+- [file]: [reason skipped]
+
+Commit: [hash] docs: update documentation after [context]
+(or "No changes needed — all docs are current")
+```
+
+## Error Handling
+
+- No docs found for scope → report "No [scope] files found in project"
+- Git commit fails → report error, don't retry
+- File read fails → skip file, note in report
+
+## Notes
+
+- Never modify source code — only documentation and tracking files
+- Preserve existing doc structure — update sections, don't rewrite
+- Keep updates minimal and high-signal
+- In auto mode, err on the side of updating (better to commit a small doc fix than miss it)
+- Conversation history analysis is best-effort — skip if files are too large or missing
