@@ -58,7 +58,16 @@ gh pr view --json number,title,body,url,state 2>/dev/null
 
 ```bash
 gh pr edit --title "type(scope): Description" --body "$(cat <<'EOF'
-PR body here
+## Description
+- Summary bullet 1
+- Summary bullet 2
+
+## Resolves
+Closes #123
+
+## Testing (Optional)
+- [ ] npm test
+- [ ] Manual smoke test: <what was verified>
 EOF
 )"
 ```
@@ -67,7 +76,16 @@ EOF
 
 ```bash
 gh pr create --draft --base <base> --title "type(scope): Description" --body "$(cat <<'EOF'
-PR body here
+## Description
+- Summary bullet 1
+- Summary bullet 2
+
+## Resolves
+Closes #123
+
+## Testing (Optional)
+- [ ] npm test
+- [ ] Manual smoke test: <what was verified>
 EOF
 )"
 ```
@@ -80,13 +98,23 @@ EOF
 
 ### Description
 
-Review ALL commits `origin/<base>..HEAD`. Write 1-6 concise bullets summarizing full scope of changes. No section headers. Include reasoning inline where non-obvious.
+Review ALL commits `origin/<base>..HEAD`. Write a structured PR body with the sections below:
+
+- `## Description` → 1-6 concise bullets summarizing full scope of changes
+- `## Resolves` → `Closes #N` when linked issue exists; otherwise `None`
+- `## Testing (Optional)` → include only when tests/manual checks were run
 
 ```
+## Description
 - Extract base branch detection into reusable agent (was duplicated across 3 skills)
 - Add existing PR check to avoid duplicate PRs on repeated runs
 
+## Resolves
 Closes #42
+
+## Testing (Optional)
+- [ ] npm test
+- [ ] Manual smoke test: create + update PR flow
 ```
 
 ### Critical
