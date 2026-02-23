@@ -1,6 +1,6 @@
 ---
 name: mp-review-changes
-description: 'Read-only review of uncommitted changes via mp-reviewer-min. Use when: "review changes", "review uncommitted"'
+description: 'Read-only review of uncommitted changes via subagents. Use when: "review changes", "review uncommitted"'
 disable-model-invocation: true
 allowed-tools: Read, Write, Glob, Grep, Bash(git status *), Bash(git diff *), Bash(git diff --cached *), Task
 metadata:
@@ -23,12 +23,15 @@ This review is **READ-ONLY** except report creation. It does NOT:
 
 1. Collect change scope (`git diff` + `git diff --cached`)
 2. If no changes, exit
-3. Spawn `mp-reviewer-min` with resolved scope
+3. Spawn 3 parallel subagents with resolved scope:
+
+- `mp-reviewer-code-quality`
+- `mp-reviewer-best-practices`
+- `mp-reviewer-spec-alignment`
+
 4. Write returned findings to `REVIEW-CHANGES.md`
 
 ## Review Dispatch Logic
-
-Spawn agent: `mp-reviewer-min`
 
 Pass:
 

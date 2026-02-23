@@ -15,6 +15,11 @@ Investigate a GitHub issue, analyze the codebase, plan a fix, and execute with u
 
 GitHub MCP allowed for this skill.
 
+## Architecture: No Nested Agents
+
+Sub-agents CANNOT spawn other sub-agents. All agent spawning happens at this skill level only.
+`mp-executor` cannot spawn agents — if it needs library docs, this skill fetches them first.
+
 ## Usage
 
 ```
@@ -123,7 +128,7 @@ AskUserQuestion:
       description: "Do not implement"
 ```
 
-**On approval:** Delegate to executor agent:
+**On approval:** First, if the issue involves a library, spawn `mp-context7-docs-fetcher` to get relevant docs. Then delegate to executor agent:
 
 ```
 Task tool:
@@ -139,6 +144,9 @@ Task tool:
     ## Fix Plan
     [Include the approved plan]
 
+    ## Library Docs (if fetched)
+    [Include Context7 docs if relevant]
+
     ## Instructions
     1. Implement each step in the plan
     2. Run relevant tests to verify
@@ -149,6 +157,7 @@ Task tool:
     - Follow existing code patterns
     - Keep changes minimal and focused
     - Do NOT expand scope beyond the plan
+    - Do NOT spawn sub-agents — you cannot
 ```
 
 **On modify:** Ask for changes, re-run Phase 3 with adjustments.
@@ -188,16 +197,16 @@ After execution completes:
 | Plan confidence = Low  | Ask user before proceeding         |
 | Execution fails        | Report blocker, suggest manual fix |
 
-## Optional: Library Docs
+## Library Docs (Pre-Execution)
 
-If the issue involves an external library, use Context7 for docs:
+If the issue involves an external library, spawn `mp-context7-docs-fetcher` **before** launching the executor:
 
 ```
 Task tool:
   subagent_type: "mp-context7-docs-fetcher"
-  model: sonnet
+  model: haiku
   description: "Fetch docs for [library]"
   prompt: "Get documentation for [library] focusing on [relevant API]"
 ```
 
-Only fetch docs when issue clearly involves library-specific behavior.
+Pass the fetched docs to `mp-executor` in its prompt. Only fetch docs when issue clearly involves library-specific behavior.

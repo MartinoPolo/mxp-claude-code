@@ -26,12 +26,6 @@ Execute tasks using grouped agentic loops.
 - MPX mode: execute from `.mpx/ROADMAP.md` + phase `CHECKLIST.md` files
 - In both modes: consume `HANDOFF.md` from project root if present
 
-## MCP Allowlist
-
-- GitHub MCP: allowed
-- Context7 MCP: only via `mp-context7-docs-fetcher`
-- Chrome DevTools MCP: only via `mp-chrome-tester`
-
 ## Orchestration
 
 ### Step 0: Consume HANDOFF.md (both modes)
@@ -77,8 +71,10 @@ For each group:
    - original task/spec text
    - session handoff context (if consumed)
    - checklist path
-2. After executor finisher, spawn in parallel:
-   - `mp-reviewer-min` agent on group diff + original spec
+2. After executor finishes, spawn in parallel:
+   - `mp-reviewer-code-quality`
+   - `mp-reviewer-best-practices`
+   - `mp-reviewer-spec-alignment` with task spec
    - `mp-checker` agent with detected check commands
 3. If reviewer/checker reports issues, optionally spawn `mp-issue-resolver` agent
    - pass findings + failing commands
@@ -96,7 +92,15 @@ In MPX mode, update phase `CHECKLIST.md` and roadmap phase status where relevant
 
 After all tasks are completed or unresolved, run full gate:
 
-1. Spawn `mp-reviewer-full` agent
+1. Spawn 6 parallel subagents with resolved scope:
+
+- `mp-reviewer-code-quality`
+- `mp-reviewer-best-practices`
+- `mp-reviewer-spec-alignment`
+- `mp-reviewer-security`
+- `mp-reviewer-performance`
+- `mp-reviewer-error-handling`
+
 2. Spawn `mp-checker` agent
 3. If issues remain, spawn `mp-issue-resolver` agent with all findings and failed checks
 4. If still unresolved, mark affected tasks as unresolved with clear reason and continue
@@ -109,16 +113,6 @@ After all tasks are completed or unresolved, run full gate:
 - Final commit — invoke `/mp-commit` for any remaining uncommitted changes (checklist updates, roadmap status, docs)
 - Summarize completed/skipped/unresolved tasks
 - Spawn `mp-docs-updater` agent with list of changes to update docs
-
-## Required Subagents
-
-- `mp-checks-detector`
-- `mp-executor`
-- `mp-reviewer-min`
-- `mp-reviewer-full`
-- `mp-checker`
-- `mp-issue-resolver` (optional)
-- `mp-docs-updater` (when docs drift)
 
 ## Failure Policy
 

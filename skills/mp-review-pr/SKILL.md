@@ -1,6 +1,6 @@
 ---
 name: mp-review-pr
-description: 'Read-only PR review via mp-reviewer-full. Works on draft PRs. Use when: "review PR #N"'
+description: 'Read-only PR review via subagent. Works on draft PRs. Use when: "review PR #N"'
 disable-model-invocation: true
 allowed-tools: Read, Write, Glob, Grep, Bash(gh pr view *), Bash(gh pr diff *), Bash(gh pr list *), Task
 metadata:
@@ -25,12 +25,18 @@ This review is **READ-ONLY** except report creation. It does NOT:
 
 1. Resolve PR (`$ARGUMENTS` or current branch PR)
 2. Fetch PR metadata + diff (draft PRs included)
-3. Spawn `mp-reviewer-full` with resolved scope
+3. Spawn 6 parallel subagents with resolved scope:
+
+- `mp-reviewer-code-quality`
+- `mp-reviewer-best-practices`
+- `mp-reviewer-spec-alignment`
+- `mp-reviewer-security`
+- `mp-reviewer-performance`
+- `mp-reviewer-error-handling`
+
 4. Write returned findings to `REVIEW-PR.md`
 
 ## Review Dispatch Logic
-
-Spawn agent: `mp-reviewer-full`
 
 Pass:
 

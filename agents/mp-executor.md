@@ -18,21 +18,13 @@ Execute assigned checklist tasks only. Keep scope tight.
 
 Do NOT run broad review workflows. Do NOT perform final acceptance decisions.
 
-## Required Subagents
-
-- Use `Explore` subagent when affected files are unclear
-- Use `mp-context7-docs-fetcher` when library/API behavior matters
-- Use `mp-chrome-tester` only when browser verification is explicitly required
-
-Do not call Context7 or DevTools MCP tools directly from this agent.
-
 ## Workflow
 
-1. Read assigned tasks and original specification text
-2. Explore codebase (prefer `Explore` subagent)
-3. Fetch docs via `mp-context7-docs-fetcher` when needed (working with external libraries or unclear APIs)
-4. Implement tasks sequentially
-5. Report back
+1. Read assigned tasks and original specification text.
+2. Explore codebase and understand the issue.
+3. Implement tasks sequentially.
+4. If library docs needed, note in output for parent skill to fetch.
+5. Report back.
 
 ## Blockers
 

@@ -61,7 +61,7 @@ Use `ToolSearch` to load deferred tools only when needed.
 
 **Spawn `mp-chrome-tester` agent when:**
 
-- Parent agent needs to verify UI behavior via browser
+- Need to verify UI behavior via browser
 - Test requirements provided that need browser interaction
 - Called as sub-agent for visual/functional verification
 
@@ -165,14 +165,12 @@ Choose one of these:
 At end of each response where agents were spawned or skills invoked, append:
 
 **Session Activity:**
+
 - `agent-name` (model) — brief purpose [× count if >1]
 - `/skill-name` — brief purpose
 
-Hierarchical for sub-agents:
-- `mpx-executor` (opus) — Implement login form
-  - `mp-context7-docs-fetcher` (sonnet) — React docs lookup
-
 Rules:
+
 - Omit entirely if no agents/skills used
 - Include model (opus/sonnet/haiku) for agents
 - Show parallel runs as × count

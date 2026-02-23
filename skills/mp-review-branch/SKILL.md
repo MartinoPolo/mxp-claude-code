@@ -1,6 +1,6 @@
 ---
 name: mp-review-branch
-description: 'Read-only branch review via mp-reviewer-full. Use when: "review branch", "review my changes"'
+description: 'Read-only branch review via subagents. Use when: "review branch", "review my changes"'
 disable-model-invocation: true
 allowed-tools: Read, Write, Glob, Grep, Bash(git branch --show-current *), Bash(git branch -r *), Bash(git merge-base *), Bash(git diff *), Bash(git log *), Task, AskUserQuestion
 metadata:
@@ -24,12 +24,18 @@ This review is **READ-ONLY** except report creation. It does NOT:
 1. Determine current (`git branch --show-current`) and base branch (auto-detect via `mp-base-branch-detector`)
 2. Ask user only when base is ambiguous
 3. Build diff scope (`git diff <base>...HEAD`)
-4. Spawn `mp-reviewer-full` with resolved scope
+4. Spawn 6 parallel subagents with resolved scope:
+
+- `mp-reviewer-code-quality`
+- `mp-reviewer-best-practices`
+- `mp-reviewer-spec-alignment`
+- `mp-reviewer-security`
+- `mp-reviewer-performance`
+- `mp-reviewer-error-handling`
+
 5. Write returned findings to `REVIEW-BRANCH.md`
 
 ## Review Dispatch Logic
-
-Spawn agent: `mp-reviewer-full`
 
 Pass:
 

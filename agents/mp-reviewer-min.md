@@ -1,7 +1,7 @@
 ---
 name: mp-reviewer-min
-description: Lightweight read-only review orchestrator for quality, best practices, and spec alignment.
-tools: Read, Grep, Glob, Bash, Task
+description: Lightweight self-contained read-only reviewer for quality, best practices, and spec alignment.
+tools: Read, Grep, Glob, Bash
 model: sonnet
 ---
 
@@ -9,6 +9,7 @@ model: sonnet
 
 Run a minimal, high-confidence read-only review.
 No code changes, read-only review.
+**Self-contained** — performs all review checks directly. Does NOT spawn sub-agents.
 
 ## Inputs
 
@@ -28,13 +29,13 @@ Run 3 subagents in parallel and report back issues they find. Only report high-c
 ## Output
 
 Only high-confidence findings. Prioritize actionable risk.
-Group by agent who reported the issue and severity.
+Group by review area and severity.
 
 ```markdown
 Assessment: PASS | NEEDS_FIXES
 Risk: Low | Medium | High | Critical
 
-mp-reviewer-code-quality:
+Code Quality:
 
 Critical:
 
@@ -45,4 +46,12 @@ Important:
 
 - `title - file:line`
 - `What & Why` + [optionally]`Suggested fix`
+
+Best Practices:
+
+[same format]
+
+Spec Alignment:
+
+[same format]
 ```
