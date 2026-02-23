@@ -1,6 +1,6 @@
 ---
 name: mp-gemini-fetch
-description: 'Fetch content from sites Claude cannot access (Reddit, etc.) using Gemini CLI as fallback. Use when: fetching Reddit, StackOverflow, or sites Claude cannot access'
+description: "Fetch content from sites Claude cannot access (Reddit, etc.) using Gemini CLI as fallback. Use when: fetching Reddit, StackOverflow, or sites Claude cannot access"
 compatibility: Requires Gemini CLI installed and authenticated
 disable-model-invocation: true
 allowed-tools: Bash, Read, Write
@@ -22,6 +22,7 @@ Fetches content from websites that Claude cannot directly access using Gemini CL
 ## Usage
 
 Invoke with a URL:
+
 ```
 /mp-gemini-fetch https://reddit.com/r/programming/top
 ```
@@ -41,6 +42,7 @@ gemini -p "Fetch and summarize the main content from this URL: [URL]. Include ke
 ```
 
 Use longer timeout for complex pages:
+
 ```bash
 gemini -p "..." --timeout 120000
 ```
@@ -70,6 +72,7 @@ Present the fetched content to the user:
 ## Error Handling
 
 If Gemini CLI fails:
+
 1. **"No input provided via stdin"** → You forgot the `-p` flag. Use `gemini -p "prompt"`
 2. Check if Gemini is installed: `gemini --version`
 3. Check authentication: `gemini auth`

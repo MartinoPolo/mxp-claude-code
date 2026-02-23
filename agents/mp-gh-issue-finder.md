@@ -14,6 +14,7 @@ Find the GitHub issue that a PR's changes resolve. Return `Closes #N` or candida
 ## Input
 
 You receive:
+
 1. **Repo** — `owner/repo`
 2. **Branch name**
 3. **Commit messages** — oneline list
@@ -24,6 +25,7 @@ You receive:
 ### Step 1: Extract Keywords
 
 From branch name, commit messages, and diff file paths, extract:
+
 - Feature/bug keywords (strip prefixes like `feat/`, `fix/`, `issue-`)
 - File paths and component names
 - Any `#N` references already in commits
@@ -38,12 +40,12 @@ gh issue list --repo <repo> --state open --limit 50 --json number,title,body,lab
 
 For each issue, score against PR context:
 
-| Signal | Weight |
-|--------|--------|
-| Issue number referenced in branch name or commits | **Instant match** |
-| Title keyword overlap with commits/branch | High |
-| Body mentions same files/components | Medium |
-| Label matches commit type (bug↔fix, enhancement↔feat) | Low |
+| Signal                                                | Weight            |
+| ----------------------------------------------------- | ----------------- |
+| Issue number referenced in branch name or commits     | **Instant match** |
+| Title keyword overlap with commits/branch             | High              |
+| Body mentions same files/components                   | Medium            |
+| Label matches commit type (bug↔fix, enhancement↔feat) | Low               |
 
 ### Step 4: Return Result
 

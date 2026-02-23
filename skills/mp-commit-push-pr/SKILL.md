@@ -12,6 +12,8 @@ metadata:
 
 Full workflow: stage → commit → push → detect base → create or update draft PR. $ARGUMENTS
 
+GitHub MCP allowed for this skill.
+
 ## Workflow
 
 ### Step 1: Check Status

@@ -26,10 +26,12 @@ Rebase (default) or merge a target branch into the current branch. $ARGUMENTS
 If target branch provided in Step 1 → use it.
 
 Otherwise, spawn `mp-base-branch-detector` agent (via Task tool, subagent_type `mp-base-branch-detector`, model haiku) with:
+
 - Explicit base branch: none
 - Remote branches: output of `git branch -r`
 
 **Based on result:**
+
 - **Branch returned** → use it, display to user
 - **Null with candidates** → ask user with `AskUserQuestion` to pick from candidates
 - **Null without candidates** → ask user with `AskUserQuestion` to specify manually
@@ -43,6 +45,7 @@ git status --porcelain
 ```
 
 If output is non-empty → AskUserQuestion: "Uncommitted changes detected. Rebase requires a clean working tree."
+
 - "Stash changes and continue" → `git stash push -m "Auto-stash before rebase"`
 - "Abort"
 
@@ -63,6 +66,7 @@ git rev-list --left-right --count HEAD...origin/<current>
 ```
 
 Based on ahead/behind counts:
+
 - **Behind only** → AskUserQuestion: "Current branch is N behind remote. Pull first?"
   - "Pull remote changes (Recommended)" → `git pull --rebase origin <current>`
   - "Continue anyway"

@@ -14,6 +14,10 @@ metadata:
 
 Visual inspection workflow using chrome-devtools MCP to identify and fix design issues.
 
+Use `mp-chrome-tester` as the dedicated DevTools subagent for browser operations. Do not call DevTools MCP tools directly from this skill.
+
+Chrome DevTools MCP allowed only through `mp-chrome-tester`.
+
 ## Prerequisites
 
 1. Website running (localhost or remote)

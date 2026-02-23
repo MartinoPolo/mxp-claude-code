@@ -15,13 +15,14 @@ Creates ephemeral `HANDOFF.md` in the project root that bridges between sessions
 
 ## Purpose
 
-Capture accumulated knowledge, context, and insights that would be lost when starting a new conversation. HANDOFF.md is ephemeral — created here, consumed and deleted by `/mpx-execute` at the start of the next session.
+Capture accumulated knowledge, context, and insights that would be lost when starting a new conversation. HANDOFF.md is ephemeral — created here, consumed and deleted by `/mp-execute` at the start of the next session.
 
 ## Workflow
 
 ### Step 1: Gather Context
 
 Review the current conversation to extract:
+
 - What was accomplished (progress)
 - Decisions made and their reasoning
 - Problems encountered and how they were solved
@@ -32,6 +33,7 @@ Review the current conversation to extract:
 ### Step 2: Check Task List
 
 Use `TaskList` to see current task status:
+
 - Completed tasks
 - In-progress tasks
 - Pending tasks
@@ -61,33 +63,40 @@ Write as if briefing a developer who has zero context. Every section should cont
 Date: [Today's date]
 
 ## Progress This Session
+
 - [For each completed item: what was done and how]
 - [Include file paths, function names, specific changes]
 - [Not just "implemented X" — describe the approach taken]
 
 ## Key Decisions
+
 - [Each decision: what was decided, alternatives considered, why this choice]
 - [Include technical trade-offs and constraints that influenced the decision]
 
 ## Dead Ends & Mistakes
+
 - [Failed approaches with WHY they failed — error messages, wrong assumptions]
 - [Paths that looked promising but weren't — save the next agent from repeating]
 - [Include specific error messages, stack traces, or symptoms encountered]
 
 ## Bugs Found
+
 - [Any bugs discovered during work, whether fixed or not]
 - [Include reproduction steps and file locations]
 
 ## Next Steps
+
 1. [Prioritized, with enough context to start immediately]
 2. [Include file paths, function names, what specifically needs doing]
 3. [Note any prerequisites or ordering constraints]
 
 ## Critical Files
+
 - `path/to/file` — what it does, why it matters for this work
 - [Every file the next agent will need to read or modify]
 
 ## Working Memory
+
 - [Implicit knowledge: "X depends on Y", "don't change Z because..."]
 - [Patterns discovered, architectural constraints]
 - [Environment quirks, config gotchas, version-specific behavior]
@@ -104,8 +113,10 @@ Only if `.mpx/` structure exists and decisions were made during this session:
 Decisions are persistent (unlike HANDOFF.md which is ephemeral).
 
 Format:
+
 ```markdown
 ## Decisions
+
 - [Date]: [Decision description] — [reasoning]
 ```
 
@@ -114,24 +125,26 @@ Format:
 Show the user what was created:
 
 > "Session handoff created:
+>
 > - `HANDOFF.md` (project root, ephemeral)
-> [If .mpx/ exists:]
+>   [If .mpx/ exists:]
 > - Updated Decisions in `.mpx/phases/02-feature/CHECKLIST.md`
 > - Updated Decisions in `.mpx/ROADMAP.md` (project-level)
 >
 > Captured:
-> - [X] items of progress
-> - [X] decisions [persisted to .mpx/ if applicable]
-> - [X] lessons learned
-> - [X] next steps
 >
-> HANDOFF.md will be consumed automatically by `/mpx-execute` in your next session."
+> - [x] items of progress
+> - [x] decisions [persisted to .mpx/ if applicable]
+> - [x] lessons learned
+> - [x] next steps
+>
+> HANDOFF.md will be consumed automatically by `/mp-execute` in your next session."
 
 ## HANDOFF.md Lifecycle
 
 1. `/mp-handoff` **creates** HANDOFF.md (project root)
-2. `/mpx-execute` **reads** HANDOFF.md at start, passes context to executor
-3. `/mpx-execute` **deletes** HANDOFF.md after processing
+2. `/mp-execute` **reads** HANDOFF.md at start (both checklist and mpx modes), passes context to executor
+3. `/mp-execute` **deletes** HANDOFF.md after processing
 4. Purpose: bridge between sessions only — not a permanent record
 
 ## Notes

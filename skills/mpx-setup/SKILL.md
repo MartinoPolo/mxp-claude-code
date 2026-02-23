@@ -1,6 +1,6 @@
 ---
 name: mpx-setup
-description: 'Unified project setup. Auto-detects state — fresh init, existing codebase conversion, or restructure of outdated .mpx/.'
+description: "Unified project setup. Auto-detects state — fresh init, existing codebase conversion, or restructure of outdated .mpx/."
 disable-model-invocation: true
 allowed-tools: Read, Write, Bash, Glob, Grep, Skill, Task, AskUserQuestion
 metadata:
@@ -54,17 +54,18 @@ If `.mpx/` exists, run the **MXP Health Check** below before routing.
 
 Run all checks. Collect failures. Any failure → Path C.
 
-| # | Check | Failure |
-|---|-------|---------|
-| 1 | `.mpx/SPEC.md` exists and non-empty | Missing/empty spec |
-| 2 | `.mpx/ROADMAP.md` exists and non-empty | Missing/empty roadmap |
-| 3 | At least one `phases/NN-*/` directory exists | No phase directories |
-| 4 | Every phase dir has `CHECKLIST.md` | Phase(s) missing checklist |
-| 5 | No legacy files (`TASKS.md`, `TODO.md`, `task-*.md` in phase dirs) | Legacy files detected |
-| 6 | Every phase has ≤10 uncompleted tasks | Oversized phase(s) |
-| 7 | ROADMAP.md phase entries match actual phase directories | Roadmap/directory mismatch |
+| #   | Check                                                              | Failure                    |
+| --- | ------------------------------------------------------------------ | -------------------------- |
+| 1   | `.mpx/SPEC.md` exists and non-empty                                | Missing/empty spec         |
+| 2   | `.mpx/ROADMAP.md` exists and non-empty                             | Missing/empty roadmap      |
+| 3   | At least one `phases/NN-*/` directory exists                       | No phase directories       |
+| 4   | Every phase dir has `CHECKLIST.md`                                 | Phase(s) missing checklist |
+| 5   | No legacy files (`TASKS.md`, `TODO.md`, `task-*.md` in phase dirs) | Legacy files detected      |
+| 6   | Every phase has ≤10 uncompleted tasks                              | Oversized phase(s)         |
+| 7   | ROADMAP.md phase entries match actual phase directories            | Roadmap/directory mismatch |
 
 **All checks pass → healthy.** Use `AskUserQuestion`:
+
 - **Overwrite** — delete `.mpx/`, restart as Path A or B (based on source detection)
 - **Add requirements** — invoke `/mpx-add-requirements` instead
 - **Abort** — stop
@@ -117,10 +118,12 @@ For new projects with no code and no `.mpx/`.
 ### Steps
 
 **A1: Check Git**
+
 - Does `.git/` exist?
 - If not, note that git init will happen in A3.
 
 **A2: Create Specification**
+
 ```
 Use Skill tool: skill: "mpx-create-spec"
 ```
@@ -128,7 +131,9 @@ Use Skill tool: skill: "mpx-create-spec"
 **A3: Confirm Git Initialization**
 
 Use `AskUserQuestion`:
+
 > "Ready to initialize git repository? This will create `.git/`, `.gitignore`, and initial commit."
+
 - Yes → invoke `/mpx-init-repo`
 - No → skip
 
@@ -137,6 +142,7 @@ Use Skill tool: skill: "mpx-init-repo"
 ```
 
 **A4: Parse Specification**
+
 ```
 Use Skill tool: skill: "mpx-parse-spec"
 ```
@@ -146,6 +152,7 @@ Use Skill tool: skill: "mpx-parse-spec"
 Run the **Phase Splitting Algorithm** (see below) on all generated phases.
 
 **A6: Summary**
+
 ```
 Project Initialized Successfully!
 
@@ -164,7 +171,7 @@ Git Status:
   Initial commit created  ✓ / skipped
 
 Next Steps:
-  Run `/mpx-execute` to start Phase 1 with fresh context.
+  Run `/mp-execute mpx` to start Phase 1 with fresh context.
   Run `/mpx-show-project-status` to check progress at any time.
 ```
 
@@ -221,11 +228,13 @@ For existing codebases with source files but no `.mpx/`.
 ### Steps
 
 **B1: Verify Git**
+
 - `.git/` must exist. If missing → tell user to run `git init` first.
 
 **B2: Scan Codebase**
 
 Spawn `mpx-codebase-scanner` agent:
+
 ```
 Use Task tool:
   subagent_type: "mpx-codebase-scanner"
@@ -237,6 +246,7 @@ Store the full report.
 **B3: Present Findings & Confirm**
 
 Display detected profile summary. Use `AskUserQuestion`:
+
 - **Looks correct** — proceed
 - **Needs corrections** — user provides fixes
 - **Scan missed features** — user lists additions
@@ -252,6 +262,7 @@ If multiple goals, follow up to clarify priority and dependencies.
 **B5: Generate SPEC.md**
 
 Create `.mpx/SPEC.md` with:
+
 - Header noting converted project and `[IMPLEMENTED]` markers
 - Tech stack from scan
 - Existing features marked `[IMPLEMENTED]`
@@ -266,37 +277,50 @@ Create `.mpx/SPEC.md` with:
 Generated: [Date]
 
 ## Project Overview
+
 [From scan report]
 
 ## Tech Stack
+
 [From scan report]
 
 ## Project Structure
+
 [From scan report]
 
 ## Dev Commands
+
 [From scan report]
 
 ## Existing Features [IMPLEMENTED]
+
 ### [Feature 1] [IMPLEMENTED]
+
 [Brief description]
 
 ## New Requirements
+
 ### [Goal 1]
+
 [Description]
+
 #### Acceptance Criteria
+
 - [Derived from user description]
 
 ## Technical Constraints
+
 - Must integrate with existing codebase patterns
 - Preserve existing functionality
 - Follow established project conventions
 
 ## Dependencies Between Requirements
+
 [Map if any new requirements depend on others]
 ```
 
 **B6: Parse Specification**
+
 ```
 Use Skill tool: skill: "mpx-parse-spec"
 ```
@@ -310,10 +334,12 @@ Run the **Phase Splitting Algorithm** on all generated phases.
 Create or update `.claude/CLAUDE.md` in the project directory with real project info from the scan report.
 
 Before writing:
+
 - If `.claude/CLAUDE.md` exists with non-template content → `AskUserQuestion`: overwrite, merge, or skip
 - If empty or template-only → overwrite silently
 
 **B9: Summary**
+
 ```
 Project Converted Successfully!
 
@@ -339,7 +365,7 @@ Phases: [N] phases focusing on new work
   2. [Phase name] ([N] tasks)
 
 Next Steps:
-  Run `/mpx-execute` to start Phase 1 with fresh context.
+       Run `/mp-execute mpx` to start Phase 1 with fresh context.
   Run `/mpx-show-project-status` to check progress at any time.
 ```
 
@@ -391,6 +417,7 @@ For projects where `.mpx/` exists but has health issues.
 **C1: Present Health Issues**
 
 Display all failed health checks to the user. Use `AskUserQuestion`:
+
 - **Fix all** — proceed with automatic fixes
 - **Review one by one** — confirm each fix
 - **Abort** — stop
@@ -398,6 +425,7 @@ Display all failed health checks to the user. Use `AskUserQuestion`:
 **C2: Fix Missing/Empty SPEC.md**
 
 If SPEC.md missing or empty:
+
 - Source files exist → spawn `mpx-codebase-scanner`, generate spec (like Path B steps B2-B5)
 - No source files → invoke `/mpx-create-spec` (like Path A step A2)
 
@@ -406,6 +434,7 @@ If SPEC.md exists and non-empty → skip.
 **C3: Fix Missing CHECKLISTs**
 
 For each phase directory missing `CHECKLIST.md`:
+
 1. Check for legacy files (`TASKS.md`, `TODO.md`, `task-*.md`) in the phase dir
 2. If legacy files found → migrate content into proper CHECKLIST.md format
 3. If no legacy files → generate minimal CHECKLIST.md from ROADMAP.md phase entry and SPEC.md
@@ -418,6 +447,7 @@ Run the **Phase Splitting Algorithm** on all phases with >6 uncompleted tasks.
 **C5: Rebuild ROADMAP.md**
 
 Regenerate ROADMAP.md from current phase directories:
+
 - Preserve completed states (`- [x]`)
 - Preserve existing decisions and blockers sections
 - Fix phase numbering to match directory structure
@@ -446,7 +476,7 @@ Phase Structure:
   2. [Phase name] ([N] tasks) [status]
 
 Next Steps:
-  Run `/mpx-execute` to continue work.
+       Run `/mp-execute mpx` to continue work.
   Run `/mpx-show-project-status` to verify structure.
 ```
 
@@ -471,14 +501,14 @@ Next Steps:
 
 ## Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
-| Health check: "Missing/empty spec" | SPEC.md missing or empty — Path C will regenerate it |
-| Health check: "No phase directories" | `.mpx/phases/` is empty — restructure creates phases from spec |
-| Health check: "Legacy files detected" | Old TASKS.md/TODO.md found — restructure migrates to CHECKLIST.md format |
-| Health check: "Oversized phase(s)" | Phase has >10 uncompleted tasks — splitting algorithm breaks it up |
-| Health check: "Roadmap/directory mismatch" | Phase folders don't match ROADMAP.md entries — restructure syncs them |
-| Scanner agent fails | Try manual spec creation with `/mpx-create-spec` instead |
+| Problem                                    | Solution                                                                 |
+| ------------------------------------------ | ------------------------------------------------------------------------ |
+| Health check: "Missing/empty spec"         | SPEC.md missing or empty — Path C will regenerate it                     |
+| Health check: "No phase directories"       | `.mpx/phases/` is empty — restructure creates phases from spec           |
+| Health check: "Legacy files detected"      | Old TASKS.md/TODO.md found — restructure migrates to CHECKLIST.md format |
+| Health check: "Oversized phase(s)"         | Phase has >10 uncompleted tasks — splitting algorithm breaks it up       |
+| Health check: "Roadmap/directory mismatch" | Phase folders don't match ROADMAP.md entries — restructure syncs them    |
+| Scanner agent fails                        | Try manual spec creation with `/mpx-create-spec` instead                 |
 
 ## Notes
 

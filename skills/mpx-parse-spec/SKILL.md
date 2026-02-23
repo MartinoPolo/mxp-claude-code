@@ -26,6 +26,7 @@ Convert SPEC.md into a phased implementation plan with tracking files.
 ### Step 1: Read and Analyze SPEC.md
 
 Read `.mpx/SPEC.md` and extract:
+
 - Project name
 - Tech stack
 - Core features
@@ -34,6 +35,7 @@ Read `.mpx/SPEC.md` and extract:
 ### Step 2: Create Phase Structure
 
 Create the following:
+
 - `.mpx/ROADMAP.md` (phase overview + tracking + decisions + blockers)
 - `.mpx/phases/` directory with **phase folders**
 
@@ -42,6 +44,7 @@ Smaller projects may have just 1-2 phases; larger projects may have more.
 ### Step 3: Create Files
 
 **ROADMAP.md** (phase overview + tracking + decisions + blockers):
+
 ```markdown
 # Implementation Roadmap
 
@@ -50,6 +53,7 @@ Generated: [Date]
 Total Phases: N
 
 ## Overview
+
 [Brief summary of the full implementation approach]
 
 ## Phases
@@ -60,24 +64,29 @@ Total Phases: N
 - [ ] **Phase 4: Polish** — N tasks | Dependencies: Phase 3
 
 ## Dependency Graph
+
 Phase 1 (Foundation) → Phase 2 (Core) → Phase 3 (Secondary) → Phase 4 (Polish)
 
 ## Phase Details
 
 ### Phase 1: Foundation
+
 **Goal:** Set up project infrastructure
 **Deliverables:** Working dev environment, basic project structure
 
 ### Phase 2: [Feature Name]
+
 **Goal:** Implement core functionality
 **Deliverables:** [Specific outputs]
 
 [Continue for all phases...]
 
 ## Decisions
+
 [Project-level decisions with reasoning]
 
 ## Blockers
+
 None
 ```
 
@@ -86,6 +95,7 @@ None
 Each phase gets its own folder with a single CHECKLIST.md file — the single source of truth for phase specs, tasks, and state.
 
 **CHECKLIST.md** (specs + tasks + state):
+
 ```markdown
 # Phase 1: Foundation
 
@@ -93,12 +103,15 @@ Each phase gets its own folder with a single CHECKLIST.md file — the single so
 **Dependencies:** None
 
 ## Objective
+
 Set up the project infrastructure and development environment.
 
 ## Scope
+
 - Initialize project, build tools, dev environment
 
 ## Out of Scope
+
 - Feature implementation, production deployment
 
 ---
@@ -108,15 +121,15 @@ Set up the project infrastructure and development environment.
 ### Setup
 
 - [ ] Initialize project and install dependencies
-  Create project config, add runtime/dev dependencies per tech stack.
+      Create project config, add runtime/dev dependencies per tech stack.
 
 - [ ] Configure TypeScript/linting
-  Set up tsconfig.json strict mode, ESLint, Prettier.
+      Set up tsconfig.json strict mode, ESLint, Prettier.
 
 ### Project Structure
 
 - [ ] Create directory structure and entry point
-  Set up src/, tests/, config/. Create main entry point.
+      Set up src/, tests/, config/. Create main entry point.
 
 ### Completion Criteria
 
@@ -124,12 +137,15 @@ Set up the project infrastructure and development environment.
 - [ ] Dev server runs successfully
 
 ---
+
 Progress: 0/N tasks complete
 
 ## Decisions
+
 [Phase-specific decisions]
 
 ## Blockers
+
 None
 ```
 
@@ -142,19 +158,22 @@ If `.claude/CLAUDE.md` exists and has template content, update it with actual pr
 Report what was created:
 
 > "Created phased implementation plan:
+>
 > - `.mpx/ROADMAP.md` - Phase overview, dependencies, tracking, decisions, and blockers
 > - `.mpx/phases/` - Phase folders with CHECKLIST.md each
 >
 > **Phases Created:**
+>
 > 1. Foundation (N tasks)
 > 2. [Feature] (N tasks)
-> ...
+>    ...
 >
-> Run `/mpx-execute` to start with the first task."
+> Run `/mp-execute mpx` to start with the first task."
 
 ## Task Breakdown Guidelines
 
 When breaking features into tasks, ensure:
+
 - Each task is atomic and completable in one sitting
 - Tasks have clear completion criteria
 - Dependencies between tasks are noted

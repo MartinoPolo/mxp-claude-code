@@ -149,7 +149,7 @@ Warning: Conflicts Noted:
   - Consider reviewing Phase 2 dependencies
 
 Run `/mpx-show-project-status` to see updated progress.
-Run `/mpx-execute` to start working on new tasks.
+Run `/mp-execute mpx` to start working on new tasks.
 ```
 
 ## Conflict Detection Rules

@@ -41,6 +41,7 @@ If no argument, ask the user:
 > "Describe the bug or issue you want to track."
 
 Extract from the description:
+
 - **Summary** — one-line description
 - **Severity** — critical / high / medium / low (default: medium)
 - **Affected area** — component, feature, or module
@@ -59,23 +60,25 @@ Note each phase's status (complete/incomplete), section headings, and scope.
 ### Step 3: Find Related Sections
 
 Keyword match the affected area against:
+
 - Section headings in CHECKLIST.md files
 - Task descriptions
 - Scope items in each phase
 
 Rank matches:
+
 - **Strong** — direct keyword match in section heading or scope
 - **Weak** — partial match in task descriptions
 - **None** — no relevant match found
 
 ### Step 4: Decide Placement
 
-| Match    | Phase Status | Action                                             |
-| -------- | ------------ | -------------------------------------------------- |
-| Strong   | Incomplete   | Add fix tasks to that phase's CHECKLIST.md         |
-| Strong   | Complete     | Create new bugfix phase (never reopen completed)   |
-| Weak     | Any          | Ask user: add to matched phase or new bugfix phase |
-| None     | —            | Create new bugfix phase                            |
+| Match  | Phase Status | Action                                             |
+| ------ | ------------ | -------------------------------------------------- |
+| Strong | Incomplete   | Add fix tasks to that phase's CHECKLIST.md         |
+| Strong | Complete     | Create new bugfix phase (never reopen completed)   |
+| Weak   | Any          | Ask user: add to matched phase or new bugfix phase |
+| None   | —            | Create new bugfix phase                            |
 
 Use `AskUserQuestion` for weak-match decisions.
 
@@ -87,6 +90,7 @@ Use `AskUserQuestion` for weak-match decisions.
    - `Fix:` prefix distinguishes bug tasks from feature tasks
 
    Example tasks:
+
    ```
    - [ ] Fix: Login form crashes on emails with + character [severity: medium]
      > Email addresses containing + are valid per RFC 5321. The form validation regex rejects them incorrectly.
@@ -123,7 +127,7 @@ New Tasks:
   - [ ] Fix: [description]
   - [ ] Verify: [description]
 
-Next: Run `/mpx-execute` to implement the fix.
+Next: Run `/mp-execute mpx` to implement the fix.
 ```
 
 ## Task Generation Rules

@@ -18,6 +18,7 @@ Analyze the current working directory and return a comprehensive markdown report
 ### 1. Detect Language & Runtime
 
 Check for manifest files:
+
 - `package.json` → Node.js/JavaScript/TypeScript
 - `go.mod` → Go
 - `requirements.txt` / `pyproject.toml` / `setup.py` → Python
@@ -33,6 +34,7 @@ Read the manifest to extract project name, version, description.
 ### 2. Detect Framework
 
 Check dependencies in manifests:
+
 - **Frontend:** next, react, vue, svelte, angular, solid, astro, nuxt, remix
 - **Backend:** express, fastify, koa, hono, fastapi, django, flask, gin, fiber, actix
 - **Fullstack:** next, nuxt, remix, sveltekit, t3
@@ -44,6 +46,7 @@ Also check config files: `next.config.*`, `vite.config.*`, `tailwind.config.*`, 
 ### 3. Detect Package Manager
 
 Check lock files:
+
 - `pnpm-lock.yaml` → pnpm
 - `yarn.lock` → yarn
 - `package-lock.json` → npm
@@ -55,6 +58,7 @@ Check lock files:
 ### 4. Detect Database & ORM
 
 Check for:
+
 - ORM configs: `prisma/schema.prisma`, `drizzle.config.*`, `ormconfig.*`, `alembic.ini`
 - DB driver deps: `pg`, `mysql2`, `sqlite3`, `mongoose`, `redis`, `@prisma/client`
 - Docker compose: `docker-compose.yml` — look for postgres, mysql, redis, mongo services
@@ -63,6 +67,7 @@ Check for:
 ### 5. Detect Testing
 
 Check for config files and dependencies:
+
 - `vitest.config.*`, `jest.config.*`, `cypress.config.*`, `playwright.config.*`
 - `conftest.py`, `pytest.ini`, `setup.cfg [tool:pytest]`
 - Test directories: `__tests__/`, `tests/`, `test/`, `spec/`, `e2e/`
@@ -78,6 +83,7 @@ Check for config files and dependencies:
 ### 7. Analyze Project Structure
 
 Glob top-level directories and identify patterns:
+
 - `src/`, `app/`, `lib/`, `pages/`, `components/`, `routes/`, `api/`
 - `public/`, `static/`, `assets/`
 - `config/`, `.github/`, `.vscode/`
@@ -86,6 +92,7 @@ Glob top-level directories and identify patterns:
 ### 8. Detect Existing Features
 
 Best-effort feature detection:
+
 - **Route/endpoint analysis:** scan route files, API handlers, page directories
 - **Component analysis:** count components in `components/` or similar
 - **Directory-based features:** each top-level dir under `src/features/`, `src/modules/`, etc.
@@ -117,11 +124,13 @@ Return a single markdown document with this structure:
 # Codebase Scan Report
 
 ## Project Identity
+
 - **Name:** [from manifest]
 - **Description:** [from manifest or README]
 - **Version:** [if available]
 
 ## Tech Stack
+
 - **Language:** [e.g., TypeScript]
 - **Runtime:** [e.g., Node.js 20]
 - **Framework:** [e.g., Next.js 14]
@@ -132,7 +141,9 @@ Return a single markdown document with this structure:
 
 ## Project Structure
 ```
+
 [top-level directory tree, 2 levels deep max]
+
 ```
 
 ## Dev Commands

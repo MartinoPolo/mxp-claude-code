@@ -28,14 +28,14 @@ BG_BLUE='\033[44m'
 
 ## Usage Patterns
 
-| Type | Pattern | Example |
-|------|---------|---------|
-| Success | `echo -e "${GREEN}✓${RESET} Message"` | ✓ Done |
-| Error | `echo -e "${RED}✗${RESET} Message"` | ✗ Failed |
-| Warning | `echo -e "${YELLOW}⚠${RESET} Message"` | ⚠ Caution |
-| Info | `echo -e "${CYAN}→${RESET} Message"` | → Processing |
+| Type      | Pattern                                     | Example          |
+| --------- | ------------------------------------------- | ---------------- |
+| Success   | `echo -e "${GREEN}✓${RESET} Message"`       | ✓ Done           |
+| Error     | `echo -e "${RED}✗${RESET} Message"`         | ✗ Failed         |
+| Warning   | `echo -e "${YELLOW}⚠${RESET} Message"`      | ⚠ Caution        |
+| Info      | `echo -e "${CYAN}→${RESET} Message"`        | → Processing     |
 | Highlight | `echo -e "${BG_BLUE}${BOLD} PATH ${RESET}"` | Highlighted text |
-| Secondary | `echo -e "  ${DIM}Details${RESET}"` | Dimmed details |
+| Secondary | `echo -e "  ${DIM}Details${RESET}"`         | Dimmed details   |
 
 ## Path Highlight Box
 

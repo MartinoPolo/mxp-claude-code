@@ -28,6 +28,7 @@ Display current project progress, completed tasks, and next steps.
 3. Compile overall statistics
 
 ### Step 2: Generate Status Display
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  Project Status: [Project Name]
@@ -59,8 +60,8 @@ Blockers:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Commands:
-  /mpx-execute               Continue with next task
-  /mpx-parse-spec       Regenerate plan
+  /mp-execute mpx            Continue with next task
+  /mpx-parse-spec            Regenerate plan
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -68,9 +69,9 @@ Commands:
 
 Based on project state, suggest relevant next commands:
 
-- If no tasks done: "Start with `/mpx-execute` to execute the first task"
-- If phase incomplete: "Continue with `/mpx-execute`"
-- If phase complete: "Ready for next phase with `/mpx-execute`"
+- If no tasks done: "Start with `/mp-execute mpx` to execute the first task"
+- If phase incomplete: "Continue with `/mp-execute mpx`"
+- If phase complete: "Ready for next phase with `/mp-execute mpx`"
 - If blockers exist: "Resolve blockers before continuing"
 - If all phases done: "Project complete! Consider final review"
 

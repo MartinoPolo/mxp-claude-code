@@ -93,6 +93,7 @@ mcp__plugin_context7_context7__query-docs({
 ## Quality Checklist
 
 Before responding:
+
 - [ ] Called `resolve-library-id`?
 - [ ] Called `query-docs`?
 - [ ] Checked user's version in dependency file?
@@ -101,14 +102,14 @@ Before responding:
 
 ## Common Libraries
 
-| Library | Topic Examples |
-|---------|---------------|
-| React | hooks, context, suspense, server-components |
-| Next.js | routing, middleware, api-routes, app-router |
-| Express | middleware, routing, error-handling |
-| Tailwind | utilities, customization, dark-mode |
-| Vue | composition-api, reactivity, slots |
-| TypeScript | types, generics, utility-types |
+| Library    | Topic Examples                              |
+| ---------- | ------------------------------------------- |
+| React      | hooks, context, suspense, server-components |
+| Next.js    | routing, middleware, api-routes, app-router |
+| Express    | middleware, routing, error-handling         |
+| Tailwind   | utilities, customization, dark-mode         |
+| Vue        | composition-api, reactivity, slots          |
+| TypeScript | types, generics, utility-types              |
 
 ## Never Do
 

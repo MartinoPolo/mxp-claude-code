@@ -18,6 +18,7 @@ Initialize a new git repository with a comprehensive .gitignore and Claude Code 
 1. **Check for existing git repo**: If `.git/` already exists, inform the user and abort.
 
 2. **Run the init script**: Execute the initialization script:
+
    ```bash
    bash ~/.claude/scripts/init-repo.sh
    ```

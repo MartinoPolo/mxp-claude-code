@@ -13,6 +13,8 @@ metadata:
 
 Investigate a GitHub issue, analyze the codebase, plan a fix, and execute with user approval.
 
+GitHub MCP allowed for this skill.
+
 ## Usage
 
 ```
@@ -41,6 +43,7 @@ gh issue view <number> --repo owner/repo --json title,body,labels,comments,state
 ```
 
 Parse and summarize:
+
 - Title and description
 - Labels (bug, feature, etc.)
 - Key comments with context
@@ -124,7 +127,7 @@ AskUserQuestion:
 
 ```
 Task tool:
-  subagent_type: "mpx-executor"
+  subagent_type: "mp-executor"
   model: opus
   description: "Fix issue #N"
   prompt: |
@@ -178,12 +181,12 @@ After execution completes:
 
 ## Error Handling
 
-| Error | Action |
-|-------|--------|
-| Issue not found | Report error, suggest checking URL |
-| No relevant code found | Report findings, ask for hints |
-| Plan confidence = Low | Ask user before proceeding |
-| Execution fails | Report blocker, suggest manual fix |
+| Error                  | Action                             |
+| ---------------------- | ---------------------------------- |
+| Issue not found        | Report error, suggest checking URL |
+| No relevant code found | Report findings, ask for hints     |
+| Plan confidence = Low  | Ask user before proceeding         |
+| Execution fails        | Report blocker, suggest manual fix |
 
 ## Optional: Library Docs
 
@@ -191,6 +194,8 @@ If the issue involves an external library, use Context7 for docs:
 
 ```
 Task tool:
+  subagent_type: "mp-context7-docs-fetcher"
+  model: sonnet
   description: "Fetch docs for [library]"
   prompt: "Get documentation for [library] focusing on [relevant API]"
 ```

@@ -31,7 +31,7 @@ Read `manifest.json`. Verify:
 
 1. `id` exists and is kebab-case
 2. `name` exists
-3. `description` ends with `.?!)`  — if not, **stop and fix**
+3. `description` ends with `.?!)` — if not, **stop and fix**
 4. `version` exists
 5. `author` and `authorUrl` exist
 6. `minAppVersion` is set
@@ -112,11 +112,11 @@ Read the file. Find alphabetical insertion point by `id`. Add entry:
 
 ```json
 {
-    "id": "<manifest.id>",
-    "name": "<manifest.name>",
-    "author": "<manifest.author>",
-    "description": "<manifest.description>",
-    "repo": "<github-user>/<repo-name>"
+  "id": "<manifest.id>",
+  "name": "<manifest.name>",
+  "author": "<manifest.author>",
+  "description": "<manifest.description>",
+  "repo": "<github-user>/<repo-name>"
 }
 ```
 
@@ -176,6 +176,7 @@ gh pr view <pr-number> --repo obsidianmd/obsidian-releases --json comments --jq 
 ```
 
 Common bot rejection reasons:
+
 - Description mismatch between manifest and community-plugins.json
 - Description doesn't end with punctuation
 - Missing release assets
@@ -185,6 +186,7 @@ Common bot rejection reasons:
 ## Output
 
 Display:
+
 - Plugin id, name, version
 - Release URL
 - PR URL and number

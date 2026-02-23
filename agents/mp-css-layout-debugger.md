@@ -22,8 +22,8 @@ Expert in CSS layout systems, debugging visual issues, and framework-specific fi
 }
 
 .flex-item {
-  flex: 1 1 300px;  /* grow, shrink, basis */
-  min-width: 0;     /* CRITICAL: prevents overflow */
+  flex: 1 1 300px; /* grow, shrink, basis */
+  min-width: 0; /* CRITICAL: prevents overflow */
 }
 
 /* Centering */
@@ -35,6 +35,7 @@ Expert in CSS layout systems, debugging visual issues, and framework-specific fi
 ```
 
 **Common Flexbox Fixes:**
+
 - Item overflow → Add `min-width: 0`
 - Content not wrapping → Add `flex-wrap: wrap`
 - Unequal heights → Use `align-items: stretch` (default)
@@ -68,6 +69,7 @@ Expert in CSS layout systems, debugging visual issues, and framework-specific fi
 ```
 
 **auto-fit vs auto-fill:**
+
 - `auto-fit`: Expands items to fill space (preferred)
 - `auto-fill`: Creates empty tracks if space allows
 
@@ -129,29 +131,29 @@ Expert in CSS layout systems, debugging visual issues, and framework-specific fi
 
 ```javascript
 // Paste in DevTools console to outline all elements
-document.querySelectorAll('*').forEach(el => {
-  el.style.outline = '1px solid red';
+document.querySelectorAll("*").forEach((el) => {
+  el.style.outline = "1px solid red";
 });
 
 // Detect horizontal overflow
-document.querySelectorAll('*').forEach(el => {
+document.querySelectorAll("*").forEach((el) => {
   if (el.scrollWidth > el.clientWidth) {
-    console.log('Overflow:', el);
-    el.style.outline = '2px solid blue';
+    console.log("Overflow:", el);
+    el.style.outline = "2px solid blue";
   }
 });
 ```
 
 ### Step 3: Common Root Causes
 
-| Symptom | Likely Cause | Fix |
-|---------|--------------|-----|
-| Horizontal scrollbar | Content wider than viewport | `overflow-x: hidden` on container, fix source |
-| Flex item too wide | Missing min-width constraint | `min-width: 0` on flex items |
-| Grid item overflow | Content forcing width | `min-width: 0` + `word-wrap: break-word` |
-| Z-index not working | Missing position or stacking context | Add `position: relative` to parent |
-| Centering fails | No explicit dimensions | Set width/height on container |
-| Text clipping | Fixed height without overflow | `overflow: auto` or remove fixed height |
+| Symptom              | Likely Cause                         | Fix                                           |
+| -------------------- | ------------------------------------ | --------------------------------------------- |
+| Horizontal scrollbar | Content wider than viewport          | `overflow-x: hidden` on container, fix source |
+| Flex item too wide   | Missing min-width constraint         | `min-width: 0` on flex items                  |
+| Grid item overflow   | Content forcing width                | `min-width: 0` + `word-wrap: break-word`      |
+| Z-index not working  | Missing position or stacking context | Add `position: relative` to parent            |
+| Centering fails      | No explicit dimensions               | Set width/height on container                 |
+| Text clipping        | Fixed height without overflow        | `overflow: auto` or remove fixed height       |
 
 ### Step 4: Specificity Issues
 
@@ -170,7 +172,9 @@ document.querySelectorAll('*').forEach(el => {
 @layer base, components, utilities;
 
 @layer utilities {
-  .mt-4 { margin-top: 1rem; }
+  .mt-4 {
+    margin-top: 1rem;
+  }
 }
 ```
 
@@ -274,27 +278,33 @@ const Grid = styled.div`
 
 ### Viewport Testing Sizes
 
-| Breakpoint | Width | Device |
-|------------|-------|--------|
-| Mobile | 375px | iPhone SE |
-| Tablet | 768px | iPad |
-| Desktop | 1280px | Laptop |
-| Wide | 1920px | Monitor |
+| Breakpoint | Width  | Device    |
+| ---------- | ------ | --------- |
+| Mobile     | 375px  | iPhone SE |
+| Tablet     | 768px  | iPad      |
+| Desktop    | 1280px | Laptop    |
+| Wide       | 1920px | Monitor   |
 
 ### Mobile-First Media Queries
 
 ```css
 /* Base: mobile */
-.element { padding: 1rem; }
+.element {
+  padding: 1rem;
+}
 
 /* Tablet+ */
 @media (min-width: 768px) {
-  .element { padding: 2rem; }
+  .element {
+    padding: 2rem;
+  }
 }
 
 /* Desktop+ */
 @media (min-width: 1024px) {
-  .element { padding: 3rem; }
+  .element {
+    padding: 3rem;
+  }
 }
 ```
 
@@ -303,8 +313,8 @@ const Grid = styled.div`
 ```css
 /* Instead of left/right */
 .element {
-  margin-inline-start: 1rem;  /* margin-left in LTR */
-  padding-inline: 2rem;       /* padding-left + padding-right */
+  margin-inline-start: 1rem; /* margin-left in LTR */
+  padding-inline: 2rem; /* padding-left + padding-right */
   border-block-end: 1px solid; /* border-bottom */
 }
 ```
@@ -312,21 +322,25 @@ const Grid = styled.div`
 ## Quick Reference
 
 **Flex fixes:**
+
 - `min-width: 0` - Allow shrinking
 - `flex-wrap: wrap` - Prevent overflow
 - `gap` - Modern spacing
 
 **Grid fixes:**
+
 - `minmax(0, 1fr)` - Prevent minimum content width
 - `auto-fit` - Fill available space
 - `min-width: 0` on items - Allow shrinking
 
 **Overflow fixes:**
+
 - Check parent containers first
 - `word-wrap: break-word` for long text
 - `max-width: 100%` on images
 
 **Centering:**
+
 - Grid: `place-items: center`
 - Flex: `justify-content: center; align-items: center`
 - Needs explicit dimensions on container

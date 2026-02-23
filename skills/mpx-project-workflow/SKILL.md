@@ -61,7 +61,7 @@ This document provides background knowledge about spec-driven development workfl
 
 - Requirements skills (`/mpx-add-requirements`, `/mpx-report-issue-or-bug`, `/mpx-create-spec`, `/mpx-parse-spec`) are documentation-only
 - They update `.mpx/` files — never source code, configs, or tests
-- Implementation happens only via `/mpx-execute`
+- Implementation happens only via `/mp-execute mpx`
 
 ### Session Handoff
 
@@ -70,7 +70,7 @@ This document provides background knowledge about spec-driven development workfl
 - Note any decisions made and why
 - Document blockers clearly
 - Leave "next step" note for continuity
-- HANDOFF.md is consumed and deleted by `/mpx-execute` at next session start
+- HANDOFF.md is consumed and deleted by `/mp-execute` at next session start
 
 ## Troubleshooting
 
@@ -88,7 +88,7 @@ This document provides background knowledge about spec-driven development workfl
 
 ### "Context is getting degraded"
 
-1. Use `/mpx-execute` for complex work
+1. Use `/mp-execute mpx` for complex work
 2. This spawns fresh agent with clean context
 3. CHECKLIST.md maintains continuity (HANDOFF.md adds optional session context if `/mp-handoff` was run)
 
@@ -100,9 +100,9 @@ This document provides background knowledge about spec-driven development workfl
 
 ### "I want to control what gets executed"
 
-- `/mpx-execute phase 3` — target specific phase
-- `/mpx-execute next` — force single task
-- `/mpx-execute all` — force entire remaining phase
+- `/mp-execute mpx phase 3` — target specific phase
+- `/mp-execute mpx task` — force single task
+- `/mp-execute mpx all` — force entire remaining phase
 
 ### "I need to add new requirements"
 
@@ -123,7 +123,7 @@ This document provides background knowledge about spec-driven development workfl
 /mpx-create-spec        - Interactive spec creation
 /mpx-init-repo          - Git initialization only
 /mpx-parse-spec         - Generate checklists from spec
-/mpx-execute                  - Execute tasks (auto-selects phase and scope)
+/mp-execute mpx              - Execute tasks (auto-selects phase and scope)
 /mpx-show-project-status     - Show progress and next steps
 /mpx-add-requirements   - Add new requirements to existing project
 /mpx-report-issue-or-bug          - Track bugs/issues in phase system

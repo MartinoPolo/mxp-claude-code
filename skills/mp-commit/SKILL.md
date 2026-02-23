@@ -12,6 +12,8 @@ metadata:
 
 Stage and commit changes with conventional commit format. $ARGUMENTS
 
+GitHub MCP allowed for this skill.
+
 ## Workflow
 
 ### Step 1: Check Status

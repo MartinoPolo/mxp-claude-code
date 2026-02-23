@@ -30,6 +30,7 @@ bash ~/.claude/scripts/detect-check-scripts.sh
 ```
 
 Parse output key=value pairs. Report findings:
+
 - Package manager (PM)
 - Available checks (BUILD, TYPECHECK, LINT)
 - Monorepo packages if applicable
@@ -85,6 +86,7 @@ Summarize final status for each check:
 - **Skipped**: not available in this project
 
 Format:
+
 ```
 Build:     [status]
 Typecheck: [status]
@@ -93,12 +95,12 @@ Lint:      [status]
 
 ## Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
-| "No scripts detected" | Check `package.json` has `build`, `lint`, or `typecheck`/`check` scripts |
-| "No package.json found" | Run from project root containing `package.json` |
-| "PM_UNKNOWN" | No lock file found — provide package manager manually when prompted |
-| Wrong package manager detected | Delete stale lock files or specify PM via second argument |
+| Problem                        | Solution                                                                 |
+| ------------------------------ | ------------------------------------------------------------------------ |
+| "No scripts detected"          | Check `package.json` has `build`, `lint`, or `typecheck`/`check` scripts |
+| "No package.json found"        | Run from project root containing `package.json`                          |
+| "PM_UNKNOWN"                   | No lock file found — provide package manager manually when prompted      |
+| Wrong package manager detected | Delete stale lock files or specify PM via second argument                |
 
 ## Rules
 

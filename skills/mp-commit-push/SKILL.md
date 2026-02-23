@@ -12,6 +12,8 @@ metadata:
 
 Stage, commit, and push changes. No PR created. $ARGUMENTS
 
+GitHub MCP allowed for this skill.
+
 ## Workflow
 
 ### Step 1: Check Status

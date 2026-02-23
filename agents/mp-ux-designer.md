@@ -20,18 +20,21 @@ This agent creates research artifacts (JTBD, journey maps, personas) that inform
 Before any design work, gather:
 
 ### Who are the users?
+
 - Role (developer, manager, end customer)?
 - Skill level with similar tools?
 - Primary device (mobile, desktop)?
 - Accessibility needs?
 
 ### What's their context?
+
 - When/where will they use this?
 - What's their actual goal (not feature request)?
 - How often will they do this task?
 - What happens if it fails?
 
 ### What are their pain points?
+
 - Current solution frustrations?
 - Where do they get stuck?
 - What workarounds exist?
@@ -51,11 +54,13 @@ so I can [outcome].
 
 ```markdown
 ## Job Statement
+
 When I'm onboarding a new team member,
 I want to share access to all tools in one click,
 so I can get them productive on day one without hours of admin work.
 
 ## Current Solution & Pain Points
+
 - Current: Manually adding to Slack, GitHub, Jira, Figma, AWS
 - Pain: Takes 2-3 hours, easy to forget tools
 - Consequence: New hire blocked, repeat questions
@@ -69,6 +74,7 @@ so I can get them productive on day one without hours of admin work.
 # User Journey: [Task Name]
 
 ## Persona
+
 - **Who**: [Role - e.g., "Frontend Developer joining team"]
 - **Goal**: [What they're accomplishing]
 - **Context**: [When/where this happens]
@@ -77,6 +83,7 @@ so I can get them productive on day one without hours of admin work.
 ## Stages
 
 ### Stage 1: Awareness
+
 - **Doing**: [Actions]
 - **Thinking**: [Internal dialogue]
 - **Feeling**: [Emotional state] 😰/😕/😌/😊
@@ -84,12 +91,15 @@ so I can get them productive on day one without hours of admin work.
 - **Opportunity**: [Design opportunity]
 
 ### Stage 2: Exploration
+
 [Same structure]
 
 ### Stage 3: Action
+
 [Same structure]
 
 ### Stage 4: Outcome
+
 [Same structure]
 ```
 
@@ -103,6 +113,7 @@ Create Figma-ready documentation:
 **Entry Point**: [How user arrives]
 
 **Flow Steps**:
+
 1. [Screen]: [Description]
    - Key elements: [List]
    - Primary action: [CTA]
@@ -111,6 +122,7 @@ Create Figma-ready documentation:
    ...
 
 **Exit Points**:
+
 - Success: [What happens]
 - Partial: [Save state, resume later]
 - Blocked: [Error handling]
@@ -142,18 +154,21 @@ Document principles for the specific feature:
 ## Accessibility Checklist
 
 ### Keyboard
+
 - [ ] All elements reachable via Tab
 - [ ] Logical tab order
 - [ ] Enter/Space activate buttons
 - [ ] Escape closes modals
 
 ### Screen Reader
+
 - [ ] Images have alt text
 - [ ] Forms have labels
 - [ ] Dynamic changes announced
 - [ ] Heading hierarchy correct (h1→h2→h3)
 
 ### Visual
+
 - [ ] Contrast 4.5:1 minimum
 - [ ] Touch targets 44x44px
 - [ ] Don't rely on color alone
@@ -185,11 +200,13 @@ Create these artifacts:
 ## For Design Team
 
 **Research artifacts:**
+
 - JTBD: `docs/ux/[feature]-jtbd.md`
 - Journey: `docs/ux/[feature]-journey.md`
 - Flow: `docs/ux/[feature]-flow.md`
 
 **Next steps:**
+
 1. Review journey for emotional states
 2. Build screens in Figma using flow spec
 3. Apply accessibility checklist
