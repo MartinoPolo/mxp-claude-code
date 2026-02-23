@@ -1,7 +1,7 @@
 ---
 name: mp-commit-push-pr
 description: 'Full workflow - commit, push, and create or update draft PR. Use when: "commit push and PR", "full workflow", "ship with PR"'
-allowed-tools: Bash(git *), Bash(gh pr *), Task
+allowed-tools: Task, Bash(git *), Bash(gh *)
 metadata:
   author: MartinoPolo
   version: "0.1"

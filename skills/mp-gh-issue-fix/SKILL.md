@@ -2,7 +2,7 @@
 name: mp-gh-issue-fix
 description: 'Investigate GitHub issue, analyze codebase, create fix plan, execute with approval. Use when: "fix issue #N", "investigate issue", "solve this issue"'
 disable-model-invocation: true
-allowed-tools: Read, Glob, Grep, Task, AskUserQuestion, Bash(gh issue *), Bash(git log *)
+allowed-tools: Read, Glob, Grep, Task, AskUserQuestion, Bash(gh issue *), Bash(git log *), Bash(git *), Bash(gh *)
 metadata:
   author: MartinoPolo
   version: "0.1"

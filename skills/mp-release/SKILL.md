@@ -2,7 +2,7 @@
 name: mp-release
 description: 'Bump version, push tag, verify CI workflow starts. Use when: "release", "bump version", "version bump", "cut a release"'
 args: "[patch | minor | major]"
-allowed-tools: Bash(npm version *), Bash(git push *), Bash(git status *), Bash(git branch *), Bash(git remote *), Bash(gh run *), Read, Grep, Glob, AskUserQuestion
+allowed-tools: Bash(npm version *), Bash(git push *), Bash(git status *), Bash(git branch *), Bash(git remote *), Bash(gh run *), Read, Grep, Glob, AskUserQuestion, Bash(git *), Bash(gh *)
 metadata:
   author: MartinoPolo
   version: "0.1"

@@ -1,7 +1,7 @@
 ---
 name: mp-commit
 description: 'Stage and commit changes with conventional commit format. Use when: "commit this", "stage and commit", "make a commit"'
-allowed-tools: Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git add *), Bash(git commit *)
+allowed-tools: Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git add *), Bash(git commit *), Bash(git *), Bash(gh *)
 metadata:
   author: MartinoPolo
   version: "0.1"

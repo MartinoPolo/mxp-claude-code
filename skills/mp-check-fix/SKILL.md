@@ -2,7 +2,7 @@
 name: mp-check-fix
 description: 'Auto-detect and fix build/typecheck/lint errors. Use when: "fix lint errors", "fix type errors", "check and fix", "run checks"'
 compatibility: Requires project with npm/yarn/pnpm scripts for build/lint/typecheck
-allowed-tools: Bash(bash *detect-check-scripts*), Bash(*run build*), Bash(*run check*), Bash(*run typecheck*), Bash(*run type-check*), Bash(*run tsc*), Bash(*run check:types*), Bash(*run lint*), Bash(*run eslint*), Bash(*run lint:check*), Bash(cd * && *run build*), Bash(cd * && *run check*), Bash(cd * && *run typecheck*), Bash(cd * && *run type-check*), Bash(cd * && *run tsc*), Bash(cd * && *run check:types*), Bash(cd * && *run lint*), Bash(cd * && *run eslint*), Bash(cd * && *run lint:check*), Read, Edit, Glob, Grep
+allowed-tools: Bash(bash *detect-check-scripts*), Bash(*run build*), Bash(*run check*), Bash(*run typecheck*), Bash(*run type-check*), Bash(*run tsc*), Bash(*run check:types*), Bash(*run lint*), Bash(*run eslint*), Bash(*run lint:check*), Bash(cd * && *run build*), Bash(cd * && *run check*), Bash(cd * && *run typecheck*), Bash(cd * && *run type-check*), Bash(cd * && *run tsc*), Bash(cd * && *run check:types*), Bash(cd * && *run lint*), Bash(cd * && *run eslint*), Bash(cd * && *run lint:check*), Read, Edit, Glob, Grep, Bash(yarn *), Bash(npm *), Bash(pnpm *), Bash(bun *)
 metadata:
   author: MartinoPolo
   version: "0.1"

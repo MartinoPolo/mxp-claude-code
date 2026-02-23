@@ -3,7 +3,7 @@ name: mp-execute
 description: 'Execute checklist tasks in grouped loops with executor/reviewer/checker/resolver agents. Use when: "execute checklist", "run this task list", "complete unchecked tasks"'
 argument-hint: "<checklist-path | mpx [phase N | task | all]>"
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git diff *), Bash(git status *), AskUserQuestion, Task
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git diff *), Bash(git status *), AskUserQuestion, Task, Skill
 metadata:
   author: MartinoPolo
   version: "0.1"

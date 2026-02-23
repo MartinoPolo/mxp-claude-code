@@ -1,7 +1,7 @@
 ---
 name: mp-commit-push
 description: 'Stage, commit, and push changes (no PR). Use when: "commit and push", "push my changes", "ship it"'
-allowed-tools: Bash(git *)
+allowed-tools: Bash(git *), Bash(gh *)
 metadata:
   author: MartinoPolo
   version: "0.1"

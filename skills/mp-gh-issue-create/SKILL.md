@@ -1,7 +1,7 @@
 ---
 name: mp-gh-issue-create
 description: 'Create well-structured GitHub issues with codebase context. Use when: "create issue", "open issue", "file a bug", "report issue"'
-allowed-tools: Bash(gh issue create *), Bash(gh label *), Bash(git log *), Bash(git diff *), Read, Glob, Grep, Task
+allowed-tools: Bash(gh issue create *), Bash(gh label *), Bash(git log *), Bash(git diff *), Read, Glob, Grep, Task, Bash(git *), Bash(gh *)
 metadata:
   author: MartinoPolo
   version: "0.1"

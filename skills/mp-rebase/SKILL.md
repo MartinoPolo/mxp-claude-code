@@ -1,7 +1,7 @@
 ---
 name: mp-rebase
 description: 'Rebase or merge target branch into current branch. Use when: "rebase on main", "update from dev", "merge main into branch"'
-allowed-tools: Bash(git *), Task, Read, Edit
+allowed-tools: Bash(git *), Task, Read, Edit, Bash(gh *)
 metadata:
   author: MartinoPolo
   version: "0.1"
