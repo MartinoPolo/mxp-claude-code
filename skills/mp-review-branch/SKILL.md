@@ -64,3 +64,5 @@ Pass:
   - Important: should-fix findings
 - Nice-to-Have
   - Minor non-blocking notes
+
+DO NOT create the file if no issues are found. Only report in the conversation.

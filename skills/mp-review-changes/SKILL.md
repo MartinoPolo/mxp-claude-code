@@ -60,3 +60,5 @@ Pass:
 
 - Read-only review (except writing `REVIEW-CHANGES.md`)
 - No source edits
+
+DO NOT create the file if no issues are found. Only report in the conversation.
