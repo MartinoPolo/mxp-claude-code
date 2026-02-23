@@ -3,7 +3,7 @@ name: mp-execute
 description: 'Execute checklist tasks in grouped loops with executor/reviewer/checker/resolver agents. Use when: "execute checklist", "run this task list", "complete unchecked tasks"'
 argument-hint: "<checklist-path | mpx [phase N | task | all]>"
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git diff *), Bash(git status *), AskUserQuestion, Task, Skill
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git diff *), Bash(git status *), Bash(git add *), Bash(git commit *), AskUserQuestion, Task, Skill
 metadata:
   author: MartinoPolo
   version: "0.1"
@@ -85,6 +85,10 @@ For each group:
    - max 3 iterations per failed check
 4. Mark completed tasks as `[x]`
 5. For unresolved blockers, keep unchecked and append reason in checklist `## Blockers` (or inline unresolved note)
+6. Commit completed work — after marking tasks complete, invoke `/mp-commit` skill
+   - Scope commit to files changed in this group
+   - Commit message reflects the group's tasks (e.g., `feat(scope): implement auth flow`)
+   - Skip commit if no tasks were completed in this group
 
 In MPX mode, update phase `CHECKLIST.md` and roadmap phase status where relevant.
 
@@ -102,6 +106,7 @@ After all tasks are completed or unresolved, run full gate:
 - Ensure tracked state reflects actual status:
   - Checklist mode: target checklist (`[x]`, unresolved notes, blockers)
   - MPX mode: phase checklists + roadmap phase progress
+- Final commit — invoke `/mp-commit` for any remaining uncommitted changes (checklist updates, roadmap status, docs)
 - Summarize completed/skipped/unresolved tasks
 - Spawn `mp-docs-updater` agent with list of changes to update docs
 
