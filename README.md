@@ -82,41 +82,42 @@ All mpx projects use phase-based organization inside `.mpx/`:
 | `/mpx-execute`             | Select phase, execute tasks (full phase or single)                              |
 | `/mpx-show-project-status` | Show progress                                                                   |
 | `/mpx-add-requirements`    | Add requirements with conflict detection                                        |
-| `/mpx-report-issue-or-bug`           | Track bugs/issues in .mpx/ phase system                                         |
+| `/mpx-report-issue-or-bug` | Track bugs/issues in .mpx/ phase system                                         |
+
 ### mp- Skills (General Purpose)
 
-| Skill                     | Description                                     |
-| ------------------------- | ----------------------------------------------- |
-| `/mp-commit`              | Stage and commit with conventional format       |
-| `/mp-commit-push`         | Commit and push (no PR)                         |
-| `/mp-pr`                  | Create or update draft PR from existing commits |
-| `/mp-commit-push-pr`      | Full workflow — commit, push, create/update PR  |
-| `/mp-rebase`              | Rebase or merge target branch into current      |
-| `/mp-review-branch`       | Multi-agent code review of current branch       |
-| `/mp-review-pr`           | PR review with confidence scoring               |
+| Skill                     | Description                                      |
+| ------------------------- | ------------------------------------------------ |
+| `/mp-commit`              | Stage and commit with conventional format        |
+| `/mp-commit-push`         | Commit and push (no PR)                          |
+| `/mp-pr`                  | Create or update draft PR from existing commits  |
+| `/mp-commit-push-pr`      | Full workflow — commit, push, create/update PR   |
+| `/mp-rebase`              | Rebase or merge target branch into current       |
+| `/mp-review-branch`       | Multi-agent code review of current branch        |
+| `/mp-review-pr`           | PR review with confidence scoring                |
 | `/mp-review-changes`      | Lightweight review of uncommitted changes        |
-| `/mp-review-design`       | Visual design inspection via chrome-devtools    |
-| `/mp-gh-issue-fix`        | Investigate and fix GitHub issues               |
-| `/mp-update-readme`       | Update README.md                                |
-| `/mp-update-instructions` | Analyze history, improve CLAUDE.md/AGENTS.md    |
-| `/mp-check-fix`           | Auto-detect and fix build/typecheck/lint errors |
+| `/mp-review-design`       | Visual design inspection via chrome-devtools     |
+| `/mp-gh-issue-fix`        | Investigate and fix GitHub issues                |
+| `/mp-update-readme`       | Update README.md                                 |
+| `/mp-update-instructions` | Analyze history, improve CLAUDE.md/AGENTS.md     |
+| `/mp-check-fix`           | Auto-detect and fix build/typecheck/lint errors  |
 | `/mp-handoff`             | Create ephemeral HANDOFF.md for session bridging |
-| `/mp-gemini-fetch`        | Fetch blocked sites via Gemini CLI              |
+| `/mp-gemini-fetch`        | Fetch blocked sites via Gemini CLI               |
 
 ## Agents
 
-| Agent                    | Model  | Description                                        |
-| ------------------------ | ------ | -------------------------------------------------- |
-| mpx-executor             | Opus   | Executes tasks with fresh context                  |
-| mpx-spec-analyzer        | Sonnet | Analyzes specs and creates phase structure         |
-| mpx-codebase-scanner     | Sonnet | Scans codebase for tech stack, features, structure |
-| mp-chrome-tester         | Sonnet | Browser test automation via Chrome DevTools MCP     |
-| mp-gh-issue-analyzer     | Opus   | Analyzes GitHub issues, creates fix plans          |
-| mp-context7-docs-fetcher | Sonnet | Fetches library docs via Context7 MCP              |
-| mp-css-layout-debugger   | Haiku  | CSS layout debugging                               |
-| mp-base-branch-detector  | Haiku  | Detect base branch for PRs and rebases             |
-| mp-bash-script-colorizer | Haiku  | Bash script coloring guidelines                    |
-| mp-ux-designer           | Sonnet | UX research and design artifacts                   |
+| Agent                     | Model  | Description                                        |
+| ------------------------- | ------ | -------------------------------------------------- |
+| mpx-executor              | Opus   | Executes tasks with fresh context                  |
+| mpx-spec-analyzer         | Sonnet | Analyzes specs and creates phase structure         |
+| mpx-codebase-scanner      | Sonnet | Scans codebase for tech stack, features, structure |
+| mp-chrome-devtools-tester | Sonnet | Browser test automation via Chrome DevTools MCP    |
+| mp-gh-issue-analyzer      | Opus   | Analyzes GitHub issues, creates fix plans          |
+| mp-context7-docs-fetcher  | Sonnet | Fetches library docs via Context7 MCP              |
+| mp-css-layout-debugger    | Haiku  | CSS layout debugging                               |
+| mp-base-branch-detector   | Haiku  | Detect base branch for PRs and rebases             |
+| mp-bash-script-colorizer  | Haiku  | Bash script coloring guidelines                    |
+| mp-ux-designer            | Sonnet | UX research and design artifacts                   |
 
 Agents are auto-spawned based on rules in `AGENTS.md` — no manual invocation needed.
 

@@ -44,10 +44,6 @@ Use `ToolSearch` to load deferred tools only when needed.
 - CSS systems: "flexbox not working", "grid issues", "centering"
 - Responsive: "mobile layout broken", "responsive design"
 
-**Spawn `mp-ux-designer` agent when:**
-
-- "Design a [feature]", "UX for..."
-
 **Spawn `mp-bash-script-colorizer` agent when:**
 
 - Creating new bash/shell scripts
@@ -59,11 +55,10 @@ Use `ToolSearch` to load deferred tools only when needed.
 - Detecting base branch for PR creation/update
 - Called from mp-pr, mp-commit-push-pr, or mp-rebase skills
 
-**Spawn `mp-chrome-tester` agent when:**
+**Spawn `mp-chrome-devtools-tester` agent when:**
 
 - Need to verify UI behavior via browser
-- Test requirements provided that need browser interaction
-- Called as sub-agent for visual/functional verification
+- "Verify with chrome devtools", "Test in browser"
 
 **Spawn `mp-gh-issue-finder` agent when:**
 

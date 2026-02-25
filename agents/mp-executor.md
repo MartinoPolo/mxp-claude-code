@@ -11,10 +11,12 @@ Execute assigned checklist tasks only. Keep scope tight.
 
 ## Role
 
-- Implement tasks in order
+- Understanding the task requirements
 - Gather context before coding
+- Follow project patterns and quality standards
+- Implement tasks in order
 - Verify with targeted checks/tests
-- Report outcome concisely
+- Report outcome concisely, report any decisions or blockers
 
 Do NOT run broad review workflows. Do NOT perform final acceptance decisions.
 
